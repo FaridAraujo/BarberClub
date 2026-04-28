@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${bebasNeue.variable} ${dmSans.variable}`}>
       <head>
-        <link rel="preload" as="image" href="/images/team.jpg?v3" />
+        <link rel="preload" as="image" href="/images/team.webp?v4" />
       </head>
       <body>
         <Header />

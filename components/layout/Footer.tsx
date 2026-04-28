@@ -127,7 +127,7 @@ export default function Footer() {
 
       {/* ── Row 3: Copyright ── */}
       <div className="flex flex-col items-center gap-1 pt-8 text-xs text-[#555555] sm:flex-row sm:justify-between sm:gap-0">
-        <span>© 2025 Barber Club. Todos los derechos reservados.</span>
+        <span>© 2026 Barber Club. Todos los derechos reservados.</span>
         <span>Heredia, Costa Rica</span>
       </div>
     </footer>

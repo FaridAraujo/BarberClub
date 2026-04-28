@@ -1,4 +1,4 @@
-export const ASSET_VERSION = "v3"
+export const ASSET_VERSION = "v4"
 export const LOGO_PATH = "/images/logo.png"
 
 export const GALLERY_IMAGES = [

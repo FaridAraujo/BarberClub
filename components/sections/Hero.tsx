@@ -14,12 +14,12 @@ const HEADLINE_WORDS = ["EL", "ESTILO", "ES", "UNA", "ACTITUD"]
 
 // ─── Decorative Elements ─────────────────────────────────────────────────────
 
-// Drop /images/razor.png into public/images/ — the right razor is mirrored via CSS.
+// Drop /images/razor.webp into public/images/ — the right razor is mirrored via CSS.
 function RazorIcon({ flip = false }: { flip?: boolean }) {
   return (
     <div style={flip ? { transform: "scaleX(-1)" } : undefined}>
       <Image
-        src={`/images/razor.png?${ASSET_VERSION}`}
+        src={`/images/razor.webp?${ASSET_VERSION}`}
         alt=""
         width={52}
         height={52}
@@ -324,7 +324,7 @@ export default function Hero({ logoSrc }: HeroProps) {
       {/* ── Background image — native img for LCP priority ── */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`/images/team.jpg?${ASSET_VERSION}`}
+        src={`/images/team.webp?${ASSET_VERSION}`}
         alt=""
         fetchPriority="high"
         decoding="sync"
