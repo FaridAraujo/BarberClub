@@ -43,9 +43,19 @@
 
 ## 📸 Screenshots
 
-> Hero section, Services, Team, Gallery, and Visit sections
+> Hero section
+<img width="1365" height="623" alt="image" src="https://github.com/user-attachments/assets/0dd850fd-f3cc-4cda-9d7d-8a98a5d6a7f1" />
+> Services 
+<img width="1365" height="626" alt="image" src="https://github.com/user-attachments/assets/27b3f7e3-d1b6-42c5-a7f1-af25c6ddddc7" />
+> Team
+<img width="1365" height="635" alt="image" src="https://github.com/user-attachments/assets/66c4c865-458c-48a6-a41c-cfc16ada17ca" />
+> Gallery
+<img width="1365" height="627" alt="image" src="https://github.com/user-attachments/assets/2e9cf3b8-7630-4685-8670-5b41fa9a527c" />
+> Visit
+<img width="1365" height="626" alt="image" src="https://github.com/user-attachments/assets/b1ac886b-1c48-4323-86e0-dc54802ac2b5" />
 
-<!-- Add screenshots here -->
+
+
 
 ## ⚙️ Run Locally
 
