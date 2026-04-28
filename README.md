@@ -1,12 +1,12 @@
-# ✂️ Barber Club — Barbershop Website
+# Barber Club — Barbershop Website
 
 > Production-ready website built for a local barbershop in Heredia, Costa Rica.
 > Designed and developed as a portfolio project with the goal of delivering a real product to a real client.
 
-## 🚀 Live Demo
+## Live Demo
 [barber-club-omega.vercel.app](https://barber-club-omega.vercel.app)
 
-## 📋 Features
+## Features
 
 - Animated hero section with GSAP scroll-triggered reveals and parallax effects
 - Services section with pricing and payment methods (Card / SINPE Móvil / Cash)
@@ -18,7 +18,7 @@
 - Custom barber pole CSS scrollbar
 - Fully responsive — mobile, tablet, and desktop
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -32,7 +32,7 @@
 | Images | next/image |
 | Deployment | Vercel (Hobby) |
 
-## 📊 Lighthouse Scores (Desktop)
+## Lighthouse Scores (Desktop)
 
 | Metric | Score |
 |---|---|
@@ -41,23 +41,27 @@
 | Best Practices | 96 |
 | SEO | 100 |
 
-## 📸 Screenshots
+## Screenshots
 
 > Hero section
 <img width="1365" height="623" alt="image" src="https://github.com/user-attachments/assets/0dd850fd-f3cc-4cda-9d7d-8a98a5d6a7f1" />
+
 > Services 
 <img width="1365" height="626" alt="image" src="https://github.com/user-attachments/assets/27b3f7e3-d1b6-42c5-a7f1-af25c6ddddc7" />
+
 > Team
 <img width="1365" height="635" alt="image" src="https://github.com/user-attachments/assets/66c4c865-458c-48a6-a41c-cfc16ada17ca" />
+
 > Gallery
 <img width="1365" height="627" alt="image" src="https://github.com/user-attachments/assets/2e9cf3b8-7630-4685-8670-5b41fa9a527c" />
+
 > Visit
 <img width="1365" height="626" alt="image" src="https://github.com/user-attachments/assets/b1ac886b-1c48-4323-86e0-dc54802ac2b5" />
 
 
 
 
-## ⚙️ Run Locally
+## Run Locally
 
 ```bash
 git clone https://github.com/FaridAraujo/barber-club
@@ -68,7 +72,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000)
 
-## 📖 What I Learned
+## What I Learned
 
 - Implementing scroll-based animations with GSAP ScrollTrigger on a Next.js App Router setup
 - Optimizing images for production: converting to WebP and resizing for real display dimensions
