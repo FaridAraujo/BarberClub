@@ -26,10 +26,10 @@ function checkIsOpen(): boolean {
   return             minutes >= 9 * 60 + 30  && minutes < 19 * 60 // Lun–Jue: 9:30am–7pm
 }
 
-const HEADLINE_WORDS = ["EL", "ESTILO", "ES", "UNA", "ACTITUD"]
+const HEADLINE_WORDS = ["EL", "CLUB", "DEL", "ESTILO"]
 
 const HERO_WA_URL =
-  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola Barber Club, ¿hay espacio disponible?")}`
+  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola, ¿hay espacio disponible?")}`
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
@@ -178,10 +178,9 @@ export default function Hero({ logoSrc }: HeroProps) {
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
 
   // null = not yet computed (avoids SSR mismatch)
-  const [isOpen, setIsOpen] = useState<boolean | null>(null)
+  const [isOpen, setIsOpen] = useState<boolean | null>(() => checkIsOpen())
 
   useEffect(() => {
-    setIsOpen(checkIsOpen())
     // Re-check every minute in case the page stays open across opening/closing time
     const interval = setInterval(() => setIsOpen(checkIsOpen()), 60_000)
     return () => clearInterval(interval)
