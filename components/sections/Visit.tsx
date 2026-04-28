@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const MAPS_QUERY = "9.9906133,-84.1351361"
 const WHATSAPP_LINK =
-  "https://wa.me/50600000000?text=Hola%20Barber%20Club%2C%20quiero%20saber%20si%20hay%20espacio%20disponible"
+  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola Barber Club, ¿hay espacio disponible?")}`
 const MAPS_LINK = `https://www.google.com/maps?q=${MAPS_QUERY}`
 const MAPS_EMBED = `https://www.google.com/maps?q=${MAPS_QUERY}&output=embed`
 

@@ -10,6 +10,10 @@ import { GALLERY_IMAGES, SITE_DATA } from "@/lib/constants"
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Instagram brand gradient — yellow → orange → pink → purple → blue
+const IG_GRADIENT =
+  "linear-gradient(45deg, #feda75 0%, #fa7e1e 15%, #d62976 45%, #962fbf 75%, #4f5bd5 100%)"
+
 type GalleryImage = (typeof GALLERY_IMAGES)[number]
 
 interface CellConfig {
@@ -133,6 +137,49 @@ function GalleryCell({
   )
 }
 
+// ─── Instagram CTA button ─────────────────────────────────────────────────────
+// Gradient border via 1px-padded wrapper + gradient text via background-clip.
+// Hover fills the interior with the same gradient and switches text to white.
+// Framer Motion can't animate CSS gradients, so hover state is managed in JS.
+
+function InstagramCTA({ href }: { href: string }) {
+  const [hovered, setHovered] = useState(false)
+
+  const gradientTextStyle: React.CSSProperties = {
+    background: IG_GRADIENT,
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    color: "transparent",
+  }
+
+  // Outer div: gradient background with 1px padding = gradient border
+  return (
+    <div style={{ background: IG_GRADIENT, padding: 1, display: "inline-flex" }}>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 px-8 py-3 text-sm uppercase tracking-widest transition-all duration-300"
+        style={{ background: hovered ? IG_GRADIENT : "#0a0a0a" }}
+      >
+        {/* Icon — separate span so currentColor resolves correctly */}
+        <span
+          style={{ display: "flex", color: hovered ? "#ffffff" : "#d62976" }}
+        >
+          <InstagramIcon size={16} />
+        </span>
+
+        {/* Label — gradient text by default, white on hover */}
+        <span style={hovered ? { color: "#ffffff" } : gradientTextStyle}>
+          Ver en Instagram
+        </span>
+      </a>
+    </div>
+  )
+}
+
 export default function Work() {
   const containerRef = useRef<HTMLElement>(null)
 
@@ -220,17 +267,7 @@ export default function Work() {
             <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
               ¿Quieres ver más?
             </p>
-            <motion.a
-              href={SITE_DATA.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-body flex min-h-[44px] cursor-pointer items-center gap-3 border border-white bg-transparent px-8 py-3 text-sm uppercase tracking-widest text-white"
-              whileHover={{ backgroundColor: "#ffffff", color: "#0a0a0a" }}
-              transition={{ duration: 0.3 }}
-            >
-              <InstagramIcon size={16} />
-              Ver en Instagram
-            </motion.a>
+            <InstagramCTA href={SITE_DATA.instagram} />
           </div>
         </div>
 
