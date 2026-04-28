@@ -301,7 +301,7 @@ export default function Hero({ logoSrc }: HeroProps) {
         {/* ── Status + Location — single horizontal row ── */}
         <div
           ref={locationGroupRef}
-          className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2"
+          className="flex flex-col items-center justify-center gap-y-2"
         >
           {/* Open/closed badge — fades in after JS hydrates (avoids SSR flash) */}
           <div

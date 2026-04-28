@@ -23,7 +23,7 @@ export const BARBERS = [
   {
     id: 2,
     name: "Arson",
-    role: "CoFundador &Barbero",
+    role: "CoFundador & Barbero",
     specialty: "Fades & Estilos",
     bio: "Especialista en fades de alta precisión.",
     photo: "/images/barbers/barber2.png",
