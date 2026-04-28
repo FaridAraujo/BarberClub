@@ -1,0 +1,240 @@
+"use client"
+
+import { useRef, useState } from "react"
+import Image from "next/image"
+import { motion } from "framer-motion"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { GALLERY_IMAGES, SITE_DATA } from "@/lib/constants"
+
+gsap.registerPlugin(ScrollTrigger)
+
+type GalleryImage = (typeof GALLERY_IMAGES)[number]
+
+interface CellConfig {
+  colSpan: string
+  rowSpan: string
+  mobileColSpan: string
+}
+
+const CELL_CONFIG: CellConfig[] = [
+  { colSpan: "md:col-span-2", rowSpan: "md:row-span-2", mobileColSpan: "col-span-2" },
+  { colSpan: "md:col-span-1", rowSpan: "md:row-span-1", mobileColSpan: "col-span-1" },
+  { colSpan: "md:col-span-1", rowSpan: "md:row-span-1", mobileColSpan: "col-span-1" },
+  { colSpan: "md:col-span-1", rowSpan: "md:row-span-1", mobileColSpan: "col-span-1" },
+  { colSpan: "md:col-span-1", rowSpan: "md:row-span-1", mobileColSpan: "col-span-1" },
+  { colSpan: "md:col-span-1", rowSpan: "md:row-span-1", mobileColSpan: "col-span-1" },
+]
+
+function InstagramIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function GalleryCell({
+  image,
+  config,
+  index,
+}: {
+  image: GalleryImage
+  config: CellConfig
+  index: number
+}) {
+  const [imgError, setImgError] = useState(false)
+
+  return (
+    <motion.div
+      className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[280px] md:min-h-[400px]" : "min-h-[160px] md:min-h-[200px]"}`}
+      whileHover="hover"
+      initial="rest"
+    >
+      {imgError ? (
+        <div
+          className="flex h-full w-full items-center justify-center"
+          style={{ backgroundColor: "#111111", minHeight: "inherit" }}
+        >
+          <span className="font-display text-2xl" style={{ color: "#333333" }}>
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+      ) : (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            transform: `scale(${image.zoom})`,
+            transformOrigin: "center center",
+          }}
+        >
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            unoptimized
+            onError={() => setImgError(true)}
+            style={{
+              objectFit: image.objectFit,
+              objectPosition: image.objectPosition,
+            }}
+            sizes="(max-width: 768px) 50vw, 33vw"
+          />
+        </div>
+      )}
+
+      {/* Hover overlay */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center bg-black"
+        variants={{
+          rest: { opacity: 0 },
+          hover: { opacity: 0.5 },
+        }}
+        transition={{ duration: 0.3 }}
+      />
+
+      {/* Instagram icon on hover */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        variants={{
+          rest: { opacity: 0, scale: 0.85 },
+          hover: { opacity: 1, scale: 1 },
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <InstagramIcon size={28} />
+      </motion.div>
+
+      {/* Image scale on hover */}
+      <motion.div
+        className="absolute inset-0"
+        variants={{
+          rest: { scale: 1 },
+          hover: { scale: 1.05 },
+        }}
+        transition={{ duration: 0.3 }}
+        style={{ zIndex: -1 }}
+      />
+    </motion.div>
+  )
+}
+
+export default function Work() {
+  const containerRef = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(containerRef)
+
+      gsap.from(q(".w-header"), {
+        opacity: 0,
+        y: 24,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      })
+
+      gsap.from(q(".g-cell"), {
+        opacity: 0,
+        scale: 0.95,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: q(".g-cell")[0],
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      })
+
+      gsap.from(q(".w-cta"), {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: q(".w-cta")[0],
+          start: "top 90%",
+          toggleActions: "play none none none",
+        },
+      })
+    },
+    { scope: containerRef }
+  )
+
+  return (
+    <section
+      id="trabajo"
+      ref={containerRef}
+      className="bg-background pb-32 pt-16"
+    >
+      <div className="mx-auto max-w-5xl px-6 md:px-12">
+
+        {/* ── Header ── */}
+        <div className="w-header mb-16 md:mb-20">
+          <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
+            El trabajo
+          </p>
+          <h2 className="font-display mb-4 text-5xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+            Lo que sale de nuestras manos
+          </h2>
+          <p className="font-body text-sm text-[#888888]">
+            Cada corte es único. Síguenos para ver más.
+          </p>
+        </div>
+
+        {/* ── Gallery grid ── */}
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:grid-rows-3 md:gap-3">
+          {GALLERY_IMAGES.map((image, i) => (
+            <GalleryCell
+              key={image.id}
+              image={image}
+              config={CELL_CONFIG[i]}
+              index={i}
+            />
+          ))}
+        </div>
+
+        {/* ── CTA ── */}
+        <div className="w-cta mt-12">
+          <div className="mb-12 h-px w-full bg-[#333333]" />
+          <div className="flex flex-col items-center gap-4">
+            <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
+              ¿Quieres ver más?
+            </p>
+            <motion.a
+              href={SITE_DATA.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body flex min-h-[44px] cursor-pointer items-center gap-3 border border-white bg-transparent px-8 py-3 text-sm uppercase tracking-widest text-white"
+              whileHover={{ backgroundColor: "#ffffff", color: "#0a0a0a" }}
+              transition={{ duration: 0.3 }}
+            >
+              <InstagramIcon size={16} />
+              Ver en Instagram
+            </motion.a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
