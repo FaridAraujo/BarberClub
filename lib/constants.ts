@@ -4,10 +4,10 @@ export const LOGO_PATH = "/images/logo.png"
 export const GALLERY_IMAGES = [
   { id: 1, src: "/images/gallery/work1.webp", alt: "Corte fade",      objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
   { id: 2, src: "/images/gallery/work2.webp", alt: "Corte clásico",   objectPosition: "center 20%",    objectFit: "cover" as const, zoom: 1 },
-  { id: 3, src: "/images/gallery/work3.webp", alt: "Barba perfilada", objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
-  { id: 4, src: "/images/gallery/work4.webp", alt: "Fade degradado",  objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
-  { id: 5, src: "/images/gallery/work5.webp", alt: "Corte moderno",   objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
   { id: 6, src: "/images/gallery/work6.webp", alt: "Estilo completo", objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
+  { id: 4, src: "/images/gallery/work4.webp", alt: "Fade degradado",  objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
+  { id: 3, src: "/images/gallery/work3.webp", alt: "Barba perfilada", objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
+  { id: 5, src: "/images/gallery/work5.webp", alt: "Corte moderno",   objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
 ]
 
 export const BARBERS = [

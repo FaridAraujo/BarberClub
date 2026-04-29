@@ -64,7 +64,7 @@ function GalleryCell({
 
   return (
     <motion.div
-      className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[280px] md:min-h-[400px]" : "min-h-[160px] md:min-h-[200px]"}`}
+      className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[200px] md:min-h-[400px]" : "min-h-[110px] md:min-h-[200px]"} ${index === 5 ? "hidden md:block" : ""}`}
       whileHover="hover"
       initial="rest"
     >
@@ -161,7 +161,7 @@ function InstagramCTA({ href }: { href: string }) {
         rel="noopener noreferrer"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 px-8 py-3 text-sm uppercase tracking-widest transition-all duration-300"
+        className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest transition-all duration-300 md:gap-3 md:px-8 md:py-3 md:text-sm"
         style={{ background: hovered ? IG_GRADIENT : "#0a0a0a" }}
       >
         {/* Icon — separate span so currentColor resolves correctly */}

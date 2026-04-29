@@ -1,7 +1,6 @@
 "use client"
 
-import { useRef } from "react"
-import { motion } from "framer-motion"
+import { useRef, useState, useEffect } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -10,9 +9,7 @@ import { SITE_DATA } from "@/lib/constants"
 gsap.registerPlugin(ScrollTrigger)
 
 const MAPS_QUERY = "9.9906133,-84.1351361"
-const WHATSAPP_LINK =
-  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola Barber Club, ¿hay espacio disponible?")}`
-const MAPS_LINK = `https://www.google.com/maps?q=${MAPS_QUERY}`
+const MAPS_LINK  = `https://www.google.com/maps?q=${MAPS_QUERY}`
 const MAPS_EMBED = `https://www.google.com/maps?q=${MAPS_QUERY}&output=embed`
 
 function WhatsAppIcon() {
@@ -39,6 +36,52 @@ function PinIcon() {
       <path d="M5.5 1C3.015 1 1 3.015 1 5.5C1 8.75 5.5 13 5.5 13S10 8.75 10 5.5C10 3.015 7.985 1 5.5 1Z" />
       <circle cx="5.5" cy="5.5" r="1.5" />
     </svg>
+  )
+}
+
+// ─── Map with click-to-load on mobile, always-on on desktop ─────────────────
+// Single iframe — src only activates when ready, so no network request fires
+// on mobile until the user taps. On desktop, a useEffect sets loaded=true
+// immediately after mount so the map loads normally.
+
+function MobileMap({ embedSrc }: { embedSrc: string }) {
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    // Auto-load on desktop (≥768px); mobile waits for the user to tap.
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      setLoaded(true)
+    }
+  }, [])
+
+  return (
+    <div>
+      {/* Placeholder — mobile only, gone after tap */}
+      {!loaded && (
+        <button
+          onClick={() => setLoaded(true)}
+          className="flex h-[250px] w-full flex-col items-center justify-center gap-3 border border-[#2a2a2a] bg-[#111111] md:hidden"
+          style={{ borderRadius: 4 }}
+          aria-label="Cargar mapa"
+        >
+          <PinIcon />
+          <span className="font-body text-xs uppercase tracking-widest text-[#666666]">
+            Tocar para ver el mapa
+          </span>
+        </button>
+      )}
+
+      {/* Single iframe — src is only set once loaded=true */}
+      <iframe
+        src={loaded ? embedSrc : undefined}
+        width="100%"
+        style={{ border: "none", borderRadius: 4, filter: "grayscale(100%)" }}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        title="Ubicación Barber Club"
+        className={`h-[250px] md:h-[400px] ${loaded ? "block" : "hidden"}`}
+      />
+    </div>
   )
 }
 
@@ -123,42 +166,13 @@ export default function Visit() {
               ))}
             </div>
 
-            {/* WhatsApp CTA */}
-            <div className="mt-8 border-t border-[#333333] pt-8">
-              <p className="font-body mb-4 text-sm text-[#888888]">
-                ¿Querés saber si hay espacio?
-              </p>
-              <motion.a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 border bg-transparent px-6 py-3 text-sm uppercase tracking-widest"
-                style={{ borderColor: "#25D366", color: "#25D366" }}
-                whileHover={{ backgroundColor: "#25D366", color: "#000000" }}
-                transition={{ duration: 0.3 }}
-              >
-                <WhatsAppIcon />
-                Preguntá por WhatsApp
-              </motion.a>
-            </div>
           </div>
 
           {/* ── Right: map ── */}
           <div ref={rightRef} className="flex flex-col gap-4">
-            <iframe
-              src={MAPS_EMBED}
-              width="100%"
-              style={{
-                border: "none",
-                borderRadius: 4,
-                filter: "grayscale(100%)",
-                display: "block",
-              }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Ubicación Barber Club"
-              className="h-[250px] md:h-[400px]"
-            />
+
+            {/* Mobile: click-to-load placeholder (avoids loading ~2MB of Maps JS on page load) */}
+            <MobileMap embedSrc={MAPS_EMBED} />
             <a
               href={MAPS_LINK}
               target="_blank"

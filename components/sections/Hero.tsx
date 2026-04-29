@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { ASSET_VERSION, SITE_DATA } from "@/lib/constants"
 import { checkIsOpen } from "@/lib/schedule"
 
@@ -128,6 +128,135 @@ function PinIcon() {
   )
 }
 
+// ─── Map picker — mobile bottom sheet ────────────────────────────────────────
+
+const LAT = 9.9906133
+const LON = -84.1351361
+
+const MAP_APPS = [
+  {
+    id: "google",
+    name: "Google Maps",
+    url: `https://www.google.com/maps?q=${LAT},${LON}`,
+    color: "#4285F4",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+      </svg>
+    ),
+  },
+  {
+    id: "waze",
+    name: "Waze",
+    url: `https://waze.com/ul?ll=${LAT},${LON}&navigate=yes`,
+    color: "#33CCFF",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M12 2a9 9 0 100 18A9 9 0 0012 2zm-.5 4.5l5 5-8.5 2.5 2.5-8.5z" />
+      </svg>
+    ),
+  },
+  {
+    id: "uber",
+    name: "Uber",
+    url: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${LAT}&dropoff[longitude]=${LON}&dropoff[nickname]=Barber%20Club`,
+    color: "#ffffff",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M3 8a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm3 5.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm12 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" />
+      </svg>
+    ),
+  },
+  {
+    id: "apple",
+    name: "Apple Maps",
+    url: `https://maps.apple.com/?q=${LAT},${LON}`,
+    color: "#aaaaaa",
+    iosOnly: true,
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+        <circle cx="12" cy="12" r="9" />
+        <polygon points="16,8 13.5,13.5 8,16 10.5,10.5" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+]
+
+function MapPickerSheet({
+  isIOS,
+  onClose,
+}: {
+  isIOS: boolean
+  onClose: () => void
+}) {
+  const apps = MAP_APPS.filter((a) => !a.iosOnly || isIOS)
+
+  return (
+    <AnimatePresence>
+      {/* Backdrop */}
+      <motion.div
+        key="backdrop"
+        className="fixed inset-0 z-[60] bg-black/70 md:hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={onClose}
+        aria-hidden
+      />
+
+      {/* Sheet */}
+      <motion.div
+        key="sheet"
+        className="fixed bottom-0 left-0 right-0 z-[61] overflow-hidden md:hidden"
+        style={{ backgroundColor: "#111111", borderTop: "1px solid #2a2a2a" }}
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", damping: 28, stiffness: 320 }}
+      >
+        {/* Handle */}
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="h-1 w-10 rounded-full bg-[#444444]" />
+        </div>
+
+        {/* Title */}
+        <p className="font-body px-6 pb-4 pt-2 text-center text-[10px] uppercase tracking-widest text-[#666666]">
+          Abrir ubicación en
+        </p>
+
+        {/* App list */}
+        <div className="flex flex-col px-4 pb-4">
+          {apps.map((app, i) => (
+            <a
+              key={app.id}
+              href={app.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
+              className={`font-body flex min-h-[56px] items-center gap-4 px-3 py-3 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
+            >
+              <span style={{ color: app.color }}>{app.icon}</span>
+              {app.name}
+              <span className="ml-auto text-xs text-[#555555]">↗</span>
+            </a>
+          ))}
+        </div>
+
+        {/* Cancel */}
+        <div className="px-4 pb-8">
+          <button
+            onClick={onClose}
+            className="font-body w-full border border-[#2a2a2a] py-4 text-xs uppercase tracking-widest text-[#888888] transition-colors active:bg-white/5"
+          >
+            Cancelar
+          </button>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
 function LogoBadge({ logoSrc }: { logoSrc?: string }) {
   if (logoSrc) {
     return (
@@ -163,12 +292,21 @@ export default function Hero({ logoSrc }: HeroProps) {
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
 
   // null = not yet computed (avoids SSR mismatch)
-  const [isOpen, setIsOpen] = useState<boolean | null>(() => checkIsOpen())
+  const [isOpen,        setIsOpen]        = useState<boolean | null>(() => checkIsOpen())
+  const [showMapPicker, setShowMapPicker] = useState(false)
+  const [isIOS,         setIsIOS]         = useState(false)
 
   useEffect(() => {
-    // Re-check every minute in case the page stays open across opening/closing time
     const interval = setInterval(() => setIsOpen(checkIsOpen()), 60_000)
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent)),
+    )
   }, [])
 
   useGSAP(
@@ -320,11 +458,17 @@ export default function Hero({ logoSrc }: HeroProps) {
             ·
           </span>
 
-          {/* Location link */}
+          {/* Location link — opens map picker on mobile, Google Maps on desktop */}
           <a
-            href="https://www.google.com/maps?q=9.9906133,-84.1351361"
+            href={`https://www.google.com/maps?q=${LAT},${LON}`}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => {
+              if (window.innerWidth < 768) {
+                e.preventDefault()
+                setShowMapPicker(true)
+              }
+            }}
             className="font-body group inline-flex min-h-[44px] items-center gap-2.5 px-2 py-2 text-sm text-[#888888] transition-colors duration-300 hover:text-white"
           >
             <span className="relative flex shrink-0 items-center justify-center">
@@ -342,12 +486,14 @@ export default function Hero({ logoSrc }: HeroProps) {
             href={HERO_WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 border bg-transparent px-8 py-3 text-sm uppercase tracking-widest"
-            style={{ borderColor: "#25D366", color: "#25D366" }}
-            whileHover={{ backgroundColor: "#25D366", color: "#000000" }}
+            className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 border border-white/30 bg-transparent px-8 py-3 text-sm uppercase tracking-widest text-white/70"
+            whileHover={{ backgroundColor: "#25D366", borderColor: "#25D366", color: "#000000" }}
             transition={{ duration: 0.3 }}
           >
-            <WhatsAppIcon size={15} />
+            {/* Icon stays green — the only hint it's WhatsApp */}
+            <span style={{ color: "#25D366" }}>
+              <WhatsAppIcon size={15} />
+            </span>
             Preguntar disponibilidad
           </motion.a>
         </div>
@@ -358,6 +504,11 @@ export default function Hero({ logoSrc }: HeroProps) {
         <div style={{ width: "1px", height: "40px", backgroundColor: "#888888" }} />
         <span className="font-body text-xs uppercase tracking-widest text-[#888888]">SCROLL</span>
       </div>
+
+      {/* ── Map picker — mobile only ── */}
+      {showMapPicker && (
+        <MapPickerSheet isIOS={isIOS} onClose={() => setShowMapPicker(false)} />
+      )}
     </section>
   )
 }

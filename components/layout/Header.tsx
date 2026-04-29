@@ -152,6 +152,7 @@ export default function Header() {
   // ── Open/closed status (only computed when menu actually opens — saves work) ──
   useEffect(() => {
     if (!menuOpen) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(checkIsOpen())
     const interval = setInterval(() => setIsOpen(checkIsOpen()), 60_000)
     return () => clearInterval(interval)

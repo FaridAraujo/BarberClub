@@ -60,7 +60,7 @@ function BarberCard({ barber, index }: BarberCardProps) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Photo — square on mobile (compact horizontal card), 3:4 portrait on desktop */}
-      <div className="b-photo aspect-square w-32 shrink-0 overflow-hidden md:aspect-[3/4] md:w-full">
+      <div className="b-photo aspect-square w-40 shrink-0 overflow-hidden md:aspect-[3/4] md:w-full">
         {imgError ? (
           <BarberInitials name={barber.name} />
         ) : (

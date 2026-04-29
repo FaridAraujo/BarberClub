@@ -13,9 +13,9 @@ async function printMeta(label, filePath) {
   console.log(`  ${label}: ${meta.width}×${meta.height}px — ${(size / 1024).toFixed(1)} KB`)
 }
 
-async function convertToWebP(src, dest, { width, height, quality = 80, fit = "inside" } = {}) {
+async function convertToWebP(src, dest, { width, height, quality = 80, fit = "inside", position } = {}) {
   const resizeOpts = width || height
-    ? { width, height, fit, withoutEnlargement: true }
+    ? { width, height, fit, withoutEnlargement: true, ...(position ? { position } : {}) }
     : undefined
 
   let pipeline = sharp(src)
@@ -51,13 +51,15 @@ async function run() {
   // 900px covers 2× retina on the large cell.
   const galleryDir = join(publicDir, "gallery")
   const galleryImages = [
-    { src: join(galleryDir, "work1.jpg"), dest: join(galleryDir, "work1.webp") },
-    { src: join(galleryDir, "work2.png"), dest: join(galleryDir, "work2.webp") },
-    { src: join(galleryDir, "work3.png"), dest: join(galleryDir, "work3.webp") },
-    { src: join(galleryDir, "work4.jpg"), dest: join(galleryDir, "work4.webp") },
-    { src: join(galleryDir, "work5.jpg"), dest: join(galleryDir, "work5.webp") },
-    { src: join(galleryDir, "work6.jpg"), dest: join(galleryDir, "work6.webp") },
-  ].map((img) => ({ ...img, opts: { width: 900, quality: 80 } }))
+    // Portrait originals (9:16) → crop to 3:2 landscape so they fill the
+    // landscape grid cells without heavy zoom. "top" keeps the head/haircut visible.
+    { src: join(galleryDir, "work1.jpg"), dest: join(galleryDir, "work1.webp"), opts: { width: 900, height: 600, fit: "cover", position: "top",    quality: 80 } },
+    { src: join(galleryDir, "work2.png"), dest: join(galleryDir, "work2.webp"), opts: { width: 900, quality: 80 } },
+    { src: join(galleryDir, "work3.png"), dest: join(galleryDir, "work3.webp"), opts: { width: 900, quality: 80 } },
+    { src: join(galleryDir, "work4.jpg"), dest: join(galleryDir, "work4.webp"), opts: { width: 900, height: 600, fit: "cover", position: "attention", quality: 80 } },
+    { src: join(galleryDir, "work5.jpg"), dest: join(galleryDir, "work5.webp"), opts: { width: 900, height: 600, fit: "cover", position: "top",    quality: 80 } },
+    { src: join(galleryDir, "work6.jpg"), dest: join(galleryDir, "work6.webp"), opts: { width: 900, quality: 80 } },
+  ]
 
   const all = [...heroImages, ...galleryImages]
 
