@@ -17,7 +17,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Barber Club | Heredia",
-  description: "Únete al club del estilo — Barbería premium en Heredia, Costa Rica",
+  description: "Barbería en Heredia, Costa Rica. Sin citas, solo llegá.",
 }
 
 export default function RootLayout({
@@ -28,7 +28,8 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${bebasNeue.variable} ${dmSans.variable}`}>
       <head>
-        <link rel="preload" as="image" href="/images/team.webp?v4" />
+        <link rel="preload" as="image" href="/images/team-mobile.webp?v5" media="(max-width: 767px)" />
+        <link rel="preload" as="image" href="/images/team.webp?v5" media="(min-width: 768px)" />
       </head>
       <body>
         <Header />

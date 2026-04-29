@@ -7,24 +7,9 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { motion } from "framer-motion"
 import { ASSET_VERSION, SITE_DATA } from "@/lib/constants"
+import { checkIsOpen } from "@/lib/schedule"
 
 gsap.registerPlugin(ScrollTrigger)
-
-// ── Open/closed check — Costa Rica is UTC-6, no DST ───────────────────────────
-function getCostaRicaMinutes(): { day: number; minutes: number } {
-  const now = new Date()
-  const utc  = now.getTime() + now.getTimezoneOffset() * 60_000
-  const cr   = new Date(utc - 6 * 60 * 60_000)
-  return { day: cr.getDay(), minutes: cr.getHours() * 60 + cr.getMinutes() }
-}
-
-function checkIsOpen(): boolean {
-  const { day, minutes } = getCostaRicaMinutes()
-  if (day === 0) return false                                       // Domingo: cerrado
-  if (day === 6) return minutes >= 8 * 60     && minutes < 18 * 60 // Sábado: 8am–6pm
-  if (day === 5) return minutes >= 8 * 60     && minutes < 19 * 60 // Viernes: 8am–7pm
-  return             minutes >= 9 * 60 + 30  && minutes < 19 * 60 // Lun–Jue: 9:30am–7pm
-}
 
 const HEADLINE_WORDS = ["EL", "CLUB", "DEL", "ESTILO"]
 
@@ -239,19 +224,30 @@ export default function Hero({ logoSrc }: HeroProps) {
   return (
     <section
       ref={containerRef}
-      className="relative flex h-screen flex-col items-center justify-center overflow-hidden bg-background"
+      className="relative flex h-[75vh] flex-col items-center justify-center overflow-hidden bg-background md:h-screen"
     >
-      {/* ── Background image — native img for LCP priority ── */}
+      {/* ── Background image — native <picture> for LCP priority. ── */}
+      {/* On mobile, image fills only top 65vh; below that the section's bg-background
+          shows through, giving the team photo room to breathe (avoids hyper-cropping
+          a wide landscape source on a tall portrait viewport). The black/75 overlay
+          and bottom-fading gradient still cover the full hero, so the seam is
+          imperceptible. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={`/images/team.webp?${ASSET_VERSION}`}
-        alt=""
-        fetchPriority="high"
-        decoding="sync"
-        aria-hidden="true"
-        className="absolute inset-0 z-0 h-full w-full"
-        style={{ objectFit: "contain", objectPosition: "center" }}
-      />
+      <picture className="absolute inset-x-0 top-0 z-0 h-[65vh] w-full md:inset-0 md:h-full">
+        <source
+          media="(max-width: 767px)"
+          srcSet={`/images/team-mobile.webp?${ASSET_VERSION}`}
+        />
+        <img
+          src={`/images/team.webp?${ASSET_VERSION}`}
+          alt=""
+          fetchPriority="high"
+          decoding="sync"
+          aria-hidden="true"
+          className="h-full w-full"
+          style={{ objectFit: "cover", objectPosition: "50% 30%" }}
+        />
+      </picture>
 
       {/* Overlays */}
       <div className="absolute inset-0 z-10 bg-black/75" />

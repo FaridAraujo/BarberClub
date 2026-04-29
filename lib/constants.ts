@@ -42,7 +42,7 @@ export const BARBERS = [
 
 export const SITE_DATA = {
   name: "Barber Club",
-  slogan: "Únete al club del estilo",
+  slogan: "Sin citas. Solo llegá.",
   location: "Heredia, Costa Rica",
   whatsapp: "50660451251",
   instagram: "https://instagram.com/barber_club__",

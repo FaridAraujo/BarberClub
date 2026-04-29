@@ -32,6 +32,14 @@ async function run() {
       opts: { width: 800, quality: 80 },
     },
     {
+      // Landscape 4:3 crop for mobile — image only fills top ~65vh of hero,
+      // so crop stays wide enough to show all 3 barbers. "attention" picks
+      // the highest-contrast region (faces).
+      src:  join(publicDir, "team.jpg"),
+      dest: join(publicDir, "team-mobile.webp"),
+      opts: { width: 800, height: 600, fit: "cover", position: "attention", quality: 80 },
+    },
+    {
       src:  join(publicDir, "razor.png"),
       dest: join(publicDir, "razor.webp"),
       opts: { width: 104, height: 104, fit: "contain", quality: 85 },

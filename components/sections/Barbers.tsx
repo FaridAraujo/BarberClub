@@ -31,15 +31,13 @@ function BarberInitials({ name }: { name: string }) {
     .slice(0, 2)
     .toUpperCase()
 
+  // Aspect ratio is set on the parent container — this just fills it.
   return (
     <div
-      className="flex w-full items-center justify-center"
-      style={{ aspectRatio: "3/4", backgroundColor: "#111111" }}
+      className="flex h-full w-full items-center justify-center"
+      style={{ backgroundColor: "#111111" }}
     >
-      <span
-        className="font-display text-4xl"
-        style={{ color: "#333333" }}
-      >
+      <span className="font-display text-4xl" style={{ color: "#333333" }}>
         {initials}
       </span>
     </div>
@@ -57,15 +55,12 @@ function BarberCard({ barber, index }: BarberCardProps) {
 
   return (
     <div
-      className="b-card flex flex-col gap-4"
+      className="b-card flex flex-row gap-5 md:flex-col md:gap-4"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Photo */}
-      <div
-        className="b-photo w-full overflow-hidden"
-        style={{ aspectRatio: "3/4" }}
-      >
+      {/* Photo — square on mobile (compact horizontal card), 3:4 portrait on desktop */}
+      <div className="b-photo aspect-square w-32 shrink-0 overflow-hidden md:aspect-[3/4] md:w-full">
         {imgError ? (
           <BarberInitials name={barber.name} />
         ) : (
@@ -86,40 +81,43 @@ function BarberCard({ barber, index }: BarberCardProps) {
         )}
       </div>
 
-      {/* Name */}
-      <h3
-        className="font-display text-2xl uppercase leading-none tracking-tight"
-        style={{
-          color: hovered ? "#cc2222" : "#ffffff",
-          transition: "color 0.25s ease",
-        }}
-      >
-        {barber.name}
-      </h3>
+      {/* Info column — flex-1 on mobile (right side), full block on desktop */}
+      <div className="flex min-w-0 flex-1 flex-col justify-center gap-2 md:justify-start md:gap-4">
+        {/* Name */}
+        <h3
+          className="font-display text-xl uppercase leading-none tracking-tight md:text-2xl"
+          style={{
+            color: hovered ? "#cc2222" : "#ffffff",
+            transition: "color 0.25s ease",
+          }}
+        >
+          {barber.name}
+        </h3>
 
-      {/* Role */}
-      <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
-        {barber.role}
-      </p>
+        {/* Role */}
+        <p className="font-body text-[10px] uppercase tracking-widest text-[#888888] md:text-xs">
+          {barber.role}
+        </p>
 
-      {/* Divider */}
-      <div className="h-px w-full bg-[#333333]" />
+        {/* Divider */}
+        <div className="h-px w-full bg-[#333333]" />
 
-      {/* Specialty */}
-      <p className="font-body text-sm text-[#888888]">
-        {barber.specialty}
-      </p>
+        {/* Specialty */}
+        <p className="font-body text-xs text-[#888888] md:text-sm">
+          {barber.specialty}
+        </p>
 
-      {/* WhatsApp link */}
-      <a
-        href={`https://wa.me/${barber.whatsapp}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-body flex min-h-[44px] items-center gap-2 text-sm text-[#888888] transition-colors duration-200 hover:text-white"
-      >
-        <WhatsAppIcon />
-        Escribir por WhatsApp
-      </a>
+        {/* WhatsApp link */}
+        <a
+          href={`https://wa.me/${barber.whatsapp}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-body flex min-h-[44px] items-center gap-2 text-xs text-[#888888] transition-colors duration-200 hover:text-white md:text-sm"
+        >
+          <WhatsAppIcon />
+          Escribir
+        </a>
+      </div>
     </div>
   )
 }
@@ -175,22 +173,22 @@ export default function Barbers() {
     <section
       id="equipo"
       ref={containerRef}
-      className="bg-background pb-32 pt-16"
+      className="bg-background pb-20 pt-12 md:pb-32 md:pt-16"
     >
       <div className="mx-auto max-w-5xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="b-header mb-16 md:mb-20">
+        <div className="b-header mb-10 md:mb-20">
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             El equipo
           </p>
-          <h2 className="font-display text-5xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
-            Conoce a los maestros
+          <h2 className="font-display text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+            Conocé al equipo
           </h2>
         </div>
 
         {/* ── Barbers grid ── */}
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
           {BARBERS.map((barber, i) => (
             <BarberCard key={barber.id} barber={barber} index={i} />
           ))}

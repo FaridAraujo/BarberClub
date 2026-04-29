@@ -231,20 +231,20 @@ export default function Work() {
     <section
       id="trabajo"
       ref={containerRef}
-      className="bg-background pb-32 pt-16"
+      className="bg-background pb-20 pt-12 md:pb-32 md:pt-16"
     >
       <div className="mx-auto max-w-5xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="w-header mb-16 md:mb-20">
+        <div className="w-header mb-10 md:mb-20">
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             El trabajo
           </p>
-          <h2 className="font-display mb-4 text-5xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
-            Lo que sale de nuestras manos
+          <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+            Así quedás
           </h2>
           <p className="font-body text-sm text-[#888888]">
-            Cada corte es único. Síguenos para ver más.
+            El trabajo habla solo. Seguinos para ver más.
           </p>
         </div>
 
@@ -265,7 +265,7 @@ export default function Work() {
           <div className="mb-12 h-px w-full bg-[#333333]" />
           <div className="flex flex-col items-center gap-4">
             <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
-              ¿Quieres ver más?
+              ¿Querés ver más?
             </p>
             <InstagramCTA href={SITE_DATA.instagram} />
           </div>

@@ -78,16 +78,16 @@ export default function Visit() {
     <section
       id="visita"
       ref={containerRef}
-      className="bg-background pb-32 pt-16"
+      className="bg-background pb-20 pt-12 md:pb-32 md:pt-16"
     >
       <div className="mx-auto max-w-5xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="mb-16 md:mb-20">
+        <div className="mb-10 md:mb-20">
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             Encuéntranos
           </p>
-          <h2 className="font-display text-5xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+          <h2 className="font-display text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
             Visítanos
           </h2>
         </div>
@@ -126,7 +126,7 @@ export default function Visit() {
             {/* WhatsApp CTA */}
             <div className="mt-8 border-t border-[#333333] pt-8">
               <p className="font-body mb-4 text-sm text-[#888888]">
-                ¿Quieres saber si hay espacio?
+                ¿Querés saber si hay espacio?
               </p>
               <motion.a
                 href={WHATSAPP_LINK}
@@ -138,7 +138,7 @@ export default function Visit() {
                 transition={{ duration: 0.3 }}
               >
                 <WhatsAppIcon />
-                Preguntar disponibilidad
+                Preguntá por WhatsApp
               </motion.a>
             </div>
           </div>

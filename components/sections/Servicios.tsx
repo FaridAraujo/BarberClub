@@ -5,16 +5,15 @@ import Image from "next/image"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { motion } from "framer-motion"
 import { SITE_DATA, ASSET_VERSION, LOGO_PATH } from "@/lib/constants"
 
 gsap.registerPlugin(ScrollTrigger)
 
 const SERVICE_DESCRIPTIONS: Record<string, string> = {
   "Corte":
-    "Corte a tijera o máquina, aplicación de productos y arreglo de cejas incluido.",
+    "Tijera o máquina, como vos querás. Productos y cejas incluidas.",
   "Corte con barba":
-    "Corte completo con perfilado y arreglo de barba, aplicación de productos y arreglo de cejas incluido.",
+    "El combo completo: corte, barba perfilada, productos y cejas. Todo en una visita.",
 }
 
 const formatPrice = (price: number): string =>
@@ -98,7 +97,7 @@ export default function Servicios() {
     <section
       id="servicios"
       ref={containerRef}
-      className="relative overflow-hidden bg-background pb-32 pt-16"
+      className="relative overflow-hidden bg-background pb-20 pt-12 md:pb-32 md:pt-16"
     >
       {/* ── Logo pattern background ── */}
       <div
@@ -142,16 +141,16 @@ export default function Servicios() {
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             Servicios
           </p>
-          <h2 className="font-display mb-4 text-5xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
-            Lo que hacemos
+          <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+            Los cortes
           </h2>
           <p className="font-body text-sm text-[#888888]">
-            Todos los servicios incluyen productos y arreglo de cejas.
+            Todo incluido: productos y cejas.
           </p>
         </div>
 
         {/* ── Barber pole separator: red · white · blue ── */}
-        <div className="my-12 flex justify-center">
+        <div className="my-5 flex justify-center md:my-12">
           <div
             ref={redLineRef}
             style={{ display: "flex", flexDirection: "row", gap: 3, width: 40, overflow: "hidden" }}
@@ -173,29 +172,29 @@ export default function Servicios() {
                   : "md:pl-12"
               } ${
                 i > 0
-                  ? "mt-12 border-t border-t-[#333333] pt-12 md:mt-0 md:border-t-0 md:pt-0"
+                  ? "mt-8 border-t border-t-[#333333] pt-8 md:mt-0 md:border-t-0 md:pt-0"
                   : ""
               }`}
             >
               {/* Top rule */}
-              <div className="mb-6 h-px w-full bg-[#333333]" />
+              <div className="mb-4 h-px w-full bg-[#333333] md:mb-6" />
 
               {/* Name */}
-              <h3 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight md:text-5xl">
+              <h3 className="font-display mb-3 text-3xl uppercase leading-none tracking-tight md:mb-4 md:text-5xl">
                 {service.name}
               </h3>
 
-              {/* Description */}
-              <p className="font-body mb-6 text-sm font-light leading-relaxed text-[#888888]">
+              {/* Description — hidden on mobile (already summarised in section subtitle) */}
+              <p className="font-body mb-4 hidden text-sm font-light leading-relaxed text-[#888888] md:mb-6 md:block">
                 {SERVICE_DESCRIPTIONS[service.name] ?? ""}
               </p>
 
               {/* Bottom rule */}
-              <div className="mb-6 h-px w-full bg-[#333333]" />
+              <div className="mb-4 h-px w-full bg-[#333333] md:mb-6" />
 
               {/* Price */}
-              <div className="flex flex-col gap-2">
-                <span className="font-display text-5xl font-bold leading-none text-white md:text-6xl">
+              <div className="flex flex-col gap-1 md:gap-2">
+                <span className="font-display text-3xl font-bold leading-none text-white md:text-6xl">
                   {formatPrice(service.price)}
                 </span>
                 <span className="font-body text-xs uppercase tracking-widest text-[#888888]">
@@ -207,56 +206,11 @@ export default function Servicios() {
         </div>
 
         {/* ── Payment methods ── */}
-        <div className="s-payment mt-14 border-t border-t-[#333333] pt-8">
-          <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
-            Métodos de pago
-          </p>
-          <div className="flex flex-wrap items-center gap-6">
-            {/* Tarjeta */}
-            <div className="flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#888888" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="1" y="3.5" width="14" height="9" rx="1.5" />
-                <line x1="1" y1="6.5" x2="15" y2="6.5" />
-              </svg>
-              <span className="font-body text-sm text-[#888888]">Tarjeta</span>
-            </div>
-            {/* SINPE Móvil */}
-            <div className="flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#888888" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="4.5" y="1" width="7" height="14" rx="1.5" />
-                <line x1="4.5" y1="11.5" x2="11.5" y2="11.5" />
-                <circle cx="8" cy="13.2" r="0.6" fill="#888888" />
-              </svg>
-              <span className="font-body text-sm text-[#888888]">SINPE Móvil</span>
-            </div>
-            {/* Efectivo */}
-            <div className="flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#888888" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="1" y="4" width="14" height="8" rx="1" />
-                <circle cx="8" cy="8" r="2" />
-                <line x1="4" y1="4" x2="4" y2="12" />
-                <line x1="12" y1="4" x2="12" y2="12" />
-              </svg>
-              <span className="font-body text-sm text-[#888888]">Efectivo</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ── CTA ── */}
-        <div className="s-cta mt-10 flex flex-col items-start gap-5 md:mt-14">
+        <div className="s-payment mt-10 border-t border-t-[#333333] pt-6 md:mt-14">
           <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
-            ¿Listo para tu corte?
+            Métodos de pago
+            <span className="ml-3 normal-case tracking-normal">· Tarjeta · SINPE Móvil · Efectivo</span>
           </p>
-          <motion.button
-            className="font-body min-h-[44px] cursor-pointer border border-white bg-transparent px-8 py-3 text-sm uppercase tracking-widest text-white"
-            whileHover={{ backgroundColor: "#ffffff", color: "#0a0a0a" }}
-            transition={{ duration: 0.3 }}
-            onClick={() =>
-              document.getElementById("equipo")?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            Conoce al equipo
-          </motion.button>
         </div>
 
       </div>
