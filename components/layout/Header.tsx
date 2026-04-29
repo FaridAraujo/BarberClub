@@ -322,21 +322,29 @@ export default function Header() {
               <div className="-mr-2.5">
                 <RazorIcon size={32} />
               </div>
-              {!logoError ? (
-                <div className="relative h-[44px] w-[170px]">
-                  <Image
-                    src={`${LOGO_PATH}?${ASSET_VERSION}`}
-                    alt="Barber Club"
-                    fill
-                    unoptimized
-                    style={{ objectFit: "contain" }}
-                  />
-                </div>
-              ) : (
-                <span className="font-display text-2xl tracking-widest text-white">
-                  BARBER CLUB
-                </span>
-              )}
+              <button
+                onClick={() => {
+                  setMenuOpen(false)
+                  setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300)
+                }}
+                aria-label="Ir al inicio"
+              >
+                {!logoError ? (
+                  <div className="relative h-[44px] w-[170px]">
+                    <Image
+                      src={`${LOGO_PATH}?${ASSET_VERSION}`}
+                      alt="Barber Club"
+                      fill
+                      unoptimized
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
+                ) : (
+                  <span className="font-display text-2xl tracking-widest text-white">
+                    BARBER CLUB
+                  </span>
+                )}
+              </button>
               <div className="-ml-2.5">
                 <RazorIcon size={32} flip />
               </div>
