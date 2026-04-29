@@ -1,6 +1,7 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
+import { motion, useMotionValue, animate } from "framer-motion"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -8,17 +9,45 @@ import { SITE_DATA } from "@/lib/constants"
 
 gsap.registerPlugin(ScrollTrigger)
 
-const MAPS_QUERY = "9.9906133,-84.1351361"
-const MAPS_LINK  = `https://www.google.com/maps?q=${MAPS_QUERY}`
-const MAPS_EMBED = `https://www.google.com/maps?q=${MAPS_QUERY}&output=embed`
+const LAT  = "9.9906133"
+const LNG  = "-84.1351361"
 
-function WhatsAppIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-    </svg>
-  )
-}
+const MAPS_EMBED = `https://www.google.com/maps?q=${LAT},${LNG}&output=embed`
+
+const NAV_APPS = [
+  {
+    id:      "google",
+    label:   "Google Maps",
+    href:    `https://www.google.com/maps?q=${LAT},${LNG}`,
+    logo:    "/images/logos/googlemaps.webp",
+    size:    26,
+    iosOnly: false,
+  },
+  {
+    id:      "uber",
+    label:   "Uber",
+    href:    `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${LAT}&dropoff[longitude]=${LNG}&dropoff[nickname]=Barber%20Club`,
+    logo:    "/images/logos/uber.webp",
+    size:    38,
+    iosOnly: false,
+  },
+  {
+    id:      "waze",
+    label:   "Waze",
+    href:    `https://waze.com/ul?ll=${LAT},${LNG}&navigate=yes`,
+    logo:    "/images/logos/waze.webp",
+    size:    32,
+    iosOnly: false,
+  },
+  {
+    id:      "apple",
+    label:   "Apple Maps",
+    href:    `https://maps.apple.com/?q=${LAT},${LNG}`,
+    logo:    "/images/logos/applemaps.webp",
+    size:    32,
+    iosOnly: true,
+  },
+] as const
 
 function PinIcon() {
   return (
@@ -85,10 +114,185 @@ function MobileMap({ embedSrc }: { embedSrc: string }) {
   )
 }
 
+const LOCAL_PHOTOS = [
+  { src: "/images/local-1.webp", alt: "Barber Club — interior",   position: "center 60%" },
+  { src: "/images/local-2.webp", alt: "Barber Club — estaciones", position: "top" },
+  { src: "/images/local-3.webp", alt: "Barber Club — ambiente",   position: "top" },
+  { src: "/images/local-4.webp", alt: "Barber Club — detalle",    position: "top" },
+]
+
+const CARD_GAP = 16
+
+function LocalCarousel() {
+  const trackRef      = useRef<HTMLDivElement>(null)
+  const containerRef  = useRef<HTMLDivElement>(null)
+  const x             = useMotionValue(0)
+  const [active,      setActive]      = useState(0)
+  const [dragging,    setDragging]    = useState(false)
+  const [cardWidth,   setCardWidth]   = useState(0)
+  const [maxDrag,     setMaxDrag]     = useState(0)
+  const [states, setStates] = useState<Array<"idle" | "loaded" | "error">>(
+    LOCAL_PHOTOS.map(() => "idle")
+  )
+  const imgRefs = useRef<(HTMLImageElement | null)[]>([])
+
+  // Card = full container width; recalculate on mount and resize
+  useEffect(() => {
+    function calc() {
+      if (!containerRef.current) return
+      const cw = containerRef.current.clientWidth
+      setCardWidth(cw)
+      setMaxDrag((LOCAL_PHOTOS.length - 1) * (cw + CARD_GAP))
+    }
+    calc()
+    window.addEventListener("resize", calc)
+    return () => window.removeEventListener("resize", calc)
+  }, [])
+
+  // Check for already-cached images (onLoad won't fire for these)
+  useEffect(() => {
+    imgRefs.current.forEach((el, i) => {
+      if (!el || !el.complete) return
+      setPhotoState(i, el.naturalWidth > 0 ? "loaded" : "error")
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Snap to card when drag ends
+  function onDragEnd() {
+    setDragging(false)
+    if (!cardWidth) return
+    const cur     = x.get()
+    const nearest = Math.round(-cur / (cardWidth + CARD_GAP))
+    const clamped = Math.max(0, Math.min(nearest, LOCAL_PHOTOS.length - 1))
+    setActive(clamped)
+    animate(x, -clamped * (cardWidth + CARD_GAP), {
+      type: "spring", stiffness: 300, damping: 35,
+    })
+  }
+
+  function goTo(i: number) {
+    if (!cardWidth) return
+    setActive(i)
+    animate(x, -i * (cardWidth + CARD_GAP), {
+      type: "spring", stiffness: 300, damping: 35,
+    })
+  }
+
+  function setPhotoState(i: number, state: "loaded" | "error") {
+    setStates((prev) => prev.map((s, idx) => idx === i ? state : s))
+  }
+
+  const CARD_H = cardWidth ? `${Math.min(Math.round(cardWidth * 1.6), 900)}px` : "680px"
+
+  return (
+    <div className="mt-12 md:mt-20">
+      <div className="h-px w-full bg-[#1a1a1a]" />
+
+      <div className="mt-10 md:mt-14">
+        {/* Overflow container */}
+        <div
+          ref={containerRef}
+          className="relative overflow-hidden"
+          style={{ cursor: dragging ? "grabbing" : "grab" }}
+        >
+          <motion.div
+            ref={trackRef}
+            style={{ x, display: "flex", gap: CARD_GAP, width: "max-content" }}
+            drag="x"
+            dragConstraints={{ left: -maxDrag, right: 0 }}
+            dragElastic={0.08}
+            dragMomentum={false}
+            onDragStart={() => setDragging(true)}
+            onDragEnd={onDragEnd}
+          >
+            {LOCAL_PHOTOS.map((photo, i) => (
+              <div
+                key={photo.src}
+                style={{
+                  width:           cardWidth || "100vw",
+                  height:          CARD_H,
+                  flexShrink:      0,
+                  borderRadius:    4,
+                  overflow:        "hidden",
+                  position:        "relative",
+                  backgroundColor: "#111111",
+                  border:          "1px solid #1a1a1a",
+                }}
+              >
+                {/* Placeholder — visible until image loads */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center transition-opacity duration-500"
+                  style={{ opacity: states[i] === "loaded" ? 0 : 1, pointerEvents: "none" }}
+                >
+                  <p className="font-body text-[10px] uppercase tracking-widest text-[#2a2a2a]">
+                    {states[i] === "error" ? "Foto próximamente" : "Barber Club · Heredia"}
+                  </p>
+                </div>
+
+                {/* Image — always rendered so onLoad fires even when cached */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  draggable={false}
+                  ref={(el) => { imgRefs.current[i] = el }}
+                  onLoad={()  => setPhotoState(i, "loaded")}
+                  onError={() => setPhotoState(i, "error")}
+                  style={{
+                    width:          "100%",
+                    height:         "100%",
+                    objectFit:      "cover",
+                    objectPosition: photo.position,
+                    userSelect:     "none",
+                    pointerEvents:  "none",
+                    opacity:       states[i] === "loaded" ? 1 : 0,
+                    transition:    "opacity 0.5s ease",
+                  }}
+                />
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Dots with barber pole gradient */}
+        <div className="mt-5 flex items-center justify-center gap-2">
+          {LOCAL_PHOTOS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Foto ${i + 1}`}
+              style={{
+                width:        active === i ? 20 : 6,
+                height:       6,
+                borderRadius: 3,
+                background:   "linear-gradient(to right, #cc2222, #ffffff, #1432a6)",
+                opacity:      active === i ? 1 : 0.2,
+                transition:   "width 0.3s ease, opacity 0.3s ease",
+                border:       "none",
+                padding:      0,
+                cursor:       "pointer",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Visit() {
   const containerRef = useRef<HTMLElement>(null)
   const leftRef      = useRef<HTMLDivElement>(null)
   const rightRef     = useRef<HTMLDivElement>(null)
+  const [isIOS, setIsIOS] = useState(false)
+
+  useEffect(() => {
+    setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent))
+    )
+  }, [])
 
   useGSAP(
     () => {
@@ -173,18 +377,37 @@ export default function Visit() {
 
             {/* Mobile: click-to-load placeholder (avoids loading ~2MB of Maps JS on page load) */}
             <MobileMap embedSrc={MAPS_EMBED} />
-            <a
-              href={MAPS_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-body flex items-center gap-2 text-sm text-[#888888] transition-colors duration-200 hover:text-white"
-            >
-              <PinIcon />
-              Abrir en Google Maps
-            </a>
+
+            {/* ── Nav app links ── */}
+            <div className="border-t border-t-[#1a1a1a] pt-5">
+              <p className="font-body mb-3 text-xs uppercase tracking-widest text-[#555]">
+                Cómo llegar
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {NAV_APPS.filter((app) => !app.iosOnly || isIOS).map((app) => (
+                  <a
+                    key={app.id}
+                    href={app.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-body inline-flex items-center gap-2 border border-[#2a2a2a] px-3 py-2 text-xs text-[#aaaaaa] transition-all duration-200 hover:border-[#555] hover:text-white"
+                    style={{ borderRadius: 4 }}
+                  >
+                    <div style={{ width: 16, height: 16, display: "flex", alignItems: "center", justifyContent: app.id === "uber" ? "flex-start" : "center", overflow: "hidden", borderRadius: 3, flexShrink: 0 }}>
+                      <img src={app.logo} alt="" width={app.id === "google" ? 13 : app.id === "uber" ? 20 : 16} height={app.id === "google" ? 13 : app.id === "uber" ? 20 : 16} style={{ objectFit: "contain", flexShrink: 0 }} />
+                    </div>
+                    {app.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
 
         </div>
+
+        {/* ── Local photo carousel ── */}
+        <LocalCarousel />
+
       </div>
     </section>
   )

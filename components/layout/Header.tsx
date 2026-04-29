@@ -1,12 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { ASSET_VERSION, LOGO_PATH, SITE_DATA } from "@/lib/constants"
 import { checkIsOpen } from "@/lib/schedule"
 
 const NAV_LINKS = [
+  { label: "Inicio",          id: "inicio",    desc: "Volver al inicio"     },
   { label: "Servicios",       id: "servicios", desc: "Cortes y precios"     },
   { label: "El Equipo",       id: "equipo",    desc: "Quiénes te atienden"  },
   { label: "Nuestro Trabajo", id: "trabajo",   desc: "Galería de cortes"    },
@@ -148,6 +149,14 @@ export default function Header() {
   const [activeId,   setActiveId]   = useState<string | null>(null)
   const [hoveredId,  setHoveredId]  = useState<string | null>(null)
   const [isOpen,     setIsOpen]     = useState<boolean | null>(null)
+  const [isIOS,      setIsIOS]      = useState(false)
+
+  useEffect(() => {
+    setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent)),
+    )
+  }, [])
 
   // ── Open/closed status (only computed when menu actually opens — saves work) ──
   useEffect(() => {
@@ -200,7 +209,9 @@ export default function Header() {
     const wasOpen = menuOpen
     setMenuOpen(false)
     setTimeout(
-      () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }),
+      () => id === "inicio"
+        ? window.scrollTo({ top: 0, behavior: "smooth" })
+        : document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }),
       wasOpen ? 300 : 0,
     )
   }
@@ -330,7 +341,7 @@ export default function Header() {
                 aria-label="Ir al inicio"
               >
                 {!logoError ? (
-                  <div className="relative h-[44px] w-[170px]">
+                  <div className="relative h-[54px] w-[200px]">
                     <Image
                       src={`${LOGO_PATH}?${ASSET_VERSION}`}
                       alt="Barber Club"
@@ -451,15 +462,26 @@ export default function Header() {
                 <InstagramIcon size={20} />
               </a>
               <span className="text-[#222]">·</span>
-              <a
-                href={MAPS_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ver en Google Maps"
-                className="flex h-11 w-11 items-center justify-center text-[#888888] transition-colors hover:text-white"
-              >
-                <PinIcon size={18} />
-              </a>
+              {[
+                { href: MAPS_LINK,             src: "/images/logos/googlemaps.webp", label: "Google Maps",  size: 17, ios: false },
+                { href: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=9.9906133&dropoff[longitude]=-84.1351361&dropoff[nickname]=Barber%20Club`, src: "/images/logos/uber.webp", label: "Uber", size: 27, ios: false },
+                { href: `https://waze.com/ul?ll=9.9906133,-84.1351361&navigate=yes`, src: "/images/logos/waze.webp",       label: "Waze",         size: 22, ios: false },
+                { href: `https://maps.apple.com/?q=9.9906133,-84.1351361`,           src: "/images/logos/applemaps.webp",  label: "Apple Maps",   size: 22, ios: true  },
+              ].filter((app) => !app.ios || isIOS).map((app, i, arr) => (
+                <React.Fragment key={app.label}>
+                  <a
+                    href={app.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={app.label}
+                    className="flex h-11 w-11 items-center justify-center opacity-50 transition-opacity hover:opacity-100"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={app.src} alt={app.label} width={app.size} height={app.size} style={{ borderRadius: app.label === "Uber" ? 7 : 5, objectFit: "contain" }} />
+                  </a>
+                  {i < arr.length - 1 && <span className="text-[#222]">·</span>}
+                </React.Fragment>
+              ))}
             </motion.div>
 
             {/* ── Footer tagline ── */}

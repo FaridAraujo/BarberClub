@@ -153,7 +153,8 @@ const MAP_APPS = [
     name: "Uber",
     url: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${LAT}&dropoff[longitude]=${LON}&dropoff[nickname]=Barber%20Club`,
     logo: "/images/logos/uber.webp",
-    imgSize: 32,
+    imgSize: 38,
+    imgAlign: "flex-start",
   },
   {
     id: "apple",
@@ -219,7 +220,7 @@ function MapPickerSheet({
               onClick={onClose}
               className={`font-body flex min-h-[56px] items-center gap-4 px-3 py-3 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
             >
-              <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "imgAlign" in app ? app.imgAlign : "center" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={app.logo} alt="" style={{ width: app.imgSize, height: app.imgSize, objectFit: "contain" }} />
               </div>
@@ -359,6 +360,7 @@ export default function Hero({ logoSrc }: HeroProps) {
 
   return (
     <section
+      id="inicio"
       ref={containerRef}
       className="relative flex h-[75vh] flex-col items-center justify-center overflow-hidden bg-background md:h-screen"
     >
@@ -442,6 +444,7 @@ export default function Hero({ logoSrc }: HeroProps) {
           >
             <span
               className={`h-1.5 w-1.5 rounded-full ${isOpen ? "bg-emerald-400 animate-pulse" : "bg-[#cc2222]"}`}
+              style={isOpen ? { animationDuration: "2.5s" } : undefined}
             />
             <span className="font-body text-xs uppercase tracking-widest text-[#888888]">
               {isOpen ? "Abierto ahora" : "Cerrado"}
@@ -470,7 +473,7 @@ export default function Hero({ logoSrc }: HeroProps) {
             className="font-body group inline-flex min-h-[44px] items-center gap-2.5 px-2 py-2 text-sm text-[#888888] transition-colors duration-300 hover:text-white"
           >
             <span className="relative flex shrink-0 items-center justify-center">
-              <span className="absolute h-3 w-3 animate-ping rounded-full bg-[#cc2222] opacity-40" />
+              <span className="absolute h-3 w-3 animate-ping rounded-full bg-[#cc2222] opacity-40" style={{ animationDuration: "2.5s" }} />
               <PinIcon />
             </span>
             Heredia, Costa Rica

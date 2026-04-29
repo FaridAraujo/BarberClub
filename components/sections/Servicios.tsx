@@ -1,7 +1,6 @@
 "use client"
 
 import { useRef } from "react"
-import Image from "next/image"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -109,13 +108,13 @@ export default function Servicios() {
               key={idx}
               style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
             >
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={LOGO_SRC}
                 alt=""
                 width={120}
-                height={60}
-                unoptimized
-                style={{ opacity: 0.04, objectFit: "contain", width: 120, height: "auto" }}
+                loading="lazy"
+                style={{ opacity: 0.04, objectFit: "contain", height: "auto" }}
               />
             </div>
           ))}

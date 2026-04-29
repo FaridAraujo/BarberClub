@@ -92,8 +92,8 @@ export default function Footer() {
               height={32}
               unoptimized
               onError={() => setLogoError(true)}
-              className="h-8 w-auto"
-              style={{ objectFit: "contain" }}
+              className="h-8"
+              style={{ objectFit: "contain", width: "auto" }}
             />
           )}
         </button>
@@ -122,7 +122,7 @@ export default function Footer() {
 
       {/* ── Row 2: Nav links ── */}
       <nav
-        className="flex flex-wrap justify-center gap-8 py-8"
+        className="flex flex-nowrap justify-center gap-4 py-8 md:gap-8"
         style={{
           borderTop: "1px solid #1a1a1a",
           borderBottom: "1px solid #1a1a1a",
@@ -134,7 +134,7 @@ export default function Footer() {
           <button
             key={link.id}
             onClick={() => scrollTo(link.id)}
-            className="font-body flex min-h-[44px] items-center text-xs uppercase tracking-widest text-[#888888] transition-colors duration-200 hover:text-white"
+            className="font-body flex min-h-[44px] items-center text-[9px] uppercase tracking-widest text-[#888888] transition-colors duration-200 hover:text-white md:text-xs"
           >
             {link.label}
           </button>
