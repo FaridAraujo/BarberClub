@@ -133,39 +133,18 @@ function PinIcon() {
 const LAT = 9.9906133
 const LON = -84.1351361
 
-function WazeLogo() {
-  return (
-    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden>
-      <rect width="32" height="32" rx="8" fill="#4CC8FF"/>
-      {/* Body */}
-      <ellipse cx="16" cy="19" rx="10" ry="9" fill="white"/>
-      {/* Eyes */}
-      <circle cx="12.5" cy="17.5" r="2.2" fill="#4CC8FF"/>
-      <circle cx="19.5" cy="17.5" r="2.2" fill="#4CC8FF"/>
-      <circle cx="13.2" cy="16.8" r="0.9" fill="white"/>
-      <circle cx="20.2" cy="16.8" r="0.9" fill="white"/>
-      {/* Smile */}
-      <path d="M12 22 Q16 25.5 20 22" stroke="#4CC8FF" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
-      {/* Antenna */}
-      <line x1="21" y1="12" x2="23" y2="7" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-      <circle cx="23.5" cy="6" r="1.8" fill="white"/>
-    </svg>
-  )
-}
-
 const MAP_APPS = [
   {
     id: "google",
     name: "Google Maps",
     url: `https://www.google.com/maps?q=${LAT},${LON}`,
-    logo: "https://www.google.com/s2/favicons?domain=maps.google.com&sz=64",
+    logo: "/images/logos/googlemaps.webp",
   },
   {
     id: "waze",
     name: "Waze",
     url: `https://waze.com/ul?ll=${LAT},${LON}&navigate=yes`,
-    logo: null,
-    logoEl: <WazeLogo />,
+    logo: "/images/logos/waze.webp",
   },
   {
     id: "uber",
@@ -236,11 +215,10 @@ function MapPickerSheet({
               onClick={onClose}
               className={`font-body flex min-h-[56px] items-center gap-4 px-3 py-3 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
             >
-              {"logoEl" in app && app.logoEl
-                ? app.logoEl
-                : /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={app.logo!} alt="" width={32} height={32} style={{ borderRadius: 8, flexShrink: 0 }} />
-              }
+              <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={app.logo} alt="" width={32} height={32} style={{ width: 32, height: 32, objectFit: "cover" }} />
+              </div>
               {app.name}
             </a>
           ))}
