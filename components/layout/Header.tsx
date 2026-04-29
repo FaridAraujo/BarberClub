@@ -243,8 +243,8 @@ export default function Header() {
               height={40}
               unoptimized
               onError={() => setLogoError(true)}
-              className="h-8 w-auto md:h-10"
-              style={{ objectFit: "contain" }}
+              className="h-8 md:h-10"
+              style={{ objectFit: "contain", width: "auto" }}
             />
           )}
         </button>

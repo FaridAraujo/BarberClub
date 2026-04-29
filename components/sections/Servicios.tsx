@@ -78,17 +78,6 @@ export default function Servicios() {
         },
       })
 
-      gsap.from(q(".s-cta"), {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: q(".s-cta")[0],
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      })
     },
     { scope: containerRef }
   )
