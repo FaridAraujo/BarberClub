@@ -64,7 +64,7 @@ function GalleryCell({
 
   return (
     <motion.div
-      className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[200px] md:min-h-[400px]" : "min-h-[110px] md:min-h-[200px]"} ${index === 5 ? "hidden md:block" : ""}`}
+      className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[320px] md:min-h-[400px]" : "min-h-[135px] md:min-h-[200px]"} ${index === 5 ? "hidden md:block" : ""}`}
       whileHover="hover"
       initial="rest"
     >
@@ -231,7 +231,8 @@ export default function Work() {
     <section
       id="trabajo"
       ref={containerRef}
-      className="bg-background pb-20 pt-12 md:pb-32 md:pt-16"
+      className="pb-20 pt-12 md:pb-32 md:pt-16"
+      style={{ backgroundColor: "#0d0d0d" }}
     >
       <div className="mx-auto max-w-5xl px-6 md:px-12">
 

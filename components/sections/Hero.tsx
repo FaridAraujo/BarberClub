@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
@@ -133,51 +133,90 @@ function PinIcon() {
 const LAT = 9.9906133
 const LON = -84.1351361
 
+function AppIcon({ children, bg }: { children: React.ReactNode; bg: string }) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        width: 36, height: 36, borderRadius: 9, backgroundColor: bg,
+        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
 const MAP_APPS = [
   {
     id: "google",
     name: "Google Maps",
     url: `https://www.google.com/maps?q=${LAT},${LON}`,
-    color: "#4285F4",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-      </svg>
+      <AppIcon bg="#fff">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#34A853"/>
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 1.77.54 3.41 1.46 4.77L12 9.08V2z" fill="#EA4335"/>
+          <path d="M12 2v7.08l5.54 4.69A6.98 6.98 0 0019 9c0-3.87-3.13-7-7-7z" fill="#4285F4"/>
+          <path d="M5 9c0 1.77.54 3.41 1.46 4.77L12 9.08H5z" fill="#FBBC04"/>
+          <circle cx="12" cy="9" r="2.5" fill="white"/>
+        </svg>
+      </AppIcon>
     ),
   },
   {
     id: "waze",
     name: "Waze",
     url: `https://waze.com/ul?ll=${LAT},${LON}&navigate=yes`,
-    color: "#33CCFF",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M12 2a9 9 0 100 18A9 9 0 0012 2zm-.5 4.5l5 5-8.5 2.5 2.5-8.5z" />
-      </svg>
+      <AppIcon bg="#33CCFF">
+        <svg width="20" height="20" viewBox="0 0 100 100" aria-hidden>
+          {/* Body */}
+          <ellipse cx="50" cy="54" rx="34" ry="30" fill="white"/>
+          {/* Eyes */}
+          <circle cx="38" cy="48" r="6" fill="#33CCFF"/>
+          <circle cx="62" cy="48" r="6" fill="#33CCFF"/>
+          <circle cx="40" cy="46" r="2.5" fill="white"/>
+          <circle cx="64" cy="46" r="2.5" fill="white"/>
+          {/* Smile */}
+          <path d="M38 62 Q50 72 62 62" stroke="#33CCFF" strokeWidth="4" fill="none" strokeLinecap="round"/>
+          {/* Antenna */}
+          <line x1="68" y1="28" x2="72" y2="18" stroke="white" strokeWidth="4" strokeLinecap="round"/>
+          <circle cx="73" cy="15" r="4" fill="white"/>
+        </svg>
+      </AppIcon>
     ),
   },
   {
     id: "uber",
     name: "Uber",
     url: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${LAT}&dropoff[longitude]=${LON}&dropoff[nickname]=Barber%20Club`,
-    color: "#ffffff",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M3 8a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm3 5.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm12 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" />
-      </svg>
+      <AppIcon bg="#000000">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+          {/* Uber "U" wordmark simplified */}
+          <path
+            d="M6 7v6.5a6 6 0 0012 0V7"
+            fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"
+          />
+        </svg>
+      </AppIcon>
     ),
   },
   {
     id: "apple",
     name: "Apple Maps",
     url: `https://maps.apple.com/?q=${LAT},${LON}`,
-    color: "#aaaaaa",
     iosOnly: true,
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-        <circle cx="12" cy="12" r="9" />
-        <polygon points="16,8 13.5,13.5 8,16 10.5,10.5" fill="currentColor" stroke="none" />
-      </svg>
+      <AppIcon bg="#16a34a">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+          {/* Road */}
+          <path d="M12 3v18M8 3l4 4 4-4" fill="none" stroke="white" strokeWidth="0" />
+          {/* Navigation arrow */}
+          <path d="M12 3L20 20L12 16L4 20Z" fill="white"/>
+        </svg>
+      </AppIcon>
     ),
   },
 ]
@@ -236,9 +275,8 @@ function MapPickerSheet({
               onClick={onClose}
               className={`font-body flex min-h-[56px] items-center gap-4 px-3 py-3 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
             >
-              <span style={{ color: app.color }}>{app.icon}</span>
+              {app.icon}
               {app.name}
-              <span className="ml-auto text-xs text-[#555555]">↗</span>
             </a>
           ))}
         </div>

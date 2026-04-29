@@ -55,12 +55,12 @@ function BarberCard({ barber, index }: BarberCardProps) {
 
   return (
     <div
-      className="b-card flex flex-row gap-5 md:flex-col md:gap-4"
+      className="b-card"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Photo — square on mobile (compact horizontal card), 3:4 portrait on desktop */}
-      <div className="b-photo aspect-square w-40 shrink-0 overflow-hidden md:aspect-[3/4] md:w-full">
+      {/* Photo */}
+      <div className="b-photo relative w-full overflow-hidden aspect-square md:aspect-[3/4]">
         {imgError ? (
           <BarberInitials name={barber.name} />
         ) : (
@@ -74,18 +74,39 @@ function BarberCard({ barber, index }: BarberCardProps) {
             className="h-full w-full object-cover"
             style={{
               filter: hovered ? "grayscale(0%)" : "grayscale(100%)",
-              transform: "scale(1)",
-              transition: "filter 0.4s ease, transform 0.4s ease",
+              transition: "filter 0.4s ease",
             }}
           />
         )}
+
+        {/* Gradient overlay — mobile only */}
+        <div
+          className="absolute inset-0 md:hidden"
+          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 45%, transparent 70%)" }}
+        />
+
+        {/* Name + WA over photo — mobile only */}
+        <div className="absolute inset-x-0 bottom-0 p-4 md:hidden">
+          <h3 className="font-display mb-2 text-2xl uppercase leading-none tracking-tight text-white">
+            {barber.name}
+          </h3>
+          <div className="mb-3 h-px w-full bg-white/20" />
+          <a
+            href={`https://wa.me/${barber.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body flex items-center gap-2 text-sm text-white/60 transition-colors duration-200 hover:text-white"
+          >
+            <WhatsAppIcon />
+            Escribir
+          </a>
+        </div>
       </div>
 
-      {/* Info column — flex-1 on mobile (right side), full block on desktop */}
-      <div className="flex min-w-0 flex-1 flex-col justify-center gap-2 md:justify-start md:gap-4">
-        {/* Name */}
+      {/* Text below photo — desktop only */}
+      <div className="hidden md:flex md:flex-col md:gap-4 md:pt-4">
         <h3
-          className="font-display text-xl uppercase leading-none tracking-tight md:text-2xl"
+          className="font-display text-2xl uppercase leading-none tracking-tight"
           style={{
             color: hovered ? "#cc2222" : "#ffffff",
             transition: "color 0.25s ease",
@@ -93,26 +114,12 @@ function BarberCard({ barber, index }: BarberCardProps) {
         >
           {barber.name}
         </h3>
-
-        {/* Role */}
-        <p className="font-body text-[10px] uppercase tracking-widest text-[#888888] md:text-xs">
-          {barber.role}
-        </p>
-
-        {/* Divider */}
         <div className="h-px w-full bg-[#333333]" />
-
-        {/* Specialty */}
-        <p className="font-body text-xs text-[#888888] md:text-sm">
-          {barber.specialty}
-        </p>
-
-        {/* WhatsApp link */}
         <a
           href={`https://wa.me/${barber.whatsapp}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-body flex min-h-[44px] items-center gap-2 text-xs text-[#888888] transition-colors duration-200 hover:text-white md:text-sm"
+          className="font-body flex min-h-[44px] items-center gap-2 text-sm text-[#888888] transition-colors duration-200 hover:text-white"
         >
           <WhatsAppIcon />
           Escribir
