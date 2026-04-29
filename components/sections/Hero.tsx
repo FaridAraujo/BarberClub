@@ -150,13 +150,13 @@ const MAP_APPS = [
     id: "uber",
     name: "Uber",
     url: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${LAT}&dropoff[longitude]=${LON}&dropoff[nickname]=Barber%20Club`,
-    logo: "https://www.google.com/s2/favicons?domain=uber.com&sz=64",
+    logo: "/images/logos/uber.webp",
   },
   {
     id: "apple",
     name: "Apple Maps",
     url: `https://maps.apple.com/?q=${LAT},${LON}`,
-    logo: "https://www.google.com/s2/favicons?domain=maps.apple.com&sz=64",
+    logo: "/images/logos/applemaps.webp",
     iosOnly: true,
   },
 ]
@@ -215,9 +215,9 @@ function MapPickerSheet({
               onClick={onClose}
               className={`font-body flex min-h-[56px] items-center gap-4 px-3 py-3 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
             >
-              <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={app.logo} alt="" width={32} height={32} style={{ width: 32, height: 32, objectFit: "cover" }} />
+                <img src={app.logo} alt="" style={{ width: 32, height: 32, objectFit: "contain" }} />
               </div>
               {app.name}
             </a>
