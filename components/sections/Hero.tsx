@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
@@ -139,24 +139,29 @@ const MAP_APPS = [
     name: "Google Maps",
     url: `https://www.google.com/maps?q=${LAT},${LON}`,
     logo: "/images/logos/googlemaps.webp",
+    imgSize: 26,
   },
   {
     id: "waze",
     name: "Waze",
     url: `https://waze.com/ul?ll=${LAT},${LON}&navigate=yes`,
     logo: "/images/logos/waze.webp",
+    imgSize: 32,
   },
   {
     id: "uber",
     name: "Uber",
     url: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=${LAT}&dropoff[longitude]=${LON}&dropoff[nickname]=Barber%20Club`,
     logo: "/images/logos/uber.webp",
+    imgSize: 32,
+    containerWidth: 72,
   },
   {
     id: "apple",
     name: "Apple Maps",
     url: `https://maps.apple.com/?q=${LAT},${LON}`,
     logo: "/images/logos/applemaps.webp",
+    imgSize: 32,
     iosOnly: true,
   },
 ]
@@ -215,9 +220,9 @@ function MapPickerSheet({
               onClick={onClose}
               className={`font-body flex min-h-[56px] items-center gap-4 px-3 py-3 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
             >
-              <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ width: "containerWidth" in app ? app.containerWidth : 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={app.logo} alt="" style={{ width: 32, height: 32, objectFit: "contain" }} />
+                <img src={app.logo} alt="" style={{ width: "containerWidth" in app ? app.containerWidth : app.imgSize, height: app.imgSize, objectFit: "contain" }} />
               </div>
               {app.name}
             </a>
@@ -261,13 +266,13 @@ interface HeroProps {
 
 export default function Hero({ logoSrc }: HeroProps) {
   const containerRef       = useRef<HTMLElement>(null)
+  const bgImageRef         = useRef<HTMLElement>(null)
   const logoWrapRef        = useRef<HTMLDivElement>(null)
   const bladeLeftRef       = useRef<HTMLDivElement>(null)
   const bladeRightRef      = useRef<HTMLDivElement>(null)
   const headlineRef        = useRef<HTMLHeadingElement>(null)
   const wordRefs           = useRef<(HTMLSpanElement | null)[]>([])
   const hLineRef           = useRef<HTMLDivElement>(null)
-  // Status + location merged into one ref for a single clean animation step
   const locationGroupRef   = useRef<HTMLDivElement>(null)
   const ctaWrapRef         = useRef<HTMLDivElement>(null)
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
@@ -299,37 +304,43 @@ export default function Hero({ logoSrc }: HeroProps) {
 
   useGSAP(
     () => {
-      const tl = gsap.timeline()
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } })
 
-      // 1. Logo wrapper
-      tl.from(logoWrapRef.current, { opacity: 0, y: -30, duration: 1, ease: "power3.out" })
+      // 0. Ken Burns — image subtly expands while content enters
+      gsap.from(bgImageRef.current, {
+        scale: 1.06, duration: 2.2, ease: "power1.out",
+      })
 
-      // 2. Razors
+      // 1. Logo — drops in quickly from top
+      tl.from(logoWrapRef.current, { opacity: 0, y: -16, duration: 0.45 })
+
+      // 2. Razors — simultaneous, punchy
       tl.from(
         [bladeLeftRef.current, bladeRightRef.current],
-        { scale: 0, opacity: 0, transformOrigin: "center center", stagger: 0.1, duration: 0.6, ease: "back.out(1.7)" },
-        ">+0.1",
+        { scale: 0, opacity: 0, transformOrigin: "center center", stagger: 0.05, duration: 0.35, ease: "back.out(2)" },
+        "-=0.2",
       )
 
-      // 3. Headline words
+      // 3. Headline — mask reveal: words slide up from below their overflow-hidden parent
+      //    No opacity needed — the parent clip handles visibility.
       tl.from(
         wordRefs.current.filter((el): el is HTMLSpanElement => el !== null),
-        { y: 60, opacity: 0, stagger: 0.12, ease: "power4.out", duration: 0.8 },
-        "-=0.5",
+        { y: "110%", stagger: 0.07, duration: 0.55, ease: "power4.out" },
+        "-=0.15",
       )
 
-      // 4. Barber separator
-      tl.from(hLineRef.current, { width: 0, duration: 0.8, ease: "power2.out" }, "-=0.3")
+      // 4. Separator — fast draw
+      tl.from(hLineRef.current, { width: 0, duration: 0.45, ease: "power2.out" }, "-=0.2")
 
-      // 5. Status + Location group (single step — cleaner than two separate animations)
-      tl.from(locationGroupRef.current, { opacity: 0, y: 12, duration: 0.8, ease: "power2.out" }, "-=0.5")
+      // 5. Status + location
+      tl.from(locationGroupRef.current, { opacity: 0, y: 8, duration: 0.4 }, "-=0.25")
 
-      // 6. CTA
-      tl.from(ctaWrapRef.current, { scale: 0.85, opacity: 0, ease: "back.out(1.7)", duration: 0.6 }, "-=0.4")
+      // 6. CTA — slides up, no scale bounce
+      tl.from(ctaWrapRef.current, { opacity: 0, y: 10, duration: 0.35 }, "-=0.25")
 
-      // Scroll indicator — pulsing loop
+      // Scroll indicator — pulsing loop, starts after content settles
       gsap.to(scrollIndicatorRef.current, {
-        opacity: 0.3, duration: 1.5, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 3,
+        opacity: 0.3, duration: 1.5, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 1.8,
       })
 
       // Hero fades out on scroll
@@ -359,7 +370,7 @@ export default function Hero({ logoSrc }: HeroProps) {
           and bottom-fading gradient still cover the full hero, so the seam is
           imperceptible. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <picture className="absolute inset-x-0 top-0 z-0 h-[65vh] w-full md:inset-0 md:h-full">
+      <picture ref={bgImageRef as React.Ref<HTMLElement>} className="absolute inset-x-0 top-0 z-0 h-[65vh] w-full md:inset-0 md:h-full">
         <source
           media="(max-width: 767px)"
           srcSet={`/images/team-mobile.webp?${ASSET_VERSION}`}
