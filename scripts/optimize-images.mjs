@@ -62,7 +62,7 @@ async function run() {
     { src: join(galleryDir, "work2.png"), dest: join(galleryDir, "work2.webp"), opts: { width: 900, quality: 80 } },
     { src: join(galleryDir, "work3.png"), dest: join(galleryDir, "work3.webp"), opts: { width: 900, quality: 80 } },
     { src: join(galleryDir, "work4.jpg"), dest: join(galleryDir, "work4.webp"), opts: { width: 900, height: 600, extractTop: 400, quality: 80 } },
-    { src: join(galleryDir, "work5.jpg"), dest: join(galleryDir, "work5.webp"), opts: { width: 900, height: 600, fit: "cover", position: "top",    quality: 80 } },
+    { src: join(galleryDir, "work5.jpg"), dest: join(galleryDir, "work5.webp"), opts: { width: 900, height: 600, extractTop: 430, quality: 80 } },
     { src: join(galleryDir, "work6.jpg"), dest: join(galleryDir, "work6.webp"), opts: { width: 900, quality: 80 } },
   ]
 
