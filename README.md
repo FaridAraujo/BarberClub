@@ -4,7 +4,7 @@
 > Designed and developed as a portfolio project with the goal of delivering a real product to a real client.
 
 ## Live Demo
-[barber-club-omega.vercel.app](https://barber-club-omega.vercel.app)
+[barberclub.cr](https://barberclub.cr)
 
 ## Features
 
@@ -20,6 +20,12 @@
 - Responsive images via `<picture>` — mobile-specific crop generated with Sharp at build time
 - Custom animated barber pole (CSS + GSAP) used as a decorative separator
 - Fully responsive — mobile-first design optimized for 375px viewports
+- WhatsApp barber picker — bottom sheet con foto, nombre y link directo a cada barbero
+- Multi-app navigation picker — abre Google Maps, Waze, Uber o Apple Maps (iOS-only) según el dispositivo
+- Local photo carousel — drag/swipe con Framer Motion, indicadores con degradado bandera de Costa Rica
+- Local SEO — Schema JSON-LD tipo `BarberShop` con horarios, geo-coordenadas y rating
+- Custom 404 page and Privacy Policy page (`/privacidad`)
+- React portals — modals renderizados en `document.body` para escapar el stacking context creado por GSAP transforms
 
 ## Tech Stack
 
@@ -46,19 +52,21 @@
 ## Screenshots
 
 > Hero section
-<img width="1365" height="623" alt="image" src="https://github.com/user-attachments/assets/0dd850fd-f3cc-4cda-9d7d-8a98a5d6a7f1" />
+<img width="1365" height="628" alt="image" src="https://github.com/user-attachments/assets/1d489e28-fbb9-4d3d-8ba6-62f9f8a14f58" />
 
 > Services
-<img width="1365" height="626" alt="image" src="https://github.com/user-attachments/assets/27b3f7e3-d1b6-42c5-a7f1-af25c6ddddc7" />
+<img width="1365" height="629" alt="image" src="https://github.com/user-attachments/assets/f6b48989-63b3-4257-9c95-37bee08aa393" />
 
 > Team
-<img width="1365" height="635" alt="image" src="https://github.com/user-attachments/assets/66c4c865-458c-48a6-a41c-cfc16ada17ca" />
+<img width="1365" height="630" alt="image" src="https://github.com/user-attachments/assets/65ae4496-5171-435a-8325-2e3c00dd82b4" />
 
 > Gallery
-<img width="1365" height="627" alt="image" src="https://github.com/user-attachments/assets/2e9cf3b8-7630-4685-8670-5b41fa9a527c" />
+<img width="1365" height="630" alt="image" src="https://github.com/user-attachments/assets/2963f64b-45bb-4447-b18b-d6cf2e977ea7" />
 
 > Visit
-<img width="1365" height="626" alt="image" src="https://github.com/user-attachments/assets/b1ac886b-1c48-4323-86e0-dc54802ac2b5" />
+<img width="1363" height="624" alt="image" src="https://github.com/user-attachments/assets/492fc91d-febb-44cc-bf54-54b99dc1aa73" />
+
+> **Note:** Screenshots show the desktop layout. The site includes interactive elements not captured here — a WhatsApp barber picker sheet, a multi-app navigation picker (Google Maps / Waze / Uber / Apple Maps), and a local photo carousel with drag/swipe. On mobile, the layout adapts significantly: hero height, section padding, and card orientation all change, and the sticky header becomes a full-screen hamburger menu with live open/closed status, full schedule, and navigation app shortcuts.
 
 ## Run Locally
 
@@ -86,3 +94,6 @@ node scripts/optimize-images.mjs
 - Achieving perfect Lighthouse Accessibility and SEO scores from the ground up
 - Building a complete client-facing product with real content, real photos, and real business logic
 - Structuring a Next.js project for maintainability with a centralized `constants.ts` and shared utility modules
+- Using `ReactDOM.createPortal` to render modals outside GSAP-animated ancestors — `position: fixed` breaks when any ancestor has `transform` applied, which GSAP does on scroll; portaling to `document.body` solves this cleanly
+- Local SEO with Schema JSON-LD: structuring `BarberShop` schema with opening hours, geo-coordinates, and social links for Google rich results
+- Building a drag carousel with Framer Motion `useMotionValue` and dynamic card sizing based on container `clientWidth`
