@@ -320,60 +320,60 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-0 overflow-y-auto px-6 pb-10 pt-20"
+            className="fixed inset-0 flex flex-col overflow-hidden px-6 pb-4 pt-16"
             style={{ backgroundColor: "#0a0a0a", zIndex: 49 }}
           >
-            {/* ── Logo block + razors (matches hero composition) ── */}
+            {/* ── Logo block + razors + barber pole ── */}
             <motion.div
-              initial={{ opacity: 0, y: -12 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.05 }}
-              className="mb-6 flex items-center justify-center"
+              className="flex flex-col items-center gap-2 py-3"
             >
-              <div className="-mr-2.5">
-                <RazorIcon size={32} />
+              <div className="flex items-center">
+                <div className="-mr-2.5">
+                  <RazorIcon size={28} />
+                </div>
+                <button
+                  onClick={() => {
+                    setMenuOpen(false)
+                    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300)
+                  }}
+                  aria-label="Ir al inicio"
+                >
+                  {!logoError ? (
+                    <div className="relative h-[46px] w-[170px]">
+                      <Image
+                        src={`${LOGO_PATH}?${ASSET_VERSION}`}
+                        alt="Barber Club"
+                        fill
+                        unoptimized
+                        style={{ objectFit: "contain" }}
+                      />
+                    </div>
+                  ) : (
+                    <span className="font-display text-xl tracking-widest text-white">
+                      BARBER CLUB
+                    </span>
+                  )}
+                </button>
+                <div className="-ml-2.5">
+                  <RazorIcon size={28} flip />
+                </div>
               </div>
-              <button
-                onClick={() => {
-                  setMenuOpen(false)
-                  setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300)
-                }}
-                aria-label="Ir al inicio"
+
+              <motion.div
+                initial={{ opacity: 0, scaleX: 0 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                style={{ transformOrigin: "center" }}
               >
-                {!logoError ? (
-                  <div className="relative h-[54px] w-[200px]">
-                    <Image
-                      src={`${LOGO_PATH}?${ASSET_VERSION}`}
-                      alt="Barber Club"
-                      fill
-                      unoptimized
-                      style={{ objectFit: "contain" }}
-                    />
-                  </div>
-                ) : (
-                  <span className="font-display text-2xl tracking-widest text-white">
-                    BARBER CLUB
-                  </span>
-                )}
-              </button>
-              <div className="-ml-2.5">
-                <RazorIcon size={32} flip />
-              </div>
+                <BarberPole width={100} />
+              </motion.div>
             </motion.div>
 
-            {/* ── Animated barber pole ── */}
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="mb-10 flex justify-center"
-              style={{ transformOrigin: "center" }}
-            >
-              <BarberPole width={120} />
-            </motion.div>
-
-            {/* ── Numbered nav ── */}
-            <nav className="mb-10 flex flex-col" aria-label="Navegación móvil">
+            {/* ── Nav — fills remaining space, items distributed evenly ── */}
+            <nav className="flex flex-1 flex-col justify-evenly" aria-label="Navegación móvil">
               {NAV_LINKS.map((link, i) => (
                 <motion.button
                   key={link.id}
@@ -381,7 +381,7 @@ export default function Header() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: 0.2 + i * 0.06 }}
                   onClick={() => scrollTo(link.id)}
-                  className="group relative flex items-baseline gap-4 border-b border-[#1a1a1a] py-4 text-left transition-colors"
+                  className="group relative flex items-center gap-4 border-b border-[#1a1a1a] py-0 text-left"
                 >
                   {/* Label + description */}
                   <span className="flex flex-1 flex-col gap-0.5">
@@ -404,95 +404,86 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* ── Status + abbreviated schedule ── */}
+            {/* ── Bottom: status + contact + tagline ── */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.5 }}
-              className="mb-8"
             >
-              <div className="mb-4 flex items-center gap-2">
-                <span
-                  className={`h-1.5 w-1.5 rounded-full ${isOpen ? "bg-emerald-400 animate-pulse" : "bg-[#cc2222]"}`}
-                />
-                <span className="font-body text-[10px] uppercase tracking-widest text-[#888888]">
-                  {isOpen === null ? "—" : isOpen ? "Abierto ahora" : "Cerrado ahora"}
-                </span>
+              {/* Status + schedule */}
+              <div className="mb-2">
+                <div className="mb-2 flex items-center gap-2">
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${isOpen ? "bg-emerald-400 animate-pulse" : "bg-[#cc2222]"}`}
+                  />
+                  <span className="font-body text-[10px] uppercase tracking-widest text-[#888888]">
+                    {isOpen === null ? "—" : isOpen ? "Abierto ahora" : "Cerrado ahora"}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {SITE_DATA.schedule.map((row) => (
+                    <div key={row.days} className="flex items-baseline justify-between">
+                      <span className="font-body text-xs text-[#888888]">{row.days}</span>
+                      <span
+                        className="font-body text-xs"
+                        style={{ color: row.hours === "Cerrado" ? "#cc2222" : "#dddddd" }}
+                      >
+                        {row.hours}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex flex-col gap-2.5">
-                {SITE_DATA.schedule.map((row) => (
-                  <div key={row.days} className="flex items-baseline justify-between">
-                    <span className="font-body text-xs text-[#888888]">{row.days}</span>
-                    <span
-                      className="font-body text-xs"
-                      style={{ color: row.hours === "Cerrado" ? "#cc2222" : "#dddddd" }}
+              {/* Contact icons */}
+              <div className="flex items-center justify-center gap-3 border-t border-[#1a1a1a] pt-3">
+                <a
+                  href={WA_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="flex h-10 w-10 items-center justify-center text-[#888888] transition-colors hover:text-[#25D366]"
+                >
+                  <WhatsAppIcon size={20} />
+                </a>
+                <span className="text-[#222]">·</span>
+                <a
+                  href={SITE_DATA.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="flex h-10 w-10 items-center justify-center text-[#888888] transition-colors hover:text-[#d62976]"
+                >
+                  <InstagramIcon size={20} />
+                </a>
+                <span className="text-[#222]">·</span>
+                {[
+                  { href: MAPS_LINK,             src: "/images/logos/googlemaps.webp", label: "Google Maps",  size: 17, ios: false },
+                  { href: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=9.9906133&dropoff[longitude]=-84.1351361&dropoff[nickname]=Barber%20Club`, src: "/images/logos/uber.webp", label: "Uber", size: 27, ios: false },
+                  { href: `https://waze.com/ul?ll=9.9906133,-84.1351361&navigate=yes`, src: "/images/logos/waze.webp",       label: "Waze",         size: 22, ios: false },
+                  { href: `https://maps.apple.com/?q=9.9906133,-84.1351361`,           src: "/images/logos/applemaps.webp",  label: "Apple Maps",   size: 22, ios: true  },
+                ].filter((app) => !app.ios || isIOS).map((app, i, arr) => (
+                  <React.Fragment key={app.label}>
+                    <a
+                      href={app.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={app.label}
+                      className="flex h-10 w-10 items-center justify-center opacity-50 transition-opacity hover:opacity-100"
                     >
-                      {row.hours}
-                    </span>
-                  </div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={app.src} alt={app.label} width={app.size} height={app.size} style={{ borderRadius: app.label === "Uber" ? 7 : 5, objectFit: "contain" }} />
+                    </a>
+                    {i < arr.length - 1 && <span className="text-[#222]">·</span>}
+                  </React.Fragment>
                 ))}
               </div>
-            </motion.div>
 
-            {/* ── Contact icons row ── */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.6 }}
-              className="flex items-center justify-center gap-3 border-t border-[#1a1a1a] pt-6"
-            >
-              <a
-                href={WA_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="flex h-11 w-11 items-center justify-center text-[#888888] transition-colors hover:text-[#25D366]"
-              >
-                <WhatsAppIcon size={20} />
-              </a>
-              <span className="text-[#222]">·</span>
-              <a
-                href={SITE_DATA.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="flex h-11 w-11 items-center justify-center text-[#888888] transition-colors hover:text-[#d62976]"
-              >
-                <InstagramIcon size={20} />
-              </a>
-              <span className="text-[#222]">·</span>
-              {[
-                { href: MAPS_LINK,             src: "/images/logos/googlemaps.webp", label: "Google Maps",  size: 17, ios: false },
-                { href: `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[latitude]=9.9906133&dropoff[longitude]=-84.1351361&dropoff[nickname]=Barber%20Club`, src: "/images/logos/uber.webp", label: "Uber", size: 27, ios: false },
-                { href: `https://waze.com/ul?ll=9.9906133,-84.1351361&navigate=yes`, src: "/images/logos/waze.webp",       label: "Waze",         size: 22, ios: false },
-                { href: `https://maps.apple.com/?q=9.9906133,-84.1351361`,           src: "/images/logos/applemaps.webp",  label: "Apple Maps",   size: 22, ios: true  },
-              ].filter((app) => !app.ios || isIOS).map((app, i, arr) => (
-                <React.Fragment key={app.label}>
-                  <a
-                    href={app.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={app.label}
-                    className="flex h-11 w-11 items-center justify-center opacity-50 transition-opacity hover:opacity-100"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={app.src} alt={app.label} width={app.size} height={app.size} style={{ borderRadius: app.label === "Uber" ? 7 : 5, objectFit: "contain" }} />
-                  </a>
-                  {i < arr.length - 1 && <span className="text-[#222]">·</span>}
-                </React.Fragment>
-              ))}
+              {/* Tagline */}
+              <p className="font-body mt-2 text-center text-[10px] uppercase tracking-widest text-[#444444]">
+                {SITE_DATA.slogan}
+              </p>
             </motion.div>
-
-            {/* ── Footer tagline ── */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.7 }}
-              className="font-body mt-6 text-center text-[10px] uppercase tracking-widest text-[#444444]"
-            >
-              {SITE_DATA.slogan}
-            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>

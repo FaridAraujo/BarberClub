@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useRef, useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import Image from "next/image"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
@@ -177,10 +178,10 @@ function MapPickerSheet({
 
   return (
     <AnimatePresence>
-      {/* Backdrop */}
+      {/* Backdrop — full screen on all sizes */}
       <motion.div
         key="backdrop"
-        className="fixed inset-0 z-[60] bg-black/70 md:hidden"
+        className="fixed inset-0 z-[60] bg-black/70"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -189,23 +190,23 @@ function MapPickerSheet({
         aria-hidden
       />
 
-      {/* Sheet */}
+      {/* Sheet — bottom on mobile, centered card on desktop */}
       <motion.div
         key="sheet"
-        className="fixed bottom-0 left-0 right-0 z-[61] overflow-hidden md:hidden"
+        className="fixed bottom-0 left-0 right-0 z-[61] max-h-[90dvh] overflow-hidden md:bottom-auto md:left-1/2 md:top-1/2 md:w-80 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-lg"
         style={{ backgroundColor: "#111111", borderTop: "1px solid #2a2a2a" }}
         initial={{ y: "100%" }}
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ type: "spring", damping: 28, stiffness: 320 }}
       >
-        {/* Handle */}
-        <div className="flex justify-center pt-3 pb-1">
+        {/* Handle (mobile only) */}
+        <div className="flex justify-center pb-1 pt-3 md:hidden">
           <div className="h-1 w-10 rounded-full bg-[#444444]" />
         </div>
 
         {/* Title */}
-        <p className="font-body px-6 pb-4 pt-2 text-center text-[10px] uppercase tracking-widest text-[#666666]">
+        <p className="font-body px-6 pb-4 pt-4 text-center text-[10px] uppercase tracking-widest text-[#666666]">
           Abrir ubicación en
         </p>
 
@@ -218,7 +219,7 @@ function MapPickerSheet({
               target="_blank"
               rel="noopener noreferrer"
               onClick={onClose}
-              className={`font-body flex min-h-[56px] items-center gap-4 px-3 py-3 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
+              className={`font-body flex min-h-[52px] items-center gap-4 px-3 py-2.5 text-sm text-white transition-colors active:bg-white/5 ${i < apps.length - 1 ? "border-b border-[#1e1e1e]" : ""}`}
             >
               <div style={{ width: 32, height: 32, borderRadius: 8, overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "imgAlign" in app ? app.imgAlign : "center" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -230,10 +231,10 @@ function MapPickerSheet({
         </div>
 
         {/* Cancel */}
-        <div className="px-4 pb-8">
+        <div className="px-4 pb-6">
           <button
             onClick={onClose}
-            className="font-body w-full border border-[#2a2a2a] py-4 text-xs uppercase tracking-widest text-[#888888] transition-colors active:bg-white/5"
+            className="font-body w-full border border-[#2a2a2a] py-3.5 text-xs uppercase tracking-widest text-[#888888] transition-colors active:bg-white/5"
           >
             Cancelar
           </button>
@@ -265,7 +266,7 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
       {/* Sheet — bottom on mobile, centered on desktop */}
       <motion.div
         key="wa-sheet"
-        className="fixed bottom-0 left-0 right-0 z-[61] overflow-hidden md:bottom-auto md:left-1/2 md:top-1/2 md:w-[560px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-lg"
+        className="fixed bottom-0 left-0 right-0 z-[61] max-h-[90dvh] overflow-hidden md:bottom-auto md:left-1/2 md:top-1/2 md:w-[560px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-lg"
         style={{ backgroundColor: "#111111", borderTop: "1px solid #2a2a2a" }}
         initial={{ y: "100%", opacity: 1 }}
         animate={{ y: 0, opacity: 1 }}
@@ -278,12 +279,12 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Title */}
-        <p className="font-body px-6 pb-5 pt-5 text-center text-[10px] uppercase tracking-widest text-[#666666]">
+        <p className="font-body px-6 pb-4 pt-4 text-center text-[10px] uppercase tracking-widest text-[#666666]">
           ¿Con quién querés hablar?
         </p>
 
         {/* Barber cards — horizontal grid */}
-        <div className="grid grid-cols-3 gap-3 px-5 pb-5">
+        <div className="grid grid-cols-3 gap-3 px-5 pb-4">
           {BARBERS.map((barber) => (
             <a
               key={barber.id}
@@ -305,7 +306,7 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
               </div>
 
               {/* Name + icon */}
-              <div className="flex items-center justify-between px-3 py-3">
+              <div className="flex items-center justify-between px-3 py-2.5">
                 <span className="font-display text-2xl uppercase leading-none" style={{ letterSpacing: "0.06em" }}>
                   {barber.name}
                 </span>
@@ -318,10 +319,10 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Cancel */}
-        <div className="px-5 pb-10 md:pb-5">
+        <div className="px-5 pb-5">
           <button
             onClick={onClose}
-            className="font-body w-full border border-[#2a2a2a] py-4 text-xs uppercase tracking-widest text-[#888888] transition-colors hover:border-[#444] active:bg-white/5"
+            className="font-body w-full border border-[#2a2a2a] py-3.5 text-xs uppercase tracking-widest text-[#888888] transition-colors hover:border-[#444] active:bg-white/5"
           >
             Cancelar
           </button>
@@ -377,12 +378,14 @@ export default function Hero({ logoSrc }: HeroProps) {
     return () => clearInterval(interval)
   }, [])
 
+  // Lock body scroll whenever either picker is open
   useEffect(() => {
-    if (!showMapPicker) return
-    const handleScroll = () => setShowMapPicker(false)
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [showMapPicker])
+    const anyOpen = showMapPicker || showWaPicker
+    if (!anyOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => { document.body.style.overflow = prev }
+  }, [showMapPicker, showWaPicker])
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -449,6 +452,7 @@ export default function Hero({ logoSrc }: HeroProps) {
   )
 
   return (
+    <>
     <section
       id="inicio"
       ref={containerRef}
@@ -594,15 +598,17 @@ export default function Hero({ logoSrc }: HeroProps) {
         <span className="font-body text-xs uppercase tracking-widest text-[#888888]">SCROLL</span>
       </div>
 
-      {/* ── Map picker ── */}
-      {showMapPicker && (
-        <MapPickerSheet isIOS={isIOS} onClose={() => setShowMapPicker(false)} />
-      )}
-
-      {/* ── WhatsApp barber picker ── */}
-      {showWaPicker && (
-        <WaPickerSheet onClose={() => setShowWaPicker(false)} />
-      )}
     </section>
+
+      {/* ── Sheets — rendered at body level via portal to escape overflow:hidden + GSAP transforms ── */}
+      {showMapPicker && createPortal(
+        <MapPickerSheet isIOS={isIOS} onClose={() => setShowMapPicker(false)} />,
+        document.body
+      )}
+      {showWaPicker && createPortal(
+        <WaPickerSheet onClose={() => setShowWaPicker(false)} />,
+        document.body
+      )}
+    </>
   )
 }
