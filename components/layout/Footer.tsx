@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Link from "next/link"
 import { ASSET_VERSION, LOGO_PATH, SITE_DATA } from "@/lib/constants"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -144,7 +145,15 @@ export default function Footer() {
       {/* ── Row 3: Copyright ── */}
       <div className="flex flex-col items-center gap-1 pt-8 text-xs text-[#555555] sm:flex-row sm:justify-between sm:gap-0">
         <span>© 2026 Barber Club. Todos los derechos reservados.</span>
-        <span>Heredia, Costa Rica</span>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/privacidad"
+            className="transition-colors duration-200 hover:text-white"
+          >
+            Privacidad
+          </Link>
+          <span>Heredia, Costa Rica</span>
+        </div>
       </div>
     </footer>
   )

@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { motion, AnimatePresence } from "framer-motion"
-import { ASSET_VERSION, SITE_DATA } from "@/lib/constants"
+import { ASSET_VERSION, SITE_DATA, BARBERS } from "@/lib/constants"
 import { checkIsOpen } from "@/lib/schedule"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -243,6 +243,94 @@ function MapPickerSheet({
   )
 }
 
+// ─── WhatsApp barber picker ───────────────────────────────────────────────────
+
+function WaPickerSheet({ onClose }: { onClose: () => void }) {
+  const WA_TEXT = encodeURIComponent("Hola, ¿hay espacio disponible?")
+
+  return (
+    <AnimatePresence>
+      {/* Backdrop */}
+      <motion.div
+        key="wa-backdrop"
+        className="fixed inset-0 z-[60] bg-black/70"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={onClose}
+        aria-hidden
+      />
+
+      {/* Sheet — bottom on mobile, centered on desktop */}
+      <motion.div
+        key="wa-sheet"
+        className="fixed bottom-0 left-0 right-0 z-[61] overflow-hidden md:bottom-auto md:left-1/2 md:top-1/2 md:w-[560px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-lg"
+        style={{ backgroundColor: "#111111", borderTop: "1px solid #2a2a2a" }}
+        initial={{ y: "100%", opacity: 1 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: "100%", opacity: 0 }}
+        transition={{ type: "spring", damping: 28, stiffness: 320 }}
+      >
+        {/* Handle (mobile only) */}
+        <div className="flex justify-center pb-1 pt-3 md:hidden">
+          <div className="h-1 w-10 rounded-full bg-[#444444]" />
+        </div>
+
+        {/* Title */}
+        <p className="font-body px-6 pb-5 pt-5 text-center text-[10px] uppercase tracking-widest text-[#666666]">
+          ¿Con quién querés hablar?
+        </p>
+
+        {/* Barber cards — horizontal grid */}
+        <div className="grid grid-cols-3 gap-3 px-5 pb-5">
+          {BARBERS.map((barber) => (
+            <a
+              key={barber.id}
+              href={`https://wa.me/${barber.whatsapp}?text=${WA_TEXT}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
+              className="group flex flex-col overflow-hidden rounded border border-[#1e1e1e] transition-colors hover:border-[#444]"
+            >
+              {/* Photo */}
+              <div style={{ aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#1a1a1a" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={barber.photo}
+                  alt={barber.name}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", transition: "transform 0.3s ease" }}
+                  className="group-hover:scale-105"
+                />
+              </div>
+
+              {/* Name + icon */}
+              <div className="flex items-center justify-between px-3 py-3">
+                <span className="font-display text-2xl uppercase leading-none" style={{ letterSpacing: "0.06em" }}>
+                  {barber.name}
+                </span>
+                <span style={{ color: "#25D366" }}>
+                  <WhatsAppIcon size={15} />
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        {/* Cancel */}
+        <div className="px-5 pb-10 md:pb-5">
+          <button
+            onClick={onClose}
+            className="font-body w-full border border-[#2a2a2a] py-4 text-xs uppercase tracking-widest text-[#888888] transition-colors hover:border-[#444] active:bg-white/5"
+          >
+            Cancelar
+          </button>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
 function LogoBadge({ logoSrc }: { logoSrc?: string }) {
   if (logoSrc) {
     return (
@@ -280,6 +368,8 @@ export default function Hero({ logoSrc }: HeroProps) {
   // null = not yet computed (avoids SSR mismatch)
   const [isOpen,        setIsOpen]        = useState<boolean | null>(() => checkIsOpen())
   const [showMapPicker, setShowMapPicker] = useState(false)
+  const [showWaPicker,  setShowWaPicker]  = useState(false)
+  const [waBtnHovered,  setWaBtnHovered]  = useState(false)
   const [isIOS,         setIsIOS]         = useState(false)
 
   useEffect(() => {
@@ -480,22 +570,21 @@ export default function Hero({ logoSrc }: HeroProps) {
           </a>
         </div>
 
-        {/* ── CTA — WhatsApp ── */}
+        {/* ── CTA — WhatsApp picker ── */}
         <div ref={ctaWrapRef}>
-          <motion.a
-            href={HERO_WA_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.button
+            onClick={() => setShowWaPicker(true)}
+            onHoverStart={() => setWaBtnHovered(true)}
+            onHoverEnd={() => setWaBtnHovered(false)}
             className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 border border-white/30 bg-transparent px-8 py-3 text-sm uppercase tracking-widest text-white/70"
             whileHover={{ backgroundColor: "#25D366", borderColor: "#25D366", color: "#000000" }}
             transition={{ duration: 0.3 }}
           >
-            {/* Icon stays green — the only hint it's WhatsApp */}
-            <span style={{ color: "#25D366" }}>
+            <span style={{ color: waBtnHovered ? "#000000" : "#25D366", transition: "color 0.3s" }}>
               <WhatsAppIcon size={15} />
             </span>
             Preguntar disponibilidad
-          </motion.a>
+          </motion.button>
         </div>
       </div>
 
@@ -505,9 +594,14 @@ export default function Hero({ logoSrc }: HeroProps) {
         <span className="font-body text-xs uppercase tracking-widest text-[#888888]">SCROLL</span>
       </div>
 
-      {/* ── Map picker — mobile only ── */}
+      {/* ── Map picker ── */}
       {showMapPicker && (
         <MapPickerSheet isIOS={isIOS} onClose={() => setShowMapPicker(false)} />
+      )}
+
+      {/* ── WhatsApp barber picker ── */}
+      {showWaPicker && (
+        <WaPickerSheet onClose={() => setShowWaPicker(false)} />
       )}
     </section>
   )
