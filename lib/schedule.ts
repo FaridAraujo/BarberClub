@@ -11,7 +11,7 @@ function getCostaRicaMinutes(): { day: number; minutes: number } {
 export function checkIsOpen(): boolean {
   const { day, minutes } = getCostaRicaMinutes()
   if (day === 0) return false                                       // Domingo: cerrado
-  if (day === 6) return minutes >= 8 * 60     && minutes < 18 * 60 // Sábado: 8am–6pm
+  if (day === 6) return minutes >= 8 * 60     && minutes < 17 * 60 // Sábado: 8am–5pm
   if (day === 5) return minutes >= 8 * 60     && minutes < 19 * 60 // Viernes: 8am–7pm
   return             minutes >= 9 * 60 + 30  && minutes < 19 * 60 // Lun–Jue: 9:30am–7pm
 }

@@ -49,7 +49,7 @@ export const SITE_DATA = {
   schedule: [
     { days: "Lunes - Jueves", hours: "9:30am - 7:00pm" },
     { days: "Viernes", hours: "8:00am - 7:00pm" },
-    { days: "Sábado", hours: "8:00am - 6:00pm" },
+    { days: "Sábado", hours: "8:00am - 5:00pm" },
     { days: "Domingo", hours: "Cerrado" },
   ],
   services: [
