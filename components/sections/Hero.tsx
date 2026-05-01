@@ -456,7 +456,7 @@ export default function Hero({ logoSrc }: HeroProps) {
     <section
       id="inicio"
       ref={containerRef}
-      className="relative flex h-[75vh] flex-col items-center justify-center overflow-hidden bg-background md:h-screen"
+      className="relative flex h-[100dvh] flex-col items-center justify-center overflow-hidden bg-background pt-16 md:pt-20"
     >
       {/* ── Background image — native <picture> for LCP priority. ── */}
       {/* On mobile, image fills only top 65vh; below that the section's bg-background
@@ -477,7 +477,7 @@ export default function Hero({ logoSrc }: HeroProps) {
           decoding="sync"
           aria-hidden="true"
           className="h-full w-full"
-          style={{ objectFit: "cover", objectPosition: "50% 30%" }}
+          style={{ objectFit: "cover", objectPosition: "50% 59%" }}
         />
       </picture>
 
@@ -494,7 +494,7 @@ export default function Hero({ logoSrc }: HeroProps) {
       />
 
       {/* ── Logo + razors — pinned to top ── */}
-      <div ref={logoWrapRef} className="absolute top-6 z-20 flex items-center">
+      <div ref={logoWrapRef} className="absolute top-6 z-20 flex items-center md:top-8">
         <div ref={bladeLeftRef} className="-mr-3.5 md:-mr-[22px]">
           <RazorIcon />
         </div>

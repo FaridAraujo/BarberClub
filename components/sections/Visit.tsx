@@ -119,6 +119,8 @@ const LOCAL_PHOTOS = [
   { src: "/images/local-2.webp", alt: "Barber Club — estaciones", position: "top" },
   { src: "/images/local-3.webp", alt: "Barber Club — ambiente",   position: "top" },
   { src: "/images/local-4.webp", alt: "Barber Club — detalle",    position: "top" },
+  { src: "/images/local-5.webp", alt: "Barber Club — local",      position: "center" },
+  { src: "/images/local-6.webp", alt: "Barber Club — espacio",    position: "top" },
 ]
 
 const CARD_GAP = 16

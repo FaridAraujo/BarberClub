@@ -1,14 +1,24 @@
 export const ASSET_VERSION = "v5"
 export const LOGO_PATH = "/images/logo.png"
 
+// Six featured photos shown in the asymmetric grid on the main page.
+// objectPosition: "center 15%" shows the haircut at the top of each landscape cell.
+// Swap IDs / reorder to change which photos appear and in which position.
 export const GALLERY_IMAGES = [
-  { id: 1, src: "/images/gallery/work1.webp", alt: "Corte fade",      objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
-  { id: 2, src: "/images/gallery/work2.webp", alt: "Corte clásico",   objectPosition: "center 20%",    objectFit: "cover" as const, zoom: 1 },
-  { id: 6, src: "/images/gallery/work6.webp", alt: "Estilo completo", objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
-  { id: 4, src: "/images/gallery/work4.webp", alt: "Fade degradado",  objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
-  { id: 3, src: "/images/gallery/work3.webp", alt: "Barba perfilada", objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
-  { id: 5, src: "/images/gallery/work5.webp", alt: "Corte moderno",   objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
+  { id:  1, src: "/images/gallery/work01.webp", alt: "Corte fade",      objectPosition: "center center", objectFit: "cover" as const, zoom: 1 },
+  { id:  2, src: "/images/gallery/work02.webp", alt: "Corte clásico",   objectPosition: "center 48%",    objectFit: "cover" as const, zoom: 1 },
+  { id:  3, src: "/images/gallery/work03.webp", alt: "Estilo moderno",  objectPosition: "center 50%",    objectFit: "cover" as const, zoom: 1 },
+  { id:  4, src: "/images/gallery/work04.webp", alt: "Fade degradado",  objectPosition: "center 43%",    objectFit: "cover" as const, zoom: 1 },
+  { id:  5, src: "/images/gallery/work05.webp", alt: "Barba perfilada", objectPosition: "center 60%",    objectFit: "cover" as const, zoom: 1 },
+  { id:  6, src: "/images/gallery/work06.webp", alt: "Corte completo",  objectPosition: "center 57%",    objectFit: "cover" as const, zoom: 1 },
 ]
+
+// All 25 photos — used in the "Ver más" modal.
+export const GALLERY_ALL = Array.from({ length: 25 }, (_, i) => ({
+  id:  i + 1,
+  src: `/images/gallery/work${String(i + 1).padStart(2, "0")}.webp`,
+  alt: `Trabajo ${String(i + 1).padStart(2, "0")}`,
+}))
 
 export const BARBERS = [
   {

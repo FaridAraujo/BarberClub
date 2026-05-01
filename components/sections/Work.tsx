@@ -1,12 +1,13 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { GALLERY_IMAGES, SITE_DATA } from "@/lib/constants"
+import { GALLERY_IMAGES, GALLERY_ALL, SITE_DATA } from "@/lib/constants"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -137,6 +138,137 @@ function GalleryCell({
   )
 }
 
+// ─── Gallery modal ────────────────────────────────────────────────────────────
+
+function GalleryModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [onClose])
+
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => { document.body.style.overflow = prev }
+  }, [])
+
+  return (
+    <AnimatePresence>
+      {/* Backdrop */}
+      <motion.div
+        key="gallery-backdrop"
+        className="fixed inset-0 z-[70]"
+        style={{ backgroundColor: "rgba(0,0,0,0.96)" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={onClose}
+        aria-hidden
+      />
+
+      {/* Panel */}
+      <motion.div
+        key="gallery-panel"
+        className="fixed inset-0 z-[71] flex flex-col"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* ── Header ── */}
+        <div
+          className="relative flex-shrink-0 px-5 pb-0 pt-6 md:px-10 md:pt-8"
+          style={{ backgroundColor: "#080808" }}
+        >
+          <div className="flex items-end justify-between">
+            {/* Left: title */}
+            <div>
+              <p className="font-body mb-2 text-[10px] uppercase tracking-widest text-[#444]">
+                Barber Club · Heredia
+              </p>
+              <h2 className="font-display text-3xl uppercase leading-none tracking-tight text-white md:text-5xl">
+                El Trabajo
+              </h2>
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={onClose}
+              className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-[#2a2a2a] text-[#555] transition-colors duration-200 hover:border-white hover:text-white"
+              aria-label="Cerrar galería"
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M1 1l10 10M11 1L1 11" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Accent line */}
+          <div className="mt-5 h-px" style={{ background: "linear-gradient(to right, #cc2222 0%, #1a1a1a 40%)" }} />
+        </div>
+
+        {/* ── Grid ── */}
+        <div className="flex-1 overflow-y-auto" style={{ backgroundColor: "#080808" }}>
+          <div className="grid grid-cols-2 gap-px md:grid-cols-3 lg:grid-cols-4" style={{ backgroundColor: "#111" }}>
+            {GALLERY_ALL.map((photo, i) => (
+              <div
+                key={photo.id}
+                className="group relative overflow-hidden bg-[#0d0d0d]"
+                style={{
+                  aspectRatio: "3/4",
+                  opacity: 0,
+                  animation: `galleryFadeIn 0.4s ease forwards`,
+                  animationDelay: `${Math.min(i * 28, 560)}ms`,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  loading="lazy"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center 15%",
+                    transition: "transform 0.5s ease",
+                  }}
+                  className="group-hover:scale-[1.04]"
+                />
+
+                {/* Dark overlay on hover */}
+                <div className="absolute inset-0 bg-black/0 transition-all duration-300 group-hover:bg-black/45" />
+
+                {/* Large number watermark */}
+                <span
+                  className="font-display pointer-events-none absolute bottom-2 right-2 select-none leading-none opacity-0 transition-all duration-300 group-hover:opacity-100"
+                  style={{
+                    fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                    color: "rgba(255,255,255,0.12)",
+                    letterSpacing: "-0.04em",
+                  }}
+                >
+                  {String(photo.id).padStart(2, "0")}
+                </span>
+
+                {/* Red bottom slide-in line */}
+                <div
+                  className="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-300 group-hover:w-full"
+                  style={{ background: "#cc2222" }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="h-12" />
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
 // ─── Instagram CTA button ─────────────────────────────────────────────────────
 // Gradient border via 1px-padded wrapper + gradient text via background-clip.
 // Hover fills the interior with the same gradient and switches text to white.
@@ -145,43 +277,47 @@ function GalleryCell({
 function InstagramCTA({ href }: { href: string }) {
   const [hovered, setHovered] = useState(false)
 
-  const gradientTextStyle: React.CSSProperties = {
+  // Gradient border via the CSS multiple-background trick:
+  // background layer 1: solid dark fill clipped to padding-box (the inner area)
+  // background layer 2: gradient clipped to border-box (shows through the transparent border)
+  const borderStyle = `linear-gradient(#0a0a0a, #0a0a0a) padding-box, ${IG_GRADIENT} border-box`
+
+  const gradientTextStyle = {
     background: IG_GRADIENT,
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     color: "transparent",
   }
 
-  // Outer div: gradient background with 1px padding = gradient border
   return (
-    <div style={{ background: IG_GRADIENT, padding: 1, display: "inline-flex" }}>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest transition-all duration-300 md:gap-3 md:px-8 md:py-3 md:text-sm"
-        style={{ background: hovered ? IG_GRADIENT : "#0a0a0a" }}
-      >
-        {/* Icon — separate span so currentColor resolves correctly */}
-        <span
-          style={{ display: "flex", color: hovered ? "#ffffff" : "#d62976" }}
-        >
-          <InstagramIcon size={16} />
-        </span>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest md:gap-3 md:px-8 md:py-3 md:text-sm"
+      style={{
+        background: hovered ? IG_GRADIENT : borderStyle,
+        border: "1px solid transparent",
+      }}
+    >
+      {/* Icon */}
+      <span style={{ display: "flex", color: hovered ? "#ffffff" : "#d62976" }}>
+        <InstagramIcon size={16} />
+      </span>
 
-        {/* Label — gradient text by default, white on hover */}
-        <span style={hovered ? { color: "#ffffff" } : gradientTextStyle}>
-          Ver en Instagram
-        </span>
-      </a>
-    </div>
+      {/* Label — gradient text by default, white on hover */}
+      <span style={hovered ? { color: "#ffffff" } : gradientTextStyle}>
+        Ver en Instagram
+      </span>
+    </a>
   )
 }
 
 export default function Work() {
-  const containerRef = useRef<HTMLElement>(null)
+  const containerRef  = useRef<HTMLElement>(null)
+  const [showGallery, setShowGallery] = useState(false)
 
   useGSAP(
     () => {
@@ -228,6 +364,7 @@ export default function Work() {
   )
 
   return (
+    <>
     <section
       id="trabajo"
       ref={containerRef}
@@ -263,6 +400,30 @@ export default function Work() {
 
         {/* ── CTA ── */}
         <div className="w-cta mt-12">
+
+          {/* Ver galería completa — above the divider */}
+          <div className="mb-8">
+            <button
+              onClick={() => setShowGallery(true)}
+              className="group flex w-full items-center gap-5 py-4"
+            >
+              <div className="h-px flex-1 bg-[#2a2a2a] transition-colors duration-300 group-hover:bg-[#444]" />
+              <span className="font-display flex-shrink-0 text-sm uppercase tracking-[0.2em] text-[#777] transition-colors duration-300 group-hover:text-white">
+                Ver todo el trabajo
+              </span>
+              <svg
+                className="flex-shrink-0 text-[#555] transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-white"
+                width="14" height="14" viewBox="0 0 14 14" fill="none"
+                stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"
+                aria-hidden
+              >
+                <path d="M2 7h10M7 2l5 5-5 5" />
+              </svg>
+              <div className="h-px flex-1 bg-[#2a2a2a] transition-colors duration-300 group-hover:bg-[#444]" />
+            </button>
+          </div>
+
+          {/* Divider + Instagram — identical structure to original */}
           <div className="mb-12 h-px w-full bg-[#333333]" />
           <div className="flex flex-col items-center gap-4">
             <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
@@ -274,5 +435,12 @@ export default function Work() {
 
       </div>
     </section>
+
+    {/* Gallery modal — portal to escape section stacking context */}
+    {showGallery && createPortal(
+      <GalleryModal onClose={() => setShowGallery(false)} />,
+      document.body
+    )}
+    </>
   )
 }

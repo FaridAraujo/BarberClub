@@ -1,10 +1,14 @@
 import sharp from "sharp"
+import heicConvert from "heic-convert"
 import { readFileSync, existsSync } from "fs"
-import { join, dirname, extname, basename } from "path"
+import { join, dirname, basename, extname } from "path"
 import { fileURLToPath } from "url"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const publicDir = join(__dirname, "..", "public", "images")
+const galleryDir = join(publicDir, "gallery")
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 async function printMeta(label, filePath) {
   if (!existsSync(filePath)) { console.log(`  ${label}: NOT FOUND`); return }
@@ -13,85 +17,114 @@ async function printMeta(label, filePath) {
   console.log(`  ${label}: ${meta.width}×${meta.height}px — ${(size / 1024).toFixed(1)} KB`)
 }
 
-async function convertToWebP(src, dest, { width, height, quality = 80, fit = "inside", position, extractTop } = {}) {
-  let pipeline = sharp(src)
-
-  if (extractTop !== undefined && width && height) {
-    // Resize to target width keeping aspect ratio, then extract a slice from extractTop
-    pipeline = pipeline
-      .resize({ width, withoutEnlargement: true })
-      .extract({ left: 0, top: extractTop, width, height })
-  } else if (width || height) {
-    pipeline = pipeline.resize({ width, height, fit, withoutEnlargement: true, ...(position ? { position } : {}) })
+// Returns a Sharp instance — handles HEIC by pre-decoding to JPEG buffer first.
+async function getSharp(filePath) {
+  const ext = extname(filePath).toLowerCase()
+  if (ext === ".heic" || ext === ".heif") {
+    const inputBuffer = readFileSync(filePath)
+    const jpegBuffer = await heicConvert({ buffer: inputBuffer, format: "JPEG", quality: 1 })
+    return sharp(Buffer.from(jpegBuffer))
   }
-
-  await pipeline.webp({ quality }).toFile(dest)
+  return sharp(filePath)
 }
 
+async function convert(src, dest, opts = {}) {
+  const { width, height, fit = "inside", position, quality = 82 } = opts
+  let pipeline = await getSharp(src)
+  if (width || height) {
+    pipeline = pipeline.resize({
+      width, height, fit,
+      withoutEnlargement: true,
+      ...(position ? { position } : {}),
+    })
+  }
+  await pipeline.webp({ quality }).toFile(dest)
+  const kb = (readFileSync(dest).length / 1024).toFixed(1)
+  console.log(`  ✓ ${basename(dest).padEnd(20)} ${kb} KB`)
+}
+
+// ── Image lists ───────────────────────────────────────────────────────────────
+
+// Hero — portrait source (1365×2048) → desktop + mobile outputs
+const heroImages = [
+  {
+    label: "Hero desktop",
+    src:   join(publicDir, "team-source.jpeg"),
+    dest:  join(publicDir, "team.webp"),
+    opts:  { width: 1600, quality: 83 },
+  },
+  {
+    label: "Hero mobile",
+    src:   join(publicDir, "team-source.jpeg"),
+    dest:  join(publicDir, "team-mobile.webp"),
+    opts:  { width: 800, height: 600, fit: "cover", position: "attention", quality: 83 },
+  },
+  {
+    label: "Razor",
+    src:   join(publicDir, "razor.png"),
+    dest:  join(publicDir, "razor.webp"),
+    opts:  { width: 104, height: 104, fit: "contain", quality: 85 },
+  },
+]
+
+// Local carousel — 6 photos (jpeg)
+const localImages = Array.from({ length: 6 }, (_, i) => ({
+  label: `Local ${i + 1}`,
+  src:   join(publicDir, `local-${i + 1}.jpeg`),
+  dest:  join(publicDir, `local-${i + 1}.webp`),
+  opts:  { width: 1400, quality: 83 },
+}))
+
+// Gallery — 25 work photos
+//   work01 → work1.jpg (original kept)
+//   work02 → work02.jpeg
+//   work03–work25 → HEIC
+const galleryImages = [
+  {
+    label: "work01",
+    src:   join(galleryDir, "work1.jpg"),
+    dest:  join(galleryDir, "work01.webp"),
+    opts:  { width: 1400, quality: 82 },
+  },
+  {
+    label: "work02",
+    src:   join(galleryDir, "work02.jpeg"),
+    dest:  join(galleryDir, "work02.webp"),
+    opts:  { width: 1400, quality: 82 },
+  },
+  ...Array.from({ length: 23 }, (_, i) => {
+    const n = String(i + 3).padStart(2, "0")
+    return {
+      label: `work${n}`,
+      src:   join(galleryDir, `work${n}.HEIC`),
+      dest:  join(galleryDir, `work${n}.webp`),
+      opts:  { width: 1400, quality: 82 },
+    }
+  }),
+]
+
+// ── Run ───────────────────────────────────────────────────────────────────────
+
 async function run() {
-  // ── Hero images ─────────────────────────────────────────────────────────────
-  const heroImages = [
-    {
-      src:  join(publicDir, "team.jpg"),
-      dest: join(publicDir, "team.webp"),
-      opts: { width: 800, quality: 80 },
-    },
-    {
-      // Landscape 4:3 crop for mobile — image only fills top ~65vh of hero,
-      // so crop stays wide enough to show all 3 barbers. "attention" picks
-      // the highest-contrast region (faces).
-      src:  join(publicDir, "team.jpg"),
-      dest: join(publicDir, "team-mobile.webp"),
-      opts: { width: 800, height: 600, fit: "cover", position: "attention", quality: 80 },
-    },
-    {
-      src:  join(publicDir, "razor.png"),
-      dest: join(publicDir, "razor.webp"),
-      opts: { width: 104, height: 104, fit: "contain", quality: 85 },
-    },
+  const sections = [
+    { name: "Hero",    images: heroImages    },
+    { name: "Local",   images: localImages   },
+    { name: "Gallery", images: galleryImages },
   ]
 
-  // ── Gallery images ───────────────────────────────────────────────────────────
-  // Displayed at max ~700px wide on desktop (2-col cell at max-w-5xl).
-  // 900px covers 2× retina on the large cell.
-  const galleryDir = join(publicDir, "gallery")
-  const galleryImages = [
-    // Portrait originals (9:16) → crop to 3:2 landscape so they fill the
-    // landscape grid cells without heavy zoom. "top" keeps the head/haircut visible.
-    { src: join(galleryDir, "work1.jpg"), dest: join(galleryDir, "work1.webp"), opts: { width: 900, height: 600, extractTop: 420, quality: 80 } },
-    { src: join(galleryDir, "work2.png"), dest: join(galleryDir, "work2.webp"), opts: { width: 900, quality: 80 } },
-    { src: join(galleryDir, "work3.png"), dest: join(galleryDir, "work3.webp"), opts: { width: 900, quality: 80 } },
-    { src: join(galleryDir, "work4.jpg"), dest: join(galleryDir, "work4.webp"), opts: { width: 900, height: 600, extractTop: 400, quality: 80 } },
-    { src: join(galleryDir, "work5.jpg"), dest: join(galleryDir, "work5.webp"), opts: { width: 900, height: 600, extractTop: 430, quality: 80 } },
-    { src: join(galleryDir, "work6.jpg"), dest: join(galleryDir, "work6.webp"), opts: { width: 900, quality: 80 } },
-  ]
-
-  const all = [...heroImages, ...galleryImages]
-
-  // ── Before ──────────────────────────────────────────────────────────────────
-  console.log("\nBefore:")
-  for (const { src } of all) {
-    const name = basename(src)
-    await printMeta(name.padEnd(12), src)
+  for (const { name, images } of sections) {
+    console.log(`\n── ${name} ─────────────────────────────────────`)
+    console.log("  Sources:")
+    for (const { label, src } of images) {
+      await printMeta(label.padEnd(16), src)
+    }
+    console.log("  Converting:")
+    for (const { src, dest, opts } of images) {
+      await convert(src, dest, opts)
+    }
   }
 
-  // ── Convert ─────────────────────────────────────────────────────────────────
-  console.log("\nConverting...")
-  for (const { src, dest, opts } of all) {
-    await convertToWebP(src, dest, opts)
-    const name = basename(dest)
-    const size = (readFileSync(dest).length / 1024).toFixed(1)
-    console.log(`  ✓ ${name.padEnd(14)} → ${size} KB`)
-  }
-
-  // ── After ───────────────────────────────────────────────────────────────────
-  console.log("\nAfter:")
-  for (const { dest } of all) {
-    const name = basename(dest)
-    await printMeta(name.padEnd(12), dest)
-  }
-
-  console.log("\nDone.\n")
+  console.log("\n✓ All done.\n")
 }
 
 run().catch((err) => { console.error(err); process.exit(1) })

@@ -174,3 +174,9 @@
 ::-webkit-scrollbar-thumb:hover {
   filter: brightness(1.15);
 }
+
+/* Gallery modal — staggered entrance */
+@keyframes galleryFadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
