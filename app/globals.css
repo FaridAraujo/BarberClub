@@ -188,6 +188,6 @@
 @media (max-width: 767px) {
   .hero-team-img {
     object-position: 50% 20%;
-    transform: translateY(-99px);
+    transform: translateY(-200px);
   }
 }
