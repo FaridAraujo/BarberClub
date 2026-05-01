@@ -29,8 +29,11 @@ async function getSharp(filePath) {
 }
 
 async function convert(src, dest, opts = {}) {
-  const { width, height, fit = "inside", position, quality = 82 } = opts
+  const { width, height, fit = "inside", position, quality = 82, extract } = opts
   let pipeline = await getSharp(src)
+  if (extract) {
+    pipeline = pipeline.extract(extract)
+  }
   if (width || height) {
     pipeline = pipeline.resize({
       width, height, fit,
@@ -57,7 +60,7 @@ const heroImages = [
     label: "Hero mobile",
     src:   join(publicDir, "team-source.jpeg"),
     dest:  join(publicDir, "team-mobile.webp"),
-    opts:  { width: 800, height: 600, fit: "cover", position: "attention", quality: 83 },
+    opts:  { extract: { left: 0, top: 500, width: 1365, height: 1700 }, width: 800, quality: 83 },
   },
   {
     label: "Razor",

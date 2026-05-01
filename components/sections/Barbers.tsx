@@ -180,16 +180,16 @@ export default function Barbers() {
     <section
       id="equipo"
       ref={containerRef}
-      className="bg-background pb-20 pt-12 md:pb-32 md:pt-16"
+      className="bg-background pb-14 pt-8 md:pb-14 md:pt-8 lg:pb-28 lg:pt-16"
     >
       <div className="mx-auto max-w-5xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="b-header mb-10 md:mb-20">
+        <div className="b-header mb-6 md:mb-8 lg:mb-20">
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             El equipo
           </p>
-          <h2 className="font-display text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+          <h2 className="font-display text-4xl uppercase leading-none tracking-tight lg:text-6xl xl:text-7xl">
             Conocé al equipo
           </h2>
         </div>

@@ -465,7 +465,7 @@ export default function Hero({ logoSrc }: HeroProps) {
           and bottom-fading gradient still cover the full hero, so the seam is
           imperceptible. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <picture ref={bgImageRef as React.Ref<HTMLElement>} className="absolute inset-x-0 top-0 z-0 h-[65vh] w-full md:inset-0 md:h-full">
+      <picture ref={bgImageRef as React.Ref<HTMLElement>} className="absolute inset-0 z-0">
         <source
           media="(max-width: 767px)"
           srcSet={`/images/team-mobile.webp?${ASSET_VERSION}`}
@@ -476,8 +476,8 @@ export default function Hero({ logoSrc }: HeroProps) {
           fetchPriority="high"
           decoding="sync"
           aria-hidden="true"
-          className="h-full w-full"
-          style={{ objectFit: "cover", objectPosition: "50% 59%" }}
+          className="h-full w-full hero-team-img"
+          style={{ objectFit: "cover" }}
         />
       </picture>
 
@@ -505,12 +505,12 @@ export default function Hero({ logoSrc }: HeroProps) {
       </div>
 
       {/* ── Main content ── */}
-      <div className="relative z-20 flex w-full flex-col items-center gap-8 px-4 md:gap-10">
+      <div className="relative z-20 flex w-full flex-col items-center gap-5 px-4 md:gap-4 lg:gap-10">
 
         {/* Headline */}
         <h1
           ref={headlineRef}
-          className="flex w-full flex-wrap justify-center gap-x-2 gap-y-0 font-display text-5xl uppercase tracking-normal md:gap-x-4 md:flex-nowrap md:text-8xl lg:text-9xl"
+          className="flex w-full flex-wrap justify-center gap-x-2 gap-y-0 font-display text-5xl uppercase tracking-normal md:flex-nowrap md:gap-x-4 lg:text-8xl xl:text-9xl"
         >
           {HEADLINE_WORDS.map((word, i) => (
             <span key={i} className="overflow-hidden">
@@ -529,7 +529,7 @@ export default function Hero({ logoSrc }: HeroProps) {
         {/* ── Status + Location — single horizontal row ── */}
         <div
           ref={locationGroupRef}
-          className="flex flex-col items-center justify-center gap-y-2"
+          className="flex flex-col items-center justify-center gap-y-2 md:flex-row md:gap-x-4 md:gap-y-0"
         >
           {/* Open/closed badge — fades in after JS hydrates (avoids SSR flash) */}
           <div
@@ -564,7 +564,7 @@ export default function Hero({ logoSrc }: HeroProps) {
                 setShowMapPicker(true)
               }
             }}
-            className="font-body group inline-flex min-h-[44px] items-center gap-2.5 px-2 py-2 text-sm text-[#888888] transition-colors duration-300 hover:text-white"
+            className="font-body group inline-flex min-h-[44px] items-center gap-2.5 px-2 py-2 text-sm text-[#888888] transition-colors duration-300 hover:text-white md:min-h-0 md:py-1"
           >
             <span className="relative flex shrink-0 items-center justify-center">
               <span className="absolute h-3 w-3 animate-ping rounded-full bg-[#cc2222] opacity-40" style={{ animationDuration: "2.5s" }} />
@@ -580,7 +580,7 @@ export default function Hero({ logoSrc }: HeroProps) {
             onClick={() => setShowWaPicker(true)}
             onHoverStart={() => setWaBtnHovered(true)}
             onHoverEnd={() => setWaBtnHovered(false)}
-            className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 border border-white/30 bg-transparent px-8 py-3 text-sm uppercase tracking-widest text-white/70"
+            className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-3 border border-white/30 bg-transparent px-8 py-3 text-sm uppercase tracking-widest text-white/70 md:min-h-0 md:py-2.5"
             whileHover={{ backgroundColor: "#25D366", borderColor: "#25D366", color: "#000000" }}
             transition={{ duration: 0.3 }}
           >
@@ -593,7 +593,7 @@ export default function Hero({ logoSrc }: HeroProps) {
       </div>
 
       {/* ── Scroll indicator ── */}
-      <div ref={scrollIndicatorRef} className="absolute bottom-8 z-20 flex flex-col items-center gap-2">
+      <div ref={scrollIndicatorRef} className="absolute bottom-8 z-20 flex flex-col items-center gap-2 md:hidden lg:flex">
         <div style={{ width: "1px", height: "40px", backgroundColor: "#888888" }} />
         <span className="font-body text-xs uppercase tracking-widest text-[#888888]">SCROLL</span>
       </div>

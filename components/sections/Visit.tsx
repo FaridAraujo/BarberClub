@@ -116,11 +116,11 @@ function MobileMap({ embedSrc }: { embedSrc: string }) {
 
 const LOCAL_PHOTOS = [
   { src: "/images/local-1.webp", alt: "Barber Club — interior",   position: "center 60%" },
-  { src: "/images/local-2.webp", alt: "Barber Club — estaciones", position: "top" },
-  { src: "/images/local-3.webp", alt: "Barber Club — ambiente",   position: "top" },
-  { src: "/images/local-4.webp", alt: "Barber Club — detalle",    position: "top" },
+  { src: "/images/local-2.webp", alt: "Barber Club — estaciones", position: "center" },
+  { src: "/images/local-3.webp", alt: "Barber Club — ambiente",   position: "center" },
+  { src: "/images/local-4.webp", alt: "Barber Club — detalle",    position: "center" },
   { src: "/images/local-5.webp", alt: "Barber Club — local",      position: "center" },
-  { src: "/images/local-6.webp", alt: "Barber Club — espacio",    position: "top" },
+  { src: "/images/local-6.webp", alt: "Barber Club — espacio",    position: "center" },
 ]
 
 const CARD_GAP = 16
@@ -132,6 +132,7 @@ function LocalCarousel() {
   const [active,      setActive]      = useState(0)
   const [dragging,    setDragging]    = useState(false)
   const [cardWidth,   setCardWidth]   = useState(0)
+  const [cardMaxH,    setCardMaxH]    = useState(700)
   const [maxDrag,     setMaxDrag]     = useState(0)
   const [states, setStates] = useState<Array<"idle" | "loaded" | "error">>(
     LOCAL_PHOTOS.map(() => "idle")
@@ -143,7 +144,9 @@ function LocalCarousel() {
     function calc() {
       if (!containerRef.current) return
       const cw = containerRef.current.clientWidth
+      const vh = window.innerHeight
       setCardWidth(cw)
+      setCardMaxH(Math.min(700, Math.round(vh * 1.2)))
       setMaxDrag((LOCAL_PHOTOS.length - 1) * (cw + CARD_GAP))
     }
     calc()
@@ -185,7 +188,7 @@ function LocalCarousel() {
     setStates((prev) => prev.map((s, idx) => idx === i ? state : s))
   }
 
-  const CARD_H = cardWidth ? `${Math.min(Math.round(cardWidth * 1.6), 900)}px` : "680px"
+  const CARD_H = cardWidth ? `${Math.min(Math.round(cardWidth * 1.6), cardMaxH)}px` : "520px"
 
   return (
     <div className="mt-12 md:mt-20">
@@ -327,16 +330,16 @@ export default function Visit() {
     <section
       id="visita"
       ref={containerRef}
-      className="bg-background pb-20 pt-12 md:pb-32 md:pt-16"
+      className="bg-background pb-14 pt-8 md:pb-14 md:pt-8 lg:pb-28 lg:pt-16"
     >
       <div className="mx-auto max-w-5xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="mb-10 md:mb-20">
+        <div className="mb-6 md:mb-8 lg:mb-20">
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             Encuéntranos
           </p>
-          <h2 className="font-display text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+          <h2 className="font-display text-4xl uppercase leading-none tracking-tight lg:text-6xl xl:text-7xl">
             Visítanos
           </h2>
         </div>

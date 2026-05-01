@@ -65,7 +65,7 @@ function GalleryCell({
 
   return (
     <motion.div
-      className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[320px] md:min-h-[400px]" : "min-h-[135px] md:min-h-[200px]"} ${index === 5 ? "hidden md:block" : ""}`}
+      className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[320px] md:min-h-[260px] lg:min-h-[380px]" : "min-h-[135px] md:min-h-[130px] lg:min-h-[190px]"} ${index === 5 ? "hidden md:block" : ""}`}
       whileHover="hover"
       initial="rest"
     >
@@ -368,17 +368,17 @@ export default function Work() {
     <section
       id="trabajo"
       ref={containerRef}
-      className="pb-20 pt-12 md:pb-32 md:pt-16"
+      className="pb-14 pt-8 md:pb-14 md:pt-8 lg:pb-28 lg:pt-16"
       style={{ backgroundColor: "#0d0d0d" }}
     >
       <div className="mx-auto max-w-5xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="w-header mb-10 md:mb-20">
+        <div className="w-header mb-6 md:mb-8 lg:mb-20">
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             El trabajo
           </p>
-          <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+          <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight lg:text-6xl xl:text-7xl">
             Así quedás
           </h2>
           <p className="font-body text-sm text-[#888888]">

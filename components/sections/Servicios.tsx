@@ -85,7 +85,7 @@ export default function Servicios() {
     <section
       id="servicios"
       ref={containerRef}
-      className="relative overflow-hidden bg-background pb-20 pt-12 md:pb-32 md:pt-16"
+      className="relative overflow-hidden bg-background pb-14 pt-8 md:pb-14 md:pt-8 lg:pb-28 lg:pt-16"
     >
       {/* ── Logo pattern background ── */}
       <div
@@ -129,7 +129,7 @@ export default function Servicios() {
           <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
             Servicios
           </p>
-          <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight md:text-6xl lg:text-7xl">
+          <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight lg:text-6xl xl:text-7xl">
             Los cortes
           </h2>
           <p className="font-body text-sm text-[#888888]">
@@ -138,7 +138,7 @@ export default function Servicios() {
         </div>
 
         {/* ── Barber pole separator: red · white · blue ── */}
-        <div className="my-5 flex justify-center md:my-12">
+        <div className="my-5 flex justify-center md:my-8 lg:my-12">
           <div
             ref={redLineRef}
             style={{ display: "flex", flexDirection: "row", gap: 3, width: 40, overflow: "hidden" }}
@@ -168,7 +168,7 @@ export default function Servicios() {
               <div className="mb-4 h-px w-full bg-[#333333] md:mb-6" />
 
               {/* Name */}
-              <h3 className="font-display mb-3 text-3xl uppercase leading-none tracking-tight md:mb-4 md:text-5xl">
+              <h3 className="font-display mb-3 text-3xl uppercase leading-none tracking-tight md:mb-4 lg:text-5xl">
                 {service.name}
               </h3>
 
@@ -182,7 +182,7 @@ export default function Servicios() {
 
               {/* Price */}
               <div className="flex flex-col gap-1 md:gap-2">
-                <span className="font-display text-3xl font-bold leading-none text-white md:text-6xl">
+                <span className="font-display text-3xl font-bold leading-none text-white md:text-4xl lg:text-6xl">
                   {formatPrice(service.price)}
                 </span>
                 <span className="font-body text-xs uppercase tracking-widest text-[#888888]">
