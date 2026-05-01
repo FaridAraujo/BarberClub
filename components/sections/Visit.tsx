@@ -105,8 +105,8 @@ function MobileMap({ embedSrc }: { embedSrc: string }) {
         src={loaded ? embedSrc : undefined}
         width="100%"
         style={{ border: "none", borderRadius: 4, filter: "grayscale(100%)" }}
-        loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
+        allowFullScreen
         title="Ubicación Barber Club"
         className={`h-[250px] md:h-[400px] ${loaded ? "block" : "hidden"}`}
       />

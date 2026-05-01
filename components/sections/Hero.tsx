@@ -404,15 +404,20 @@ export default function Hero({ logoSrc }: HeroProps) {
         scale: 1.06, duration: 2.2, ease: "power1.out",
       })
 
-      // 1. Logo — drops in quickly from top
-      tl.from(logoWrapRef.current, { opacity: 0, y: -16, duration: 0.45 })
+      // 1. Logo — drops in quickly from top (portal may not be mounted yet, skip if null)
+      if (logoWrapRef.current) {
+        tl.from(logoWrapRef.current, { opacity: 0, y: -16, duration: 0.45 })
+      }
 
       // 2. Razors — simultaneous, punchy
-      tl.from(
-        [bladeLeftRef.current, bladeRightRef.current],
-        { scale: 0, opacity: 0, transformOrigin: "center center", stagger: 0.05, duration: 0.35, ease: "back.out(2)" },
-        "-=0.2",
-      )
+      const blades = [bladeLeftRef.current, bladeRightRef.current].filter(Boolean)
+      if (blades.length) {
+        tl.from(
+          blades,
+          { scale: 0, opacity: 0, transformOrigin: "center center", stagger: 0.05, duration: 0.35, ease: "back.out(2)" },
+          "-=0.2",
+        )
+      }
 
       // 3. Headline — mask reveal: words slide up from below their overflow-hidden parent
       //    No opacity needed — the parent clip handles visibility.
@@ -441,6 +446,7 @@ export default function Hero({ logoSrc }: HeroProps) {
         scrollTrigger: { trigger: containerRef.current, start: "top top", end: "bottom top", scrub: true },
         opacity: 0,
       })
+
 
       // Headline parallax
       gsap.to(headlineRef.current, {
@@ -481,6 +487,20 @@ export default function Hero({ logoSrc }: HeroProps) {
         />
       </picture>
 
+      {/* ── Logo — absolute inside hero, scrolls away with the section ── */}
+      <div
+        ref={logoWrapRef}
+        className="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex items-center xl:top-8 md:hidden xl:flex"
+      >
+        <div ref={bladeLeftRef} className="-mr-3.5 md:-mr-[22px]">
+          <RazorIcon />
+        </div>
+        <LogoBadge logoSrc={logoSrc} />
+        <div ref={bladeRightRef} className="-ml-3.5 md:-ml-[22px]">
+          <RazorIcon flip />
+        </div>
+      </div>
+
       {/* Overlays */}
       <div className="absolute inset-0 z-10 bg-black/75" />
       <div className="absolute inset-0 z-10" style={{ background: "linear-gradient(to top, #0a0a0a 0%, transparent 60%)" }} />
@@ -493,19 +513,9 @@ export default function Hero({ logoSrc }: HeroProps) {
         }}
       />
 
-      {/* ── Logo + razors — pinned to top ── */}
-      <div ref={logoWrapRef} className="absolute top-6 z-20 flex items-center md:top-8">
-        <div ref={bladeLeftRef} className="-mr-3.5 md:-mr-[22px]">
-          <RazorIcon />
-        </div>
-        <LogoBadge logoSrc={logoSrc} />
-        <div ref={bladeRightRef} className="-ml-3.5 md:-ml-[22px]">
-          <RazorIcon flip />
-        </div>
-      </div>
 
       {/* ── Main content ── */}
-      <div className="relative z-20 flex w-full flex-col items-center gap-5 px-4 md:gap-4 lg:gap-10">
+      <div className="relative z-20 flex w-full flex-col items-center gap-5 px-4 md:gap-4 md:mt-32 lg:mt-52 lg:gap-10 xl:mt-0">
 
         {/* Headline */}
         <h1

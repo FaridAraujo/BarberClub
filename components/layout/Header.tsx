@@ -228,19 +228,35 @@ export default function Header() {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-        className="fixed left-0 right-0 top-0 z-50 flex h-16 items-center justify-between px-6 transition-colors duration-300 md:h-20 md:px-12"
-        style={{
-          backgroundColor: scrolled ? "#0a0a0a" : "transparent",
-          backdropFilter:  scrolled ? "blur(8px)" : "none",
-          borderBottom:    scrolled ? "1px solid #1a1a1a" : "1px solid transparent",
-        }}
+        className="fixed left-0 right-0 top-0 z-[67] flex h-16 items-center justify-between px-6 transition-colors duration-300 md:h-20 md:px-12"
+        style={{ borderBottom: "1px solid transparent" }}
       >
+        {/* ── Fade mask that extends below the header ── */}
+        {scrolled && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0"
+            style={{
+              height: "120px",
+              backgroundColor: "#0a0a0a",
+              WebkitMaskImage: "linear-gradient(to bottom, black 15%, transparent 100%)",
+              maskImage: "linear-gradient(to bottom, black 15%, transparent 100%)",
+              zIndex: -1,
+            }}
+          />
+        )}
+
         {/* ── Logo — hidden at top, visible on scroll ── */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Ir al inicio"
-          className="transition-opacity duration-300"
-          style={{ opacity: scrolled ? 1 : 0, pointerEvents: scrolled ? "auto" : "none" }}
+          className={`transition-opacity duration-300 ${
+            menuOpen
+              ? "opacity-0 pointer-events-none"
+              : scrolled
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto xl:opacity-0 xl:pointer-events-none"
+          }`}
         >
           {logoError ? (
             <span className="font-body text-sm font-bold uppercase tracking-widest text-white">
@@ -273,8 +289,8 @@ export default function Header() {
             >
               {link.label}
               <span
-                className="absolute -bottom-1 left-0 h-px bg-[#cc2222] transition-all duration-300"
-                style={{ width: activeId === link.id ? "100%" : "0%" }}
+                className="absolute -bottom-1 left-0 h-px transition-all duration-300"
+                style={{ width: activeId === link.id ? "100%" : "0%", background: "linear-gradient(to right, #555, #c8c8c8, #777)" }}
                 aria-hidden
               />
             </button>
@@ -284,7 +300,7 @@ export default function Header() {
         {/* ── Hamburger ── */}
         <button
           onClick={() => setMenuOpen((v) => !v)}
-          className="relative z-[60] flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-[6px] md:hidden"
+          className="relative z-[67] flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-[6px] md:hidden -mr-2"
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
         >
@@ -320,19 +336,19 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-0 flex flex-col overflow-hidden px-6 pb-4 pt-16"
-            style={{ backgroundColor: "#0a0a0a", zIndex: 49 }}
+            className="fixed inset-0 flex flex-col overflow-hidden px-6 pb-4 pt-8"
+            style={{ backgroundColor: "#0a0a0a", zIndex: 66 }}
           >
             {/* ── Logo block + razors + barber pole ── */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.05 }}
-              className="flex flex-col items-center gap-2 py-3"
+              className="flex flex-col items-center gap-2 pt-1 pb-3"
             >
               <div className="flex items-center">
-                <div className="-mr-2.5">
-                  <RazorIcon size={28} />
+                <div className="-mr-3">
+                  <RazorIcon size={36} />
                 </div>
                 <button
                   onClick={() => {
@@ -342,7 +358,7 @@ export default function Header() {
                   aria-label="Ir al inicio"
                 >
                   {!logoError ? (
-                    <div className="relative h-[46px] w-[170px]">
+                    <div className="relative h-[62px] w-[220px]">
                       <Image
                         src={`${LOGO_PATH}?${ASSET_VERSION}`}
                         alt="Barber Club"
@@ -357,8 +373,8 @@ export default function Header() {
                     </span>
                   )}
                 </button>
-                <div className="-ml-2.5">
-                  <RazorIcon size={28} flip />
+                <div className="-ml-3">
+                  <RazorIcon size={36} flip />
                 </div>
               </div>
 
@@ -387,7 +403,16 @@ export default function Header() {
                   <span className="flex flex-1 flex-col gap-0.5">
                     <span
                       className="font-display text-2xl uppercase leading-none tracking-tight"
-                      style={{ color: activeId === link.id ? "#cc2222" : "#ffffff" }}
+                      style={activeId === link.id ? {
+                        background: "linear-gradient(90deg, #666666, #e0e0e0, #999999, #d4d4d4)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      } : {
+                        color: "#ffffff",
+                        WebkitTextFillColor: "#ffffff",
+                        background: "none",
+                      }}
                     >
                       {link.label}
                     </span>

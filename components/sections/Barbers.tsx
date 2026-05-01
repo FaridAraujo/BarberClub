@@ -107,9 +107,17 @@ function BarberCard({ barber, index }: BarberCardProps) {
       <div className="hidden md:flex md:flex-col md:gap-4 md:pt-4">
         <h3
           className="font-display text-2xl uppercase leading-none tracking-tight"
-          style={{
-            color: hovered ? "#cc2222" : "#ffffff",
-            transition: "color 0.25s ease",
+          style={hovered ? {
+            background: "linear-gradient(90deg, #666666, #e0e0e0, #999999, #d4d4d4)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            transition: "opacity 0.25s ease",
+          } : {
+            color: "#ffffff",
+            WebkitTextFillColor: "#ffffff",
+            background: "none",
+            transition: "opacity 0.25s ease",
           }}
         >
           {barber.name}
