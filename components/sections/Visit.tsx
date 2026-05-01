@@ -116,8 +116,8 @@ function MobileMap({ embedSrc }: { embedSrc: string }) {
 
 const LOCAL_PHOTOS = [
   { src: "/images/local-1.webp", alt: "Barber Club — interior",   position: "center 60%" },
-  { src: "/images/local-2.webp", alt: "Barber Club — estaciones", position: "center" },
   { src: "/images/local-3.webp", alt: "Barber Club — ambiente",   position: "center" },
+  { src: "/images/local-2.webp", alt: "Barber Club — estaciones", position: "center" },
   { src: "/images/local-4.webp", alt: "Barber Club — detalle",    position: "center" },
   { src: "/images/local-5.webp", alt: "Barber Club — local",      position: "center" },
   { src: "/images/local-6.webp", alt: "Barber Club — espacio",    position: "center" },
@@ -373,6 +373,17 @@ export default function Visit() {
                   )}
                 </div>
               ))}
+            </div>
+
+            {/* ── Parking notice ── */}
+            <div className="mt-6 flex items-start gap-3 border border-[#1a1a1a] px-4 py-3" style={{ borderRadius: 4 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0" aria-hidden>
+                <polygon points="22,12 17,3.3 7,3.3 2,12 7,20.7 17,20.7" />
+                <path d="M9 15.5V8.5h3.5a2.5 2.5 0 0 1 0 5h-3.5" />
+              </svg>
+              <span className="font-body text-xs text-[#888888] leading-relaxed">
+                Contamos con <span className="text-white">parqueo disponible</span> para nuestros clientes.
+              </span>
             </div>
 
           </div>

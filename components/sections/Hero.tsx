@@ -285,7 +285,7 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
 
         {/* Barber cards — horizontal grid */}
         <div className="grid grid-cols-3 gap-3 px-5 pb-4">
-          {BARBERS.map((barber) => (
+          {[...BARBERS].sort((a, b) => (a.name === "Arson" ? -1 : b.name === "Arson" ? 1 : 0)).map((barber) => (
             <a
               key={barber.id}
               href={`https://wa.me/${barber.whatsapp}?text=${WA_TEXT}`}
@@ -307,7 +307,7 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
 
               {/* Name + icon */}
               <div className="flex items-center justify-between px-3 py-2.5">
-                <span className="font-display text-2xl uppercase leading-none" style={{ letterSpacing: "0.06em" }}>
+                <span className="font-display text-2xl uppercase leading-none tracking-tight">
                   {barber.name}
                 </span>
                 <span style={{ color: "#25D366" }}>
