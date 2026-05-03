@@ -323,14 +323,14 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
                     style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", filter: "grayscale(40%)" }}
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5" style={{ background: "rgba(0,0,0,0.6)" }}>
-                    <span className="font-body text-[8px] uppercase tracking-[0.2em] text-white/50">walk-in</span>
+                    <span className="font-body text-[8px] uppercase tracking-[0.2em] text-white/50">pasate</span>
                     <div className="h-px w-6 bg-white/20" />
-                    <span className="font-body text-[8px] uppercase tracking-[0.2em] text-white/50">únicamente</span>
+                    <span className="font-body text-[8px] uppercase tracking-[0.2em] text-white/50">al local</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between px-3 py-2.5">
                   <span className="font-display text-2xl uppercase leading-none tracking-tight text-white/50">{barber.name}</span>
-                  <span className="font-body text-[8px] uppercase tracking-widest text-[#333]">presencial</span>
+                  <span className="font-body text-[8px] uppercase tracking-widest text-[#333]">en local</span>
                 </div>
               </div>
             )
