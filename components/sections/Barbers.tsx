@@ -91,15 +91,19 @@ function BarberCard({ barber, index }: BarberCardProps) {
             {barber.name}
           </h3>
           <div className="mb-3 h-px w-full bg-white/20" />
-          <a
-            href={`https://wa.me/${barber.whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-body flex items-center gap-2 text-sm text-white/60 transition-colors duration-200 hover:text-white"
-          >
-            <WhatsAppIcon />
-            Escribir
-          </a>
+          {barber.whatsapp ? (
+            <a
+              href={`https://wa.me/${barber.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body flex items-center gap-2 text-sm text-white/60 transition-colors duration-200 hover:text-white"
+            >
+              <WhatsAppIcon />
+              Escribir
+            </a>
+          ) : (
+            <span className="font-body text-sm text-white/30">Solo presencial</span>
+          )}
         </div>
       </div>
 
@@ -123,15 +127,21 @@ function BarberCard({ barber, index }: BarberCardProps) {
           {barber.name}
         </h3>
         <div className="h-px w-full bg-[#333333]" />
-        <a
-          href={`https://wa.me/${barber.whatsapp}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-body flex min-h-[44px] items-center gap-2 text-sm text-[#888888] transition-colors duration-200 hover:text-white"
-        >
-          <WhatsAppIcon />
-          Escribir
-        </a>
+        {barber.whatsapp ? (
+          <a
+            href={`https://wa.me/${barber.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body flex min-h-[44px] items-center gap-2 text-sm text-[#888888] transition-colors duration-200 hover:text-white"
+          >
+            <WhatsAppIcon />
+            Escribir
+          </a>
+        ) : (
+          <span className="font-body flex min-h-[44px] items-center text-sm text-[#444444]">
+            Solo presencial
+          </span>
+        )}
       </div>
     </div>
   )

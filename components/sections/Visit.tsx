@@ -137,7 +137,14 @@ function LocalCarousel() {
   const [states, setStates] = useState<Array<"idle" | "loaded" | "error">>(
     LOCAL_PHOTOS.map(() => "idle")
   )
-  const imgRefs = useRef<(HTMLImageElement | null)[]>([])
+  const imgRefs       = useRef<(HTMLImageElement | null)[]>([])
+  const autoRef       = useRef<ReturnType<typeof setInterval> | null>(null)
+  const cardWidthRef  = useRef(0)
+  const activeRef     = useRef(0)
+
+  // Keep refs in sync so interval callbacks don't get stale values
+  useEffect(() => { cardWidthRef.current = cardWidth }, [cardWidth])
+  useEffect(() => { activeRef.current = active }, [active])
 
   // Card = full container width; recalculate on mount and resize
   useEffect(() => {
@@ -163,23 +170,49 @@ function LocalCarousel() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Snap to card when drag ends
-  function onDragEnd() {
-    setDragging(false)
+  // Auto-slide every 4 s — pauses while user is dragging
+  function startAuto() {
+    stopAuto()
+    autoRef.current = setInterval(() => {
+      const cw   = cardWidthRef.current
+      const next = (activeRef.current + 1) % LOCAL_PHOTOS.length
+      if (!cw) return
+      activeRef.current = next
+      setActive(next)
+      animate(x, -next * (cw + CARD_GAP), { type: "spring", stiffness: 300, damping: 35 })
+    }, 4000)
+  }
+
+  function stopAuto() {
+    if (autoRef.current) { clearInterval(autoRef.current); autoRef.current = null }
+  }
+
+  useEffect(() => {
     if (!cardWidth) return
-    const cur     = x.get()
-    const nearest = Math.round(-cur / (cardWidth + CARD_GAP))
-    const clamped = Math.max(0, Math.min(nearest, LOCAL_PHOTOS.length - 1))
-    setActive(clamped)
-    animate(x, -clamped * (cardWidth + CARD_GAP), {
-      type: "spring", stiffness: 300, damping: 35,
-    })
+    startAuto()
+    return () => stopAuto()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardWidth])
+
+  // Snap with 25% threshold + velocity so a short swipe is enough
+  function onDragEnd(_e: MouseEvent | TouchEvent | PointerEvent, info: { velocity: { x: number }; offset: { x: number } }) {
+    setDragging(false)
+    startAuto()
+    if (!cardWidth) return
+    const THRESHOLD = cardWidth * 0.25
+    const { x: velX } = info.velocity
+    const { x: offX } = info.offset
+    let next = activeRef.current
+    if (offX < -THRESHOLD || velX < -300) next = Math.min(next + 1, LOCAL_PHOTOS.length - 1)
+    else if (offX > THRESHOLD || velX > 300) next = Math.max(next - 1, 0)
+    goTo(next)
   }
 
   function goTo(i: number) {
-    if (!cardWidth) return
+    if (!cardWidthRef.current) return
     setActive(i)
-    animate(x, -i * (cardWidth + CARD_GAP), {
+    activeRef.current = i
+    animate(x, -i * (cardWidthRef.current + CARD_GAP), {
       type: "spring", stiffness: 300, damping: 35,
     })
   }
@@ -196,6 +229,7 @@ function LocalCarousel() {
 
       <div className="mt-10 md:mt-14">
         {/* Overflow container */}
+        <div className="relative">
         <div
           ref={containerRef}
           className="relative overflow-hidden"
@@ -208,7 +242,7 @@ function LocalCarousel() {
             dragConstraints={{ left: -maxDrag, right: 0 }}
             dragElastic={0.08}
             dragMomentum={false}
-            onDragStart={() => setDragging(true)}
+            onDragStart={() => { setDragging(true); stopAuto() }}
             onDragEnd={onDragEnd}
           >
             {LOCAL_PHOTOS.map((photo, i) => (
@@ -260,12 +294,40 @@ function LocalCarousel() {
           </motion.div>
         </div>
 
-        {/* Dots with barber pole gradient */}
+        {/* Prev arrow — overlaid on left edge */}
+        <button
+          onClick={() => { goTo(Math.max(active - 1, 0)); startAuto() }}
+          aria-label="Foto anterior"
+          disabled={active === 0}
+          className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-200 hover:bg-black/70 hover:border-white/30"
+          style={{ borderRadius: 4, opacity: active === 0 ? 0 : 1, pointerEvents: active === 0 ? "none" : "auto" }}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10 3L5 8l5 5" />
+          </svg>
+        </button>
+
+        {/* Next arrow — overlaid on right edge */}
+        <button
+          onClick={() => { goTo(Math.min(active + 1, LOCAL_PHOTOS.length - 1)); startAuto() }}
+          aria-label="Siguiente foto"
+          disabled={active === LOCAL_PHOTOS.length - 1}
+          className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-200 hover:bg-black/70 hover:border-white/30"
+          style={{ borderRadius: 4, opacity: active === LOCAL_PHOTOS.length - 1 ? 0 : 1, pointerEvents: active === LOCAL_PHOTOS.length - 1 ? "none" : "auto" }}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 3l5 5-5 5" />
+          </svg>
+        </button>
+
+        </div>
+
+        {/* Dots */}
         <div className="mt-5 flex items-center justify-center gap-2">
           {LOCAL_PHOTOS.map((_, i) => (
             <button
               key={i}
-              onClick={() => goTo(i)}
+              onClick={() => { goTo(i); startAuto() }}
               aria-label={`Foto ${i + 1}`}
               style={{
                 width:        active === i ? 20 : 6,

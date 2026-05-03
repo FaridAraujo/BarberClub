@@ -37,7 +37,7 @@ export const BARBERS = [
     specialty: "Fades & Estilos",
     bio: "Especialista en fades de alta precisión.",
     photo: "/images/barbers/barber2.png",
-    whatsapp: "50600000000",
+    whatsapp: "50686540577",
   },
   {
     id: 3,
@@ -46,7 +46,7 @@ export const BARBERS = [
     specialty: "Fades & Estilos",
     bio: "Especialista en fades de alta precisión.",
     photo: "/images/barbers/barber3.jpg",
-    whatsapp: "50600000000",
+    whatsapp: "",
   },
 ]
 

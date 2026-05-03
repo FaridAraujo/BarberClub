@@ -285,37 +285,56 @@ function WaPickerSheet({ onClose }: { onClose: () => void }) {
 
         {/* Barber cards — horizontal grid */}
         <div className="grid grid-cols-3 gap-3 px-5 pb-4">
-          {[...BARBERS].sort((a, b) => (a.name === "Arson" ? -1 : b.name === "Arson" ? 1 : 0)).map((barber) => (
-            <a
-              key={barber.id}
-              href={`https://wa.me/${barber.whatsapp}?text=${WA_TEXT}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={onClose}
-              className="group flex flex-col overflow-hidden rounded border border-[#1e1e1e] transition-colors hover:border-[#444]"
-            >
-              {/* Photo */}
-              <div style={{ aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#1a1a1a" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={barber.photo}
-                  alt={barber.name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", transition: "transform 0.3s ease" }}
-                  className="group-hover:scale-105"
-                />
+          {[...BARBERS].sort((a, b) => (a.name === "Arson" ? -1 : b.name === "Arson" ? 1 : 0)).map((barber) => {
+            const hasWa = Boolean(barber.whatsapp)
+            return hasWa ? (
+              <a
+                key={barber.id}
+                href={`https://wa.me/${barber.whatsapp}?text=${WA_TEXT}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onClose}
+                className="group flex flex-col overflow-hidden rounded border border-[#1e1e1e] transition-colors hover:border-[#444]"
+              >
+                <div style={{ aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#1a1a1a" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={barber.photo}
+                    alt={barber.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", transition: "transform 0.3s ease" }}
+                    className="group-hover:scale-105"
+                  />
+                </div>
+                <div className="flex items-center justify-between px-3 py-2.5">
+                  <span className="font-display text-2xl uppercase leading-none tracking-tight">{barber.name}</span>
+                  <span style={{ color: "#25D366" }}><WhatsAppIcon size={15} /></span>
+                </div>
+              </a>
+            ) : (
+              <div
+                key={barber.id}
+                className="flex flex-col overflow-hidden rounded border border-[#1e1e1e]"
+              >
+                <div style={{ aspectRatio: "3/4", overflow: "hidden", backgroundColor: "#1a1a1a", position: "relative" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={barber.photo}
+                    alt={barber.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", filter: "grayscale(40%)" }}
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5" style={{ background: "rgba(0,0,0,0.6)" }}>
+                    <span className="font-body text-[8px] uppercase tracking-[0.2em] text-white/50">walk-in</span>
+                    <div className="h-px w-6 bg-white/20" />
+                    <span className="font-body text-[8px] uppercase tracking-[0.2em] text-white/50">únicamente</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between px-3 py-2.5">
+                  <span className="font-display text-2xl uppercase leading-none tracking-tight text-white/50">{barber.name}</span>
+                  <span className="font-body text-[8px] uppercase tracking-widest text-[#333]">presencial</span>
+                </div>
               </div>
-
-              {/* Name + icon */}
-              <div className="flex items-center justify-between px-3 py-2.5">
-                <span className="font-display text-2xl uppercase leading-none tracking-tight">
-                  {barber.name}
-                </span>
-                <span style={{ color: "#25D366" }}>
-                  <WhatsAppIcon size={15} />
-                </span>
-              </div>
-            </a>
-          ))}
+            )
+          })}
         </div>
 
         {/* Cancel */}

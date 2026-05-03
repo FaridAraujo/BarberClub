@@ -56,15 +56,20 @@ function GalleryCell({
   image,
   config,
   index,
+  instagramHref,
 }: {
   image: GalleryImage
   config: CellConfig
   index: number
+  instagramHref: string
 }) {
   const [imgError, setImgError] = useState(false)
 
   return (
-    <motion.div
+    <motion.a
+      href={instagramHref}
+      target="_blank"
+      rel="noopener noreferrer"
       className={`g-cell relative overflow-hidden bg-surface ${config.colSpan} ${config.rowSpan} ${config.mobileColSpan} ${index === 0 ? "min-h-[320px] md:min-h-[260px] lg:min-h-[380px]" : "min-h-[135px] md:min-h-[130px] lg:min-h-[190px]"} ${index === 5 ? "hidden md:block" : ""}`}
       whileHover="hover"
       initial="rest"
@@ -134,7 +139,7 @@ function GalleryCell({
         transition={{ duration: 0.3 }}
         style={{ zIndex: -1 }}
       />
-    </motion.div>
+    </motion.a>
   )
 }
 
@@ -394,6 +399,7 @@ export default function Work() {
               image={image}
               config={CELL_CONFIG[i]}
               index={i}
+              instagramHref={SITE_DATA.instagram}
             />
           ))}
         </div>
