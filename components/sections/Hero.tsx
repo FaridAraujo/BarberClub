@@ -372,6 +372,68 @@ interface HeroProps {
   logoSrc?: string
 }
 
+// ─── Social links ─────────────────────────────────────────────────────────────
+
+const IG_GRADIENT = "linear-gradient(45deg, #feda75 0%, #fa7e1e 15%, #d62976 45%, #962fbf 75%, #4f5bd5 100%)"
+
+function SocialLinks() {
+  const [igHovered, setIgHovered] = useState(false)
+  const [ttHovered, setTtHovered] = useState(false)
+
+  const igBorder = `linear-gradient(#0a0a0a, #0a0a0a) padding-box, ${IG_GRADIENT} border-box`
+  const ttBorder = `linear-gradient(#0a0a0a, #0a0a0a) padding-box, rgba(255,255,255,0.5) border-box`
+
+  return (
+    <div className="flex items-center justify-center gap-3">
+      {/* Instagram */}
+      <a
+        href={SITE_DATA.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setIgHovered(true)}
+        onMouseLeave={() => setIgHovered(false)}
+        className="font-body inline-flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-all duration-300"
+        style={{
+          background: igHovered ? IG_GRADIENT : igBorder,
+          border: "1px solid transparent",
+          color: igHovered ? "#ffffff" : "rgba(255,255,255,0.4)",
+        }}
+        aria-label="Instagram"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <rect x="2" y="2" width="20" height="20" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+        </svg>
+        Instagram
+      </a>
+
+      {/* TikTok */}
+      <a
+        href={SITE_DATA.tiktok}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setTtHovered(true)}
+        onMouseLeave={() => setTtHovered(false)}
+        className="font-body inline-flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-all duration-300"
+        style={{
+          background: ttHovered
+            ? "linear-gradient(#0a0a0a, #0a0a0a) padding-box, rgba(255,255,255,0.9) border-box"
+            : ttBorder,
+          border: "1px solid transparent",
+          color: ttHovered ? "#ffffff" : "rgba(255,255,255,0.4)",
+        }}
+        aria-label="TikTok"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
+        </svg>
+        TikTok
+      </a>
+    </div>
+  )
+}
+
 export default function Hero({ logoSrc }: HeroProps) {
   const containerRef       = useRef<HTMLElement>(null)
   const bgImageRef         = useRef<HTMLElement>(null)
@@ -607,7 +669,7 @@ export default function Hero({ logoSrc }: HeroProps) {
         </div>
 
         {/* ── CTA — WhatsApp picker ── */}
-        <div ref={ctaWrapRef}>
+        <div ref={ctaWrapRef} className="flex flex-col gap-4">
           <motion.button
             onClick={() => setShowWaPicker(true)}
             onHoverStart={() => setWaBtnHovered(true)}
@@ -621,6 +683,9 @@ export default function Hero({ logoSrc }: HeroProps) {
             </span>
             Preguntar disponibilidad
           </motion.button>
+
+          {/* Social links — Instagram + TikTok */}
+          <SocialLinks />
         </div>
       </div>
 

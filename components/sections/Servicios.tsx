@@ -125,16 +125,28 @@ export default function Servicios() {
       <div className="relative z-10 mx-auto max-w-4xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="s-header mb-0">
-          <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
-            Servicios
-          </p>
-          <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight lg:text-6xl xl:text-7xl">
-            Los cortes
-          </h2>
-          <p className="font-body text-sm text-[#888888]">
-            Todo incluido: productos y cejas.
-          </p>
+        <div className="s-header mb-0 flex items-start justify-between gap-8">
+          <div>
+            <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
+              Servicios
+            </p>
+            <h2 className="font-display mb-4 text-4xl uppercase leading-none tracking-tight lg:text-6xl xl:text-7xl">
+              Los cortes
+            </h2>
+            <p className="font-body text-sm text-[#888888]">
+              Todo incluido: productos y cejas.
+            </p>
+          </div>
+
+          {/* Modality — top right, desktop only */}
+          <div className="hidden shrink-0 text-right md:block">
+            <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
+              Modalidad
+            </p>
+            <p className="font-body mt- max-w-[220px] text-right text-xs normal-case tracking-normal text-[#555]">
+              Por orden de llegada, sin citas ni reservas. Para casos especiales, consultá con tu barbero.
+            </p>
+          </div>
         </div>
 
         {/* ── Barber pole separator: red · white · blue ── */}

@@ -56,6 +56,7 @@ export const SITE_DATA = {
   location: "Heredia, Costa Rica",
   whatsapp: "50660451251",
   instagram: "https://instagram.com/barber_club__",
+  tiktok:    "https://www.tiktok.com/@barber_club__",
   schedule: [
     { days: "Lunes - Jueves", hours: "9:30am - 7:00pm" },
     { days: "Viernes", hours: "8:00am - 7:00pm" },
