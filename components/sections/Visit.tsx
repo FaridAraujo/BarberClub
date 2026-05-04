@@ -132,7 +132,8 @@ const REVIEWS = [
   { id: 4, name: "David Vargas",  badge: null, text: null },
 ]
 
-const GOOGLE_MAPS_URL = "https://www.google.com/maps?q=9.9906133,-84.1351361"
+const GOOGLE_MAPS_URL   = "https://www.google.com/maps?q=9.9906133,-84.1351361"
+const GOOGLE_REVIEW_URL = "https://maps.app.goo.gl/u4AwTaSoG2NxSH3fA"
 
 const LOCAL_PHOTOS = [
   { src: "/images/local-1.webp", alt: "Barber Club — interior",   position: "center 60%" },
@@ -545,18 +546,31 @@ function ReviewsModal({ onClose }: { onClose: () => void }) {
             )}
             {silentReviews.length > 0 && <div className="h-px bg-[#1a1a1a]" />}
 
-            {/* Google CTA */}
-            <div className="mt-8">
+            {/* Google CTAs */}
+            <div className="mt-8 flex flex-wrap items-center gap-5">
               <a
                 href={GOOGLE_MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-body inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#555] transition-colors duration-200 hover:text-white"
+                className="font-body inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#555] transition-colors duration-200 hover:text-white"
               >
                 Ver en Google Maps
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden>
                   <path d="M2 8L8 2M8 2H4M8 2V6" />
                 </svg>
+              </a>
+
+              <a
+                href={GOOGLE_REVIEW_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body inline-flex items-center gap-1.5 border border-[#2a2a2a] px-4 py-2 text-xs uppercase tracking-widest text-[#888] transition-all duration-200 hover:border-[#555] hover:text-white"
+                style={{ borderRadius: 4 }}
+              >
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518", flexShrink: 0 }} aria-hidden>
+                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                </svg>
+                Dejá tu opinión
               </a>
             </div>
 
@@ -704,15 +718,18 @@ export default function Visit() {
 
         </div>
 
-        {/* ── Reseña destacada ── */}
+        {/* ── Opiniones ── */}
         <div className="mt-12 md:mt-16">
-          <div className="h-px w-full bg-[#1a1a1a]" />
-          <div className="py-8 md:py-10">
 
-            {/* Eyebrow + score */}
+          {/* Barber-pole accent line — same as modal header */}
+          <div className="h-[2px]" style={{ background: "linear-gradient(to right, #cc2222, #b0b0b0 50%, #1432a6)" }} />
+
+          <div className="pt-8 pb-0 md:pt-10">
+
+            {/* Header: eyebrow + heading / score block */}
             <div className="mb-8 flex items-start justify-between gap-4">
               <div>
-                <p className="font-body mb-3 text-xs uppercase tracking-widest text-[#888888]">
+                <p className="font-body mb-3 text-xs uppercase tracking-widest text-[#555]">
                   ¿Querés venir?
                 </p>
                 <h3 className="font-display text-2xl uppercase leading-none tracking-tight lg:text-3xl">
@@ -720,8 +737,8 @@ export default function Visit() {
                 </h3>
               </div>
 
-              {/* Score — top right */}
-              <div className="flex flex-col items-end gap-1 shrink-0">
+              {/* Score */}
+              <div className="flex flex-col items-end gap-1.5 shrink-0">
                 <span
                   className="font-display leading-none"
                   style={{
@@ -734,52 +751,64 @@ export default function Visit() {
                 >
                   5.0
                 </span>
-                <div className="flex items-center gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518" }} aria-hidden>
-                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                    </svg>
-                  ))}
-                </div>
-                <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">4 reseñas · Google</span>
-              </div>
-            </div>
-
-            {/* Featured review */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-[200px_1fr] md:gap-12">
-              <div className="flex flex-col gap-2">
-                <span className="font-body text-sm text-white">{REVIEWS[0].name}</span>
+                <StarRow size={12} />
                 <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
-                  {REVIEWS[0].badge} · Google
+                  4 reseñas · Google
                 </span>
-                <div className="mt-1 flex items-center gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518" }} aria-hidden>
-                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-center">
-                <p className="font-body text-sm leading-relaxed text-[#888888]">
-                  "{REVIEWS[0].text}"
-                </p>
               </div>
             </div>
 
-            {/* CTA */}
-            <div className="mt-8 flex justify-center border-t border-[#1a1a1a] pt-5">
+            {/* Featured review — barber-pole left stripe + full-width quote */}
+            <div className="flex gap-5">
+              {/* Barber-pole vertical stripe */}
+              <div
+                className="w-[3px] flex-shrink-0 self-stretch rounded-full"
+                style={{ background: "linear-gradient(to bottom, #cc2222, #b0b0b0, #1432a6)" }}
+              />
+
+              {/* Quote + author */}
+              <div className="flex flex-col gap-4">
+                <p className="font-body text-sm leading-relaxed text-[#aaaaaa] md:text-base">
+                  &ldquo;{REVIEWS[0].text}&rdquo;
+                </p>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span className="font-body text-sm text-white">{REVIEWS[0].name}</span>
+                  {REVIEWS[0].badge && (
+                    <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
+                      {REVIEWS[0].badge} · Google
+                    </span>
+                  )}
+                  <StarRow size={10} />
+                </div>
+              </div>
+            </div>
+
+            {/* CTAs */}
+            <div className="mt-7 flex flex-wrap items-center gap-4 border-t border-[#1a1a1a] pt-5">
               <button
                 onClick={() => setShowReviews(true)}
-                className="font-body inline-flex items-center gap-2 border border-[#2a2a2a] bg-[#111] px-4 py-2 text-xs uppercase tracking-widest text-white transition-all duration-200 hover:border-[#444] hover:bg-[#1a1a1a]"
+                className="font-body inline-flex items-center gap-2 border border-[#2a2a2a] bg-[#111] px-4 py-2.5 text-xs uppercase tracking-widest text-white transition-all duration-200 hover:border-[#444] hover:bg-[#1a1a1a]"
                 style={{ borderRadius: 4 }}
               >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#ffffff", flexShrink: 0 }} aria-hidden>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518", flexShrink: 0 }} aria-hidden>
                   <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
                 </svg>
-                ¿Qué más dicen?
+                Opiniones
               </button>
+
+              <a
+                href={GOOGLE_REVIEW_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#555] transition-colors duration-200 hover:text-white"
+              >
+                Dejá tu opinión en Google
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden>
+                  <path d="M2 8L8 2M8 2H4M8 2V6" />
+                </svg>
+              </a>
             </div>
+
           </div>
         </div>
 
