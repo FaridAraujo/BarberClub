@@ -274,6 +274,59 @@ function GalleryModal({ onClose }: { onClose: () => void }) {
   )
 }
 
+// ─── More tile ────────────────────────────────────────────────────────────────
+// Replaces the 6th gallery cell. Big "+N" display number + small label,
+// with a barber-pole accent line that slides in on hover.
+
+function MoreTile({
+  config,
+  remaining,
+  onClick,
+}: {
+  config: CellConfig
+  remaining: number
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={`Ver toda la galería — ${remaining} fotos más`}
+      className={`g-cell group relative flex flex-col items-center justify-center overflow-hidden ${config.colSpan} ${config.rowSpan} col-span-2 md:col-span-1 min-h-[135px] md:min-h-[130px] lg:min-h-[190px]`}
+      style={{ backgroundColor: "#070707", border: "1px solid #161616" }}
+    >
+      {/* Big number */}
+      <span
+        className="font-display leading-none text-white/85 transition-all duration-500 ease-out group-hover:text-white group-hover:tracking-[-0.02em]"
+        style={{
+          fontSize: "clamp(2.4rem, 7vw, 3.75rem)",
+          letterSpacing: "-0.04em",
+        }}
+      >
+        +{remaining}
+      </span>
+
+      {/* Label */}
+      <span className="font-body mt-2 text-[10px] uppercase tracking-[0.22em] text-[#555] transition-colors duration-300 group-hover:text-[#bbb]">
+        Más trabajos
+      </span>
+
+      {/* Barber-pole accent — slides in on hover */}
+      <div
+        className="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-500 ease-out group-hover:w-full"
+        style={{ background: "linear-gradient(to right, #cc2222, #b0b0b0 50%, #1432a6)" }}
+      />
+
+      {/* Subtle vignette glow on hover */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background: "radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, transparent 70%)",
+        }}
+      />
+    </button>
+  )
+}
+
 // ─── Instagram CTA button ─────────────────────────────────────────────────────
 // Gradient border via 1px-padded wrapper + gradient text via background-clip.
 // Hover fills the interior with the same gradient and switches text to white.
@@ -393,7 +446,19 @@ export default function Work() {
 
         {/* ── Gallery grid ── */}
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:grid-rows-3 md:gap-3">
-          {GALLERY_IMAGES.map((image, i) => (
+          {GALLERY_IMAGES.map((image, i) => {
+            if (i === 5) {
+              return (
+                <MoreTile
+                  key="more-tile"
+                  config={CELL_CONFIG[i]}
+                  remaining={GALLERY_ALL.length - GALLERY_IMAGES.length}
+                  onClick={() => setShowGallery(true)}
+                /> 
+              )
+            }
+
+            return (
             <GalleryCell
               key={image.id}
               image={image}
@@ -401,33 +466,12 @@ export default function Work() {
               index={i}
               instagramHref={SITE_DATA.instagram}
             />
-          ))}
+            )
+          })}
         </div>
 
         {/* ── CTA ── */}
         <div className="w-cta mt-12">
-
-          {/* Ver galería completa — above the divider */}
-          <div className="mb-8">
-            <button
-              onClick={() => setShowGallery(true)}
-              className="group flex w-full items-center gap-5 py-4"
-            >
-              <div className="h-px flex-1 bg-[#2a2a2a] transition-colors duration-300 group-hover:bg-[#444]" />
-              <span className="font-display flex-shrink-0 text-sm uppercase tracking-[0.2em] text-[#777] transition-colors duration-300 group-hover:text-white">
-                Ver todo el trabajo
-              </span>
-              <svg
-                className="flex-shrink-0 text-[#555] transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-white"
-                width="14" height="14" viewBox="0 0 14 14" fill="none"
-                stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"
-                aria-hidden
-              >
-                <path d="M2 7h10M7 2l5 5-5 5" />
-              </svg>
-              <div className="h-px flex-1 bg-[#2a2a2a] transition-colors duration-300 group-hover:bg-[#444]" />
-            </button>
-          </div>
 
           {/* Divider + Instagram — identical structure to original */}
           <div className="mb-12 h-px w-full bg-[#333333]" />

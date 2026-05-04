@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useRef, useState, useEffect } from "react"
-import { motion, useMotionValue, animate } from "framer-motion"
+import { createPortal } from "react-dom"
+import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -113,6 +114,25 @@ function MobileMap({ embedSrc }: { embedSrc: string }) {
     </div>
   )
 }
+
+const REVIEWS = [
+  {
+    id: 1,
+    name: "Ricardo Nu Cz",
+    badge: "Local Guide",
+    text: "El servicio es rápido!! Le cortaron el pelo a mi hijo de 5 años, y tenían lo necesario para atenderlo perfectamente, el corte que sugerí se lo hicieron tal cual!",
+  },
+  {
+    id: 2,
+    name: "Josué Choso Rojas",
+    badge: "Local Guide",
+    text: "Una de las mejores barberías de Heredia junto a uno de los mejores barberos como es Dylan.",
+  },
+  { id: 3, name: "Alejandro LN",  badge: null, text: null },
+  { id: 4, name: "David Vargas",  badge: null, text: null },
+]
+
+const GOOGLE_MAPS_URL = "https://www.google.com/maps?q=9.9906133,-84.1351361"
 
 const LOCAL_PHOTOS = [
   { src: "/images/local-1.webp", alt: "Barber Club — interior",   position: "center 60%" },
@@ -348,11 +368,211 @@ function LocalCarousel() {
   )
 }
 
+// ─── Reviews modal ────────────────────────────────────────────────────────────
+
+function StarRow({ count = 5, size = 11 }: { count?: number; size?: number }) {
+  return (
+    <div className="flex items-center gap-[3px]">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24"
+          fill={i < count ? "currentColor" : "none"}
+          stroke="currentColor" strokeWidth="1.5" aria-hidden
+          style={{ color: i < count ? "#f5c518" : "#333" }}
+        >
+          <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+        </svg>
+      ))}
+    </div>
+  )
+}
+
+function ReviewsModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [onClose])
+
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => { document.body.style.overflow = prev }
+  }, [])
+
+  const textReviews   = REVIEWS.filter((r) => r.text)
+  const silentReviews = REVIEWS.filter((r) => !r.text)
+
+  return (
+    <AnimatePresence>
+      {/* Backdrop */}
+      <motion.div
+        key="reviews-backdrop"
+        className="fixed inset-0 z-[70]"
+        style={{ backgroundColor: "rgba(0,0,0,0.96)" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        onClick={onClose}
+        aria-hidden
+      />
+
+      {/* Panel */}
+      <motion.div
+        key="reviews-panel"
+        className="fixed inset-0 z-[71] flex flex-col"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 16 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* ── Header ── */}
+        <div
+          className="flex-shrink-0 px-5 pt-5 pb-0 md:px-10 md:pt-7"
+          style={{ backgroundColor: "#080808" }}
+        >
+          {/* Top row: eyebrow + close */}
+          <div className="flex items-center justify-between mb-4">
+            <p className="font-body text-[10px] uppercase tracking-widest text-[#444]">
+              Barber Club · Heredia
+            </p>
+            <button
+              onClick={onClose}
+              className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-[#2a2a2a] text-[#555] transition-colors duration-200 hover:border-white hover:text-white"
+              aria-label="Cerrar reseñas"
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M1 1l10 10M11 1L1 11" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Title */}
+          <h2 className="font-display text-3xl uppercase leading-none tracking-tight text-white md:text-5xl">
+            Opiniones
+          </h2>
+
+          {/* Score row */}
+          <div className="mt-4 mb-5 flex items-center gap-3">
+            <span
+              className="font-display leading-none"
+              style={{
+                fontSize: "1.75rem",
+                backgroundImage: "linear-gradient(90deg, #888, #e0e0e0, #aaa, #d0d0d0)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              5.0
+            </span>
+            <StarRow size={12} />
+            <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
+              {REVIEWS.length} reseñas · Google
+            </span>
+          </div>
+
+          {/* Barber-pole line — red · white · blue */}
+          <div className="h-[2px]" style={{ background: "linear-gradient(to right, #cc2222, #b0b0b0 50%, #1432a6)" }} />
+        </div>
+
+        {/* ── Body ── */}
+        <div className="flex-1 overflow-y-auto" style={{ backgroundColor: "#080808" }}>
+          <div className="mx-auto max-w-3xl px-5 py-10 md:px-10 md:py-14">
+
+            {/* Text reviews */}
+            {textReviews.map((review, i) => (
+              <div key={review.id}>
+                {i === 0 && <div className="h-px bg-[#1a1a1a]" />}
+                <div
+                  className="grid grid-cols-1 gap-5 py-8 md:grid-cols-[180px_1fr] md:gap-10 md:py-10"
+                  style={{
+                    opacity: 0,
+                    animation: `galleryFadeIn 0.4s ease forwards`,
+                    animationDelay: `${i * 80}ms`,
+                  }}
+                >
+                  {/* Author */}
+                  <div className="flex flex-col gap-2">
+                    <span className="font-body text-sm text-white">{review.name}</span>
+                    {review.badge && (
+                      <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
+                        {review.badge} · Google
+                      </span>
+                    )}
+                    <div className="mt-1">
+                      <StarRow size={10} />
+                    </div>
+                  </div>
+
+                  {/* Quote */}
+                  <div className="flex flex-col justify-center">
+                    <p className="font-body text-sm leading-relaxed text-[#888]">
+                      "{review.text}"
+                    </p>
+                  </div>
+                </div>
+                <div className="h-px bg-[#1a1a1a]" />
+              </div>
+            ))}
+
+            {/* Silent reviews — compact two-column row */}
+            {silentReviews.length > 0 && (
+              <div
+                className="flex"
+                style={{
+                  opacity: 0,
+                  animation: `galleryFadeIn 0.4s ease forwards`,
+                  animationDelay: `${textReviews.length * 80}ms`,
+                }}
+              >
+                {silentReviews.map((review, i) => (
+                  <div
+                    key={review.id}
+                    className="flex flex-1 items-center justify-between py-5"
+                    style={{
+                      paddingLeft:  i === 0 ? 0 : 24,
+                      paddingRight: i === 0 ? 24 : 0,
+                      borderRight:  i === 0 ? "1px solid #1a1a1a" : "none",
+                    }}
+                  >
+                    <span className="font-body text-sm text-[#555]">{review.name}</span>
+                    <StarRow size={10} />
+                  </div>
+                ))}
+              </div>
+            )}
+            {silentReviews.length > 0 && <div className="h-px bg-[#1a1a1a]" />}
+
+            {/* Google CTA */}
+            <div className="mt-8">
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-body inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#555] transition-colors duration-200 hover:text-white"
+              >
+                Ver en Google Maps
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                  <path d="M2 8L8 2M8 2H4M8 2V6" />
+                </svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
 export default function Visit() {
-  const containerRef = useRef<HTMLElement>(null)
-  const leftRef      = useRef<HTMLDivElement>(null)
-  const rightRef     = useRef<HTMLDivElement>(null)
-  const [isIOS, setIsIOS] = useState(false)
+  const containerRef   = useRef<HTMLElement>(null)
+  const leftRef        = useRef<HTMLDivElement>(null)
+  const rightRef       = useRef<HTMLDivElement>(null)
+  const [isIOS,         setIsIOS]        = useState(false)
+  const [showReviews,   setShowReviews]  = useState(false)
 
   useEffect(() => {
     setIsIOS(
@@ -389,6 +609,7 @@ export default function Visit() {
   )
 
   return (
+    <>
     <section
       id="visita"
       ref={containerRef}
@@ -483,10 +704,96 @@ export default function Visit() {
 
         </div>
 
+        {/* ── Reseña destacada ── */}
+        <div className="mt-12 md:mt-16">
+          <div className="h-px w-full bg-[#1a1a1a]" />
+          <div className="py-8 md:py-10">
+
+            {/* Eyebrow + score */}
+            <div className="mb-8 flex items-start justify-between gap-4">
+              <div>
+                <p className="font-body mb-3 text-xs uppercase tracking-widest text-[#888888]">
+                  ¿Querés venir?
+                </p>
+                <h3 className="font-display text-2xl uppercase leading-none tracking-tight lg:text-3xl">
+                  Mirá lo que dicen
+                </h3>
+              </div>
+
+              {/* Score — top right */}
+              <div className="flex flex-col items-end gap-1 shrink-0">
+                <span
+                  className="font-display leading-none"
+                  style={{
+                    fontSize: "2.5rem",
+                    backgroundImage: "linear-gradient(90deg, #888, #e8e8e8, #aaa, #d0d0d0)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  5.0
+                </span>
+                <div className="flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518" }} aria-hidden>
+                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                    </svg>
+                  ))}
+                </div>
+                <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">4 reseñas · Google</span>
+              </div>
+            </div>
+
+            {/* Featured review */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-[200px_1fr] md:gap-12">
+              <div className="flex flex-col gap-2">
+                <span className="font-body text-sm text-white">{REVIEWS[0].name}</span>
+                <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
+                  {REVIEWS[0].badge} · Google
+                </span>
+                <div className="mt-1 flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518" }} aria-hidden>
+                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                    </svg>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className="font-body text-sm leading-relaxed text-[#888888]">
+                  "{REVIEWS[0].text}"
+                </p>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-8 flex justify-center border-t border-[#1a1a1a] pt-5">
+              <button
+                onClick={() => setShowReviews(true)}
+                className="font-body inline-flex items-center gap-2 border border-[#2a2a2a] bg-[#111] px-4 py-2 text-xs uppercase tracking-widest text-white transition-all duration-200 hover:border-[#444] hover:bg-[#1a1a1a]"
+                style={{ borderRadius: 4 }}
+              >
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#ffffff", flexShrink: 0 }} aria-hidden>
+                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                </svg>
+                ¿Qué más dicen?
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* ── Local photo carousel ── */}
         <LocalCarousel />
 
       </div>
     </section>
+
+    {/* Reviews modal — portal to escape section stacking context */}
+    {showReviews && createPortal(
+      <ReviewsModal onClose={() => setShowReviews(false)} />,
+      document.body
+    )}
+    </>
   )
 }

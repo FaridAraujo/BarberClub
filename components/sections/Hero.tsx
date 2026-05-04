@@ -390,7 +390,8 @@ export default function Hero({ logoSrc }: HeroProps) {
   const [showMapPicker, setShowMapPicker] = useState(false)
   const [showWaPicker,  setShowWaPicker]  = useState(false)
   const [waBtnHovered,  setWaBtnHovered]  = useState(false)
-  const [isIOS,         setIsIOS]         = useState(false)
+  const [isIOS,            setIsIOS]            = useState(false)
+  const [showMapConfirm,   setShowMapConfirm]   = useState(false)
 
   useEffect(() => {
     const interval = setInterval(() => setIsOpen(checkIsOpen()), 60_000)
@@ -582,15 +583,17 @@ export default function Hero({ logoSrc }: HeroProps) {
             ·
           </span>
 
-          {/* Location link — opens map picker on mobile, Google Maps on desktop */}
+          {/* Location link — opens map picker on mobile, confirm popup on desktop */}
           <a
             href={`https://www.google.com/maps?q=${LAT},${LON}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => {
+              e.preventDefault()
               if (window.innerWidth < 768) {
-                e.preventDefault()
                 setShowMapPicker(true)
+              } else {
+                setShowMapConfirm(true)
               }
             }}
             className="font-body group inline-flex min-h-[44px] items-center gap-2.5 px-2 py-2 text-sm text-[#888888] transition-colors duration-300 hover:text-white md:min-h-0 md:py-1"
@@ -636,6 +639,83 @@ export default function Hero({ logoSrc }: HeroProps) {
       )}
       {showWaPicker && createPortal(
         <WaPickerSheet onClose={() => setShowWaPicker(false)} />,
+        document.body
+      )}
+
+      {/* ── Desktop map confirm popup ── */}
+      {showMapConfirm && createPortal(
+        <AnimatePresence>
+          <motion.div
+            key="map-confirm-backdrop"
+            className="fixed inset-0 z-[60] backdrop-blur-sm"
+            style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setShowMapConfirm(false)}
+          />
+          <motion.div
+            key="map-confirm-popup"
+            className="fixed left-1/2 top-1/2 z-[61] w-[380px] -translate-x-1/2 -translate-y-1/2 overflow-hidden"
+            style={{ backgroundColor: "#0e0e0e", border: "1px solid #222" }}
+            initial={{ opacity: 0, scale: 0.94, y: "-47%" }}
+            animate={{ opacity: 1, scale: 1, y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.94 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            {/* Barber pole accent line */}
+            <div style={{
+              height: 3,
+              backgroundImage: "repeating-linear-gradient(90deg, #cc2222 0, #cc2222 8px, #ebebeb 8px, #ebebeb 16px, #2255cc 16px, #2255cc 24px, #ebebeb 24px, #ebebeb 32px)",
+            }} />
+
+            {/* Body */}
+            <div className="px-8 pb-7 pt-6">
+              {/* Eyebrow */}
+              <p className="font-body mb-5 text-[10px] uppercase tracking-[0.22em] text-[#444]">
+                Ubicación
+              </p>
+
+              {/* Location name */}
+              <h3 className="font-display text-4xl uppercase leading-none tracking-tight text-white">
+                Heredia
+              </h3>
+              <p className="font-display mt-0.5 text-4xl uppercase leading-none tracking-tight" style={{ color: "#333" }}>
+                Costa Rica
+              </p>
+
+              {/* Coordinates */}
+              <p className="font-body mt-5 text-[11px] tabular-nums tracking-widest" style={{ color: "#3a3a3a" }}>
+                {LAT}° N &nbsp;·&nbsp; {Math.abs(LON)}° W
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px w-full bg-[#1a1a1a]" />
+
+            {/* Actions */}
+            <div className="flex">
+              <button
+                onClick={() => setShowMapConfirm(false)}
+                className="font-body flex-1 py-4 text-[11px] uppercase tracking-widest text-[#444] transition-colors duration-200 hover:text-white"
+              >
+                Cancelar
+              </button>
+              <div className="w-px bg-[#1a1a1a]" />
+              <a
+                href={`https://www.google.com/maps?q=${LAT},${LON}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowMapConfirm(false)}
+                className="font-body flex flex-1 items-center justify-center gap-2.5 py-4 text-[11px] uppercase tracking-widest text-white transition-colors duration-200 hover:text-[#888]"
+              >
+                <img src="/images/logos/googlemaps.webp" alt="" width={13} height={13} style={{ objectFit: "contain" }} />
+                Abrir mapa
+              </a>
+            </div>
+          </motion.div>
+        </AnimatePresence>,
         document.body
       )}
     </>
