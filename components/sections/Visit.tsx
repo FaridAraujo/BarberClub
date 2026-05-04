@@ -133,7 +133,7 @@ const REVIEWS = [
 ]
 
 const GOOGLE_MAPS_URL   = "https://www.google.com/maps?q=9.9906133,-84.1351361"
-const GOOGLE_REVIEW_URL = "https://maps.app.goo.gl/u4AwTaSoG2NxSH3fA"
+const GOOGLE_REVIEW_URL = "https://g.page/r/CeBRUzR_CAmwEBM/review"
 
 const LOCAL_PHOTOS = [
   { src: "/images/local-1.webp", alt: "Barber Club — interior",   position: "center 60%" },
