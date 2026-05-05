@@ -146,9 +146,21 @@ const REVIEWS = [
     badge: null,
     text: "Excelente barbería, 100% recomendados, buen servicio, muy buena nota, vengo desde largo solo a cortarme el pelo con ellos!!",
   },
-  { id: 6, name: "Alejandro LN",  badge: "Local Guide", text: null },
-  { id: 6, name: "Arson Salazar", badge: null,          text: null },
-  { id: 7, name: "David Vargas",  badge: null,          text: null },
+  {
+    id: 7,
+    name: "Jettlin Torrez",
+    badge: null,
+    text: "Me eh cortado el pelo hace más de 4 años con Arson y siempre me a brindado un buen servicio, estoy muy agradecido con mi bro. Ánimos…",
+  },
+  {
+    id: 8,
+    name: "Victor R",
+    badge: null,
+    text: "Muy buena nota los tres y siempre pendientes de lo que quiere el cliente, recomendado 10/10",
+  },
+  { id: 9,  name: "Alejandro LN",  badge: "Local Guide", text: null },
+  { id: 10, name: "Arson Salazar", badge: null,           text: null },
+  { id: 11, name: "David Vargas",  badge: null,           text: null },
 ]
 
 const GOOGLE_MAPS_URL   = "https://www.google.com/maps?q=9.9906133,-84.1351361"

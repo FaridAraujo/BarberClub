@@ -32,21 +32,21 @@ export const BARBERS = [
   },
   {
     id: 2,
-    name: "Arson",
-    role: "CoFundador & Barbero",
-    specialty: "Fades & Estilos",
-    bio: "Especialista en fades de alta precisión.",
-    photo: "/images/barbers/barber2.png",
-    whatsapp: "50686540577",
-  },
-  {
-    id: 3,
     name: "Erick",
     role: "Barbero",
     specialty: "Fades & Estilos",
     bio: "Especialista en fades de alta precisión.",
     photo: "/images/barbers/barber3.jpg",
     whatsapp: "506XXXXXXXX", // TODO: reemplazar con el número real de Erick
+  },
+  {
+    id: 3,
+    name: "Arson",
+    role: "CoFundador & Barbero",
+    specialty: "Fades & Estilos",
+    bio: "Especialista en fades de alta precisión.",
+    photo: "/images/barbers/barber2.png",
+    whatsapp: "50686540577",
   },
 ]
 
