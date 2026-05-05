@@ -158,6 +158,18 @@ const REVIEWS = [
     badge: null,
     text: "Muy buena nota los tres y siempre pendientes de lo que quiere el cliente, recomendado 10/10",
   },
+  {
+    id: 12,
+    name: "Kendall Muñoz",
+    badge: null,
+    text: "Excelente servicio , muy profesionales 🔥🔥🔥",
+  },
+  {
+    id: 13,
+    name: "Karla Rodriguez",
+    badge: null,
+    text: "Llevo a mi bb de 2 años , me encanta por que el bárbaro me entiende perfecto como es que me gusta que le quede el corte , adicional el trato que nos brindan , y el servicio es 💯👌🏼.",
+  },
   { id: 9,  name: "Alejandro LN",  badge: "Local Guide", text: null },
   { id: 10, name: "Arson Salazar", badge: null,           text: null },
   { id: 11, name: "David Vargas",  badge: null,           text: null },
