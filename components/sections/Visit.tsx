@@ -120,7 +120,7 @@ const REVIEWS = [
     id: 1,
     name: "Ricardo Nu Cz",
     badge: "Local Guide",
-    text: "El servicio es rápido!! Le cortaron el pelo a mi hijo de 5 años, y tenían lo necesario para atenderlo perfectamente, el corte que sugerí se lo hicieron tal cual!",
+    text: "El servicio es rápido!! Pero de igual forma ir con tiempo porque tienen buena clientela!! Le cortaron el pelo a mi hijo de 5 años, y tenían lo necesario para atenderlo perfectamente, el corte que sugerí se lo hicieron tal cual!",
   },
   {
     id: 2,
@@ -128,8 +128,21 @@ const REVIEWS = [
     badge: "Local Guide",
     text: "Una de las mejores barberías de Heredia junto a uno de los mejores barberos como es Dylan.",
   },
-  { id: 3, name: "Alejandro LN",  badge: null, text: null },
-  { id: 4, name: "David Vargas",  badge: null, text: null },
+  {
+    id: 3,
+    name: "farid araujo",
+    badge: null,
+    text: "Excelente servicio, muy bien los 3.",
+  },
+  {
+    id: 4,
+    name: "Xavi Araujo",
+    badge: null,
+    text: "Buen servicio, pura vida los 3.",
+  },
+  { id: 5, name: "Alejandro LN",  badge: "Local Guide", text: null },
+  { id: 6, name: "Arson Salazar", badge: null,          text: null },
+  { id: 7, name: "David Vargas",  badge: null,          text: null },
 ]
 
 const GOOGLE_MAPS_URL   = "https://www.google.com/maps?q=9.9906133,-84.1351361"
@@ -371,16 +384,21 @@ function LocalCarousel() {
 
 // ─── Reviews modal ────────────────────────────────────────────────────────────
 
+// Sharp 5-pointed star — long elegant points (inner r=3, outer r=10)
+// Much more refined than the default emoji star
+const SHARP_STAR = "M12,2 L13.76,9.57 L21.51,8.91 L14.85,12.93 L17.88,20.09 L12,15 L6.12,20.09 L9.15,12.93 L2.49,8.91 L10.24,9.57 Z"
+
 function StarRow({ count = 5, size = 11 }: { count?: number; size?: number }) {
   return (
-    <div className="flex items-center gap-[3px]">
+    <div className="flex items-center gap-[4px]">
       {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} width={size} height={size} viewBox="0 0 24 24"
-          fill={i < count ? "currentColor" : "none"}
-          stroke="currentColor" strokeWidth="1.5" aria-hidden
-          style={{ color: i < count ? "#f5c518" : "#333" }}
-        >
-          <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" aria-hidden>
+          <path
+            d={SHARP_STAR}
+            fill={i < count ? "#c8a96e" : "none"}
+            stroke={i < count ? "#c8a96e" : "#2e2e2e"}
+            strokeWidth={i < count ? 0 : 1.2}
+          />
         </svg>
       ))}
     </div>
@@ -440,11 +458,14 @@ function ReviewsModal({ onClose }: { onClose: () => void }) {
             </p>
             <button
               onClick={onClose}
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-[#2a2a2a] text-[#555] transition-colors duration-200 hover:border-white hover:text-white"
+              className="group flex flex-shrink-0 items-center gap-2.5 text-[#888] transition-colors duration-200 hover:text-white"
               aria-label="Cerrar reseñas"
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M1 1l10 10M11 1L1 11" />
+              <span className="font-body text-[10px] uppercase tracking-widest opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                Cerrar
+              </span>
+              <svg width="20" height="20" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M2 2l14 14M16 2L2 16" />
               </svg>
             </button>
           </div>
@@ -567,8 +588,8 @@ function ReviewsModal({ onClose }: { onClose: () => void }) {
                 className="font-body inline-flex items-center gap-1.5 border border-[#2a2a2a] px-4 py-2 text-xs uppercase tracking-widest text-[#888] transition-all duration-200 hover:border-[#555] hover:text-white"
                 style={{ borderRadius: 4 }}
               >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518", flexShrink: 0 }} aria-hidden>
-                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                <svg width="11" height="11" viewBox="0 0 24 24" style={{ flexShrink: 0 }} aria-hidden>
+                  <path d={SHARP_STAR} fill="#c8a96e" />
                 </svg>
                 Dejá tu opinión
               </a>
@@ -753,7 +774,7 @@ export default function Visit() {
                 </span>
                 <StarRow size={12} />
                 <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
-                  4 reseñas · Google
+                  {REVIEWS.length} reseñas · Google
                 </span>
               </div>
             </div>
@@ -790,8 +811,8 @@ export default function Visit() {
                 className="font-body inline-flex items-center gap-2 border border-[#2a2a2a] bg-[#111] px-4 py-2.5 text-xs uppercase tracking-widest text-white transition-all duration-200 hover:border-[#444] hover:bg-[#1a1a1a]"
                 style={{ borderRadius: 4 }}
               >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#f5c518", flexShrink: 0 }} aria-hidden>
-                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                <svg width="11" height="11" viewBox="0 0 24 24" style={{ flexShrink: 0 }} aria-hidden>
+                  <path d={SHARP_STAR} fill="#c8a96e" />
                 </svg>
                 Opiniones
               </button>

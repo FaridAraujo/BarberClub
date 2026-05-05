@@ -202,17 +202,20 @@ function GalleryModal({ onClose }: { onClose: () => void }) {
             {/* Close button */}
             <button
               onClick={onClose}
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center border border-[#2a2a2a] text-[#555] transition-colors duration-200 hover:border-white hover:text-white"
+              className="group flex flex-shrink-0 items-center gap-2.5 text-[#888] transition-colors duration-200 hover:text-white"
               aria-label="Cerrar galería"
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M1 1l10 10M11 1L1 11" />
+              <span className="font-body text-[10px] uppercase tracking-widest opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                Cerrar
+              </span>
+              <svg width="20" height="20" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M2 2l14 14M16 2L2 16" />
               </svg>
             </button>
           </div>
 
-          {/* Accent line */}
-          <div className="mt-5 h-px" style={{ background: "linear-gradient(to right, #cc2222 0%, #1a1a1a 40%)" }} />
+          {/* Barber-pole accent line — full width */}
+          <div className="mt-5 h-[2px] -mx-5 md:-mx-10" style={{ background: "linear-gradient(to right, #cc2222, #b0b0b0 50%, #1432a6)" }} />
         </div>
 
         {/* ── Grid ── */}
@@ -335,9 +338,6 @@ function MoreTile({
 function InstagramCTA({ href }: { href: string }) {
   const [hovered, setHovered] = useState(false)
 
-  // Gradient border via the CSS multiple-background trick:
-  // background layer 1: solid dark fill clipped to padding-box (the inner area)
-  // background layer 2: gradient clipped to border-box (shows through the transparent border)
   const borderStyle = `linear-gradient(#0a0a0a, #0a0a0a) padding-box, ${IG_GRADIENT} border-box`
 
   const gradientTextStyle = {
@@ -354,19 +354,27 @@ function InstagramCTA({ href }: { href: string }) {
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="font-body inline-flex min-h-[44px] cursor-pointer items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest md:gap-3 md:px-8 md:py-3 md:text-sm"
-      style={{
-        background: hovered ? IG_GRADIENT : borderStyle,
-        border: "1px solid transparent",
-      }}
+      className="font-body relative inline-flex min-h-[44px] cursor-pointer items-center gap-2 overflow-hidden px-5 py-2.5 text-xs uppercase tracking-widest md:gap-3 md:px-8 md:py-3 md:text-sm"
+      style={{ background: borderStyle, border: "1px solid transparent" }}
     >
+      {/* Gradient fill layer — fades in on hover */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute", inset: 0,
+          background: IG_GRADIENT,
+          opacity: hovered ? 1 : 0,
+          transition: "opacity 0.45s ease",
+        }}
+      />
+
       {/* Icon */}
-      <span style={{ display: "flex", color: hovered ? "#ffffff" : "#d62976" }}>
+      <span style={{ position: "relative", display: "flex", color: hovered ? "#ffffff" : "#d62976", transition: "color 0.45s ease" }}>
         <InstagramIcon size={16} />
       </span>
 
-      {/* Label — gradient text by default, white on hover */}
-      <span style={hovered ? { color: "#ffffff" } : gradientTextStyle}>
+      {/* Label */}
+      <span style={hovered ? { position: "relative", color: "#ffffff", transition: "color 0.45s ease" } : { position: "relative", ...gradientTextStyle }}>
         Ver en Instagram
       </span>
     </a>

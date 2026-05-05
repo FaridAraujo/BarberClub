@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { Bebas_Neue, DM_Sans } from "next/font/google"
 import "./globals.css"
-import Header from "@/components/layout/Header"
 
 const bebasNeue = Bebas_Neue({
   variable: "--font-display",
@@ -128,7 +127,6 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Header />
         {children}
       </body>
     </html>

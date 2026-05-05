@@ -17,6 +17,9 @@ const HEADLINE_WORDS = ["EL", "CLUB", "DEL", "ESTILO"]
 const HERO_WA_URL =
   `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola, ¿hay espacio disponible?")}`
 
+const GOOGLE_REVIEW_URL = "https://g.page/r/CeBRUzR_CAmwEBM/review"
+const SHARP_STAR = "M12,2 L13.76,9.57 L21.51,8.91 L14.85,12.93 L17.88,20.09 L12,15 L6.12,20.09 L9.15,12.93 L2.49,8.91 L10.24,9.57 Z"
+
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
 function WhatsAppIcon({ size = 15 }: { size?: number }) {
@@ -385,27 +388,38 @@ function SocialLinks() {
 
   return (
     <div className="flex items-center justify-center gap-3">
-      {/* Instagram */}
+      {/* Instagram — gradient fades in via opacity layer */}
       <a
         href={SITE_DATA.instagram}
         target="_blank"
         rel="noopener noreferrer"
         onMouseEnter={() => setIgHovered(true)}
         onMouseLeave={() => setIgHovered(false)}
-        className="font-body inline-flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-all duration-300"
+        className="font-body relative inline-flex items-center gap-2 overflow-hidden px-4 py-2 text-[11px] uppercase tracking-widest"
         style={{
-          background: igHovered ? IG_GRADIENT : igBorder,
+          background: igBorder,
           border: "1px solid transparent",
           color: igHovered ? "#ffffff" : "rgba(255,255,255,0.4)",
+          transition: "color 0.4s ease",
         }}
         aria-label="Instagram"
       >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        {/* Gradient fill layer — fades in */}
+        <span
+          aria-hidden
+          style={{
+            position: "absolute", inset: 0,
+            background: IG_GRADIENT,
+            opacity: igHovered ? 1 : 0,
+            transition: "opacity 0.4s ease",
+          }}
+        />
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ position: "relative" }}>
           <rect x="2" y="2" width="20" height="20" rx="5" />
           <circle cx="12" cy="12" r="4" />
           <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
         </svg>
-        Instagram
+        <span style={{ position: "relative" }}>Instagram</span>
       </a>
 
       {/* TikTok */}
@@ -415,13 +429,14 @@ function SocialLinks() {
         rel="noopener noreferrer"
         onMouseEnter={() => setTtHovered(true)}
         onMouseLeave={() => setTtHovered(false)}
-        className="font-body inline-flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest transition-all duration-300"
+        className="font-body inline-flex items-center gap-2 px-4 py-2 text-[11px] uppercase tracking-widest"
         style={{
           background: ttHovered
             ? "linear-gradient(#0a0a0a, #0a0a0a) padding-box, rgba(255,255,255,0.9) border-box"
             : ttBorder,
           border: "1px solid transparent",
           color: ttHovered ? "#ffffff" : "rgba(255,255,255,0.4)",
+          transition: "color 0.4s ease, background 0.4s ease",
         }}
         aria-label="TikTok"
       >
@@ -686,6 +701,26 @@ export default function Hero({ logoSrc }: HeroProps) {
 
           {/* Social links — Instagram + TikTok */}
           <SocialLinks />
+
+          {/* Google review — social proof + CTA */}
+          <a
+            href={GOOGLE_REVIEW_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body inline-flex items-center justify-center gap-2 text-[11px] uppercase tracking-widest text-[#555] transition-colors duration-200 hover:text-white"
+          >
+            <span className="flex items-center gap-[2px]">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg key={i} width={8} height={8} viewBox="0 0 24 24" aria-hidden>
+                  <path d={SHARP_STAR} fill="#c8a96e" />
+                </svg>
+              ))}
+            </span>
+            <span>5.0 · Opiná en Google</span>
+            <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden>
+              <path d="M2 8L8 2M8 2H4M8 2V6" />
+            </svg>
+          </a>
         </div>
       </div>
 

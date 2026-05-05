@@ -18,7 +18,10 @@ const SECTION_IDS = NAV_LINKS.map((l) => l.id)
 
 const WA_LINK =
   `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola, ¿hay espacio disponible?")}`
-const MAPS_LINK = "https://www.google.com/maps?q=9.9906133,-84.1351361"
+const MAPS_LINK        = "https://www.google.com/maps?q=9.9906133,-84.1351361"
+const GOOGLE_REVIEW_URL = "https://g.page/r/CeBRUzR_CAmwEBM/review"
+
+const SHARP_STAR = "M12,2 L13.76,9.57 L21.51,8.91 L14.85,12.93 L17.88,20.09 L12,15 L6.12,20.09 L9.15,12.93 L2.49,8.91 L10.24,9.57 Z"
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
@@ -503,6 +506,26 @@ export default function Header() {
                   </React.Fragment>
                 ))}
               </div>
+
+              {/* Google review link */}
+              <a
+                href={GOOGLE_REVIEW_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-center justify-center gap-2 font-body text-[10px] uppercase tracking-widest text-[#555] transition-colors hover:text-white"
+              >
+                <span className="flex items-center gap-[2px]">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg key={i} width={8} height={8} viewBox="0 0 24 24" aria-hidden>
+                      <path d={SHARP_STAR} fill="#c8a96e" />
+                    </svg>
+                  ))}
+                </span>
+                5.0 · Opiná en Google
+                <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden>
+                  <path d="M2 8L8 2M8 2H4M8 2V6" />
+                </svg>
+              </a>
 
               {/* Tagline */}
               <p className="font-body mt-2 text-center text-[10px] uppercase tracking-widest text-[#444444]">
