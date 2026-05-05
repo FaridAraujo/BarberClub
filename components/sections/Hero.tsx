@@ -404,7 +404,6 @@ function SocialLinks() {
         }}
         aria-label="Instagram"
       >
-        {/* Gradient fill layer — fades in */}
         <span
           aria-hidden
           style={{
@@ -571,7 +570,7 @@ export default function Hero({ logoSrc }: HeroProps) {
       <picture ref={bgImageRef as React.Ref<HTMLElement>} className="absolute inset-0 z-0">
         <source
           media="(max-width: 767px)"
-          srcSet={`/images/team-mobile.webp?${ASSET_VERSION}`}
+          srcSet={`/images/team-mobileprueba.jpg?${ASSET_VERSION}`}
         />
         <img
           src={`/images/team.webp?${ASSET_VERSION}`}
@@ -683,8 +682,8 @@ export default function Hero({ logoSrc }: HeroProps) {
           </a>
         </div>
 
-        {/* ── CTA — WhatsApp picker ── */}
-        <div ref={ctaWrapRef} className="flex flex-col gap-4">
+        {/* ── CTA ── */}
+        <div ref={ctaWrapRef} className="flex flex-col items-center gap-4 mt-10 md:mt-0">
           <motion.button
             onClick={() => setShowWaPicker(true)}
             onHoverStart={() => setWaBtnHovered(true)}
@@ -698,11 +697,7 @@ export default function Hero({ logoSrc }: HeroProps) {
             </span>
             Preguntar disponibilidad
           </motion.button>
-
-          {/* Social links — Instagram + TikTok */}
           <SocialLinks />
-
-          {/* Google review — social proof + CTA */}
           <a
             href={GOOGLE_REVIEW_URL}
             target="_blank"

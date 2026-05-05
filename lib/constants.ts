@@ -46,7 +46,7 @@ export const BARBERS = [
     specialty: "Fades & Estilos",
     bio: "Especialista en fades de alta precisión.",
     photo: "/images/barbers/barber3.jpg",
-    whatsapp: "",
+    whatsapp: "506XXXXXXXX", // TODO: reemplazar con el número real de Erick
   },
 ]
 
