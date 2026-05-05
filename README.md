@@ -26,6 +26,8 @@
 - Local SEO — Schema JSON-LD tipo `BarberShop` con horarios, geo-coordenadas y rating
 - Custom 404 page and Privacy Policy page (`/privacidad`)
 - React portals — modals renderizados en `document.body` para escapar el stacking context creado por GSAP transforms
+- Reviews section with modal — Google reviews with star ratings, featured quote, and direct Google review CTA
+- Google review CTA in hero — social proof badge (★ 5.0) anchored in the hero section
 
 ## Tech Stack
 
@@ -97,3 +99,4 @@ node scripts/optimize-images.mjs
 - Using `ReactDOM.createPortal` to render modals outside GSAP-animated ancestors — `position: fixed` breaks when any ancestor has `transform` applied, which GSAP does on scroll; portaling to `document.body` solves this cleanly
 - Local SEO with Schema JSON-LD: structuring `BarberShop` schema with opening hours, geo-coordinates, and social links for Google rich results
 - Building a drag carousel with Framer Motion `useMotionValue` and dynamic card sizing based on container `clientWidth`
+- Mobile viewport height stability — `100dvh` changes value as the browser chrome shows/hides on scroll, causing background images to stretch; `100svh` (small viewport height) locks to the stable minimum and eliminates the jump
