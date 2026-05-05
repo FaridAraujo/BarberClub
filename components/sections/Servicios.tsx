@@ -125,7 +125,7 @@ export default function Servicios() {
       <div className="relative z-10 mx-auto max-w-4xl px-6 md:px-12">
 
         {/* ── Header ── */}
-        <div className="s-header mb-0 flex items-start justify-between gap-8">
+        <div className="s-header mb-0 flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-8">
           <div>
             <p className="font-body mb-5 text-xs uppercase tracking-widest text-[#888888]">
               Servicios
@@ -138,12 +138,12 @@ export default function Servicios() {
             </p>
           </div>
 
-          {/* Modality — top right, desktop only */}
-          <div className="hidden shrink-0 text-right md:block">
+          {/* Modality */}
+          <div className="shrink-0 md:text-right">
             <p className="font-body text-xs uppercase tracking-widest text-[#888888]">
               Modalidad
             </p>
-            <p className="font-body mt- max-w-[220px] text-right text-xs normal-case tracking-normal text-[#555]">
+            <p className="font-body mt-2 text-sm normal-case tracking-normal text-[#666] md:max-w-[240px]">
               Por orden de llegada, sin citas ni reservas. Para casos especiales, consultá con tu barbero.
             </p>
           </div>
