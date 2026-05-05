@@ -558,7 +558,7 @@ export default function Hero({ logoSrc }: HeroProps) {
     <section
       id="inicio"
       ref={containerRef}
-      className="relative flex h-[100dvh] flex-col items-center justify-center overflow-hidden bg-background pt-16 md:pt-20"
+      className="relative flex h-[100svh] flex-col items-center justify-center overflow-hidden bg-background pt-16 md:pt-20"
     >
       {/* ── Background image — native <picture> for LCP priority. ── */}
       {/* On mobile, image fills only top 65vh; below that the section's bg-background
