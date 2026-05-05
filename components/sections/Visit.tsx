@@ -140,7 +140,13 @@ const REVIEWS = [
     badge: null,
     text: "Buen servicio, pura vida los 3.",
   },
-  { id: 5, name: "Alejandro LN",  badge: "Local Guide", text: null },
+  {
+    id: 5,
+    name: "Cristopher Carballo",
+    badge: null,
+    text: "Excelente barbería, 100% recomendados, buen servicio, muy buena nota, vengo desde largo solo a cortarme el pelo con ellos!!",
+  },
+  { id: 6, name: "Alejandro LN",  badge: "Local Guide", text: null },
   { id: 6, name: "Arson Salazar", badge: null,          text: null },
   { id: 7, name: "David Vargas",  badge: null,          text: null },
 ]

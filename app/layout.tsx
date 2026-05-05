@@ -119,7 +119,7 @@ export default function RootLayout({
               aggregateRating: {
                 "@type": "AggregateRating",
                 ratingValue: "5",
-                reviewCount: "4",
+                reviewCount: "8",
                 bestRating: "5",
               },
             }),
