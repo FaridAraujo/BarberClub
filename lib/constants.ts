@@ -112,10 +112,17 @@ export const REVIEWS = [
     badge: null,
     text: "Fui por primera vez y me gustó mucho. El lugar es limpio, atienden bien y el corte quedó excelente. Se nota que saben lo que hacen. Volvería sin duda.",
   },
-  { id: 11, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 12, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 13, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 11,
+    name: "Roberto Lopez",
+    badge: null,
+    text: "Excelente servicio y buena música",
+  },
+  { id: 12, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 13, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 14, name: "David Vargas",  badge: null,                    text: null },
 ]
+
 
 export const SITE_DATA = {
   name: "Barber Club",
