@@ -114,13 +114,37 @@ export const REVIEWS = [
   },
   {
     id: 11,
+    name: "Paulo Barrantes",
+    badge: null,
+    text: "Excelente servicio",
+  },
+  {
+    id: 12,
     name: "Roberto Lopez",
     badge: null,
     text: "Excelente servicio y buena música",
   },
-  { id: 12, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 13, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 14, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 13,
+    name: "Hector Meneses",
+    badge: null,
+    text: "Excelente servicio, llevo cortándome el pelo dos años con ellos y siempre con maneras de tratar a los demás, profesionales con su labor y la barbería muy bonita, con excelente ambiente.",
+  },
+  {
+    id: 14,
+    name: "David Garita",
+    badge: null,
+    text: "Barberia hay en todo lado, pero que te escuchen al 100% de lo que quieres y hagan un buen trabajo cada que vas, solo acá lo he sentido. Un lugar limpio, ordenado y sobre todo muy buena gente, recomiendadisimo maes!!",
+  },
+  {
+    id: 15,
+    name: "Andres Paniagua",
+    badge: null,
+    text: "Excelente atención, la comodidad del lugar, la ubicación y el excelente servicio de parte de todos. Muy recomendados 👌👌",
+  },
+  { id: 16, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 17, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 18, name: "David Vargas",  badge: null,                    text: null },
 ]
 
 
