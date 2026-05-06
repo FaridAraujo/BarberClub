@@ -106,9 +106,15 @@ export const REVIEWS = [
     badge: null,
     text: "Llevo a mi bb de 2 años , me encanta por que el bárbaro me entiende perfecto como es que me gusta que le quede el corte , adicional el trato que nos brindan , y el servicio es 💯👌🏼.",
   },
-  { id: 10, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 11, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 12, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 10,
+    name: "Jcc Cjc",
+    badge: null,
+    text: "Fui por primera vez y me gustó mucho. El lugar es limpio, atienden bien y el corte quedó excelente. Se nota que saben lo que hacen. Volvería sin duda.",
+  },
+  { id: 11, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 12, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 13, name: "David Vargas",  badge: null,                    text: null },
 ]
 
 export const SITE_DATA = {
