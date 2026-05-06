@@ -6,7 +6,7 @@ import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { SITE_DATA } from "@/lib/constants"
+import { SITE_DATA, REVIEWS } from "@/lib/constants"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -115,65 +115,6 @@ function MobileMap({ embedSrc }: { embedSrc: string }) {
   )
 }
 
-const REVIEWS = [
-  {
-    id: 1,
-    name: "Ricardo Nu Cz",
-    badge: "Local Guide",
-    text: "El servicio es rápido!! Pero de igual forma ir con tiempo porque tienen buena clientela!! Le cortaron el pelo a mi hijo de 5 años, y tenían lo necesario para atenderlo perfectamente, el corte que sugerí se lo hicieron tal cual!",
-  },
-  {
-    id: 2,
-    name: "Josué Choso Rojas",
-    badge: "Local Guide",
-    text: "Una de las mejores barberías de Heredia junto a uno de los mejores barberos como es Dylan.",
-  },
-  {
-    id: 3,
-    name: "farid araujo",
-    badge: null,
-    text: "Excelente servicio, muy bien los 3.",
-  },
-  {
-    id: 4,
-    name: "Xavi Araujo",
-    badge: null,
-    text: "Buen servicio, pura vida los 3.",
-  },
-  {
-    id: 5,
-    name: "Cristopher Carballo",
-    badge: null,
-    text: "Excelente barbería, 100% recomendados, buen servicio, muy buena nota, vengo desde largo solo a cortarme el pelo con ellos!!",
-  },
-  {
-    id: 7,
-    name: "Jettlin Torrez",
-    badge: null,
-    text: "Me eh cortado el pelo hace más de 4 años con Arson y siempre me a brindado un buen servicio, estoy muy agradecido con mi bro. Ánimos…",
-  },
-  {
-    id: 8,
-    name: "Victor R",
-    badge: null,
-    text: "Muy buena nota los tres y siempre pendientes de lo que quiere el cliente, recomendado 10/10",
-  },
-  {
-    id: 12,
-    name: "Kendall Muñoz",
-    badge: null,
-    text: "Excelente servicio , muy profesionales 🔥🔥🔥",
-  },
-  {
-    id: 13,
-    name: "Karla Rodriguez",
-    badge: null,
-    text: "Llevo a mi bb de 2 años , me encanta por que el bárbaro me entiende perfecto como es que me gusta que le quede el corte , adicional el trato que nos brindan , y el servicio es 💯👌🏼.",
-  },
-  { id: 9,  name: "Alejandro LN",  badge: "Local Guide", text: null },
-  { id: 10, name: "Arson Salazar", badge: null,           text: null },
-  { id: 11, name: "David Vargas",  badge: null,           text: null },
-]
 
 const GOOGLE_MAPS_URL   = "https://www.google.com/maps?q=9.9906133,-84.1351361"
 const GOOGLE_REVIEW_URL = "https://g.page/r/CeBRUzR_CAmwEBM/review"
@@ -338,6 +279,7 @@ function LocalCarousel() {
                 <img
                   src={photo.src}
                   alt={photo.alt}
+                  loading="lazy"
                   draggable={false}
                   ref={(el) => { imgRefs.current[i] = el }}
                   onLoad={()  => setPhotoState(i, "loaded")}

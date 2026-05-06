@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Bebas_Neue, DM_Sans } from "next/font/google"
+import { REVIEWS } from "@/lib/constants"
 import "./globals.css"
 
 const bebasNeue = Bebas_Neue({
@@ -119,7 +120,7 @@ export default function RootLayout({
               aggregateRating: {
                 "@type": "AggregateRating",
                 ratingValue: "5",
-                reviewCount: "13",
+                reviewCount: String(REVIEWS.length),
                 bestRating: "5",
               },
             }),

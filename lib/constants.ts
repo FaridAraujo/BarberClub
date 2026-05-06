@@ -50,6 +50,67 @@ export const BARBERS = [
   },
 ]
 
+// Google reviews — add new entries here. reviewCount in layout.tsx is auto-calculated.
+export const REVIEWS = [
+  {
+    id: 1,
+    name: "Ricardo Nu Cz",
+    badge: "Local Guide",
+    text: "El servicio es rápido!! Pero de igual forma ir con tiempo porque tienen buena clientela!! Le cortaron el pelo a mi hijo de 5 años, y tenían lo necesario para atenderlo perfectamente, el corte que sugerí se lo hicieron tal cual!",
+  },
+  {
+    id: 2,
+    name: "Josué Choso Rojas",
+    badge: "Local Guide",
+    text: "Una de las mejores barberías de Heredia junto a uno de los mejores barberos como es Dylan.",
+  },
+  {
+    id: 3,
+    name: "farid araujo",
+    badge: null,
+    text: "Excelente servicio, muy bien los 3.",
+  },
+  {
+    id: 4,
+    name: "Xavi Araujo",
+    badge: null,
+    text: "Buen servicio, pura vida los 3.",
+  },
+  {
+    id: 5,
+    name: "Cristopher Carballo",
+    badge: null,
+    text: "Excelente barbería, 100% recomendados, buen servicio, muy buena nota, vengo desde largo solo a cortarme el pelo con ellos!!",
+  },
+  {
+    id: 6,
+    name: "Jettlin Torrez",
+    badge: null,
+    text: "Me eh cortado el pelo hace más de 4 años con Arson y siempre me a brindado un buen servicio, estoy muy agradecido con mi bro. Ánimos…",
+  },
+  {
+    id: 7,
+    name: "Victor R",
+    badge: null,
+    text: "Muy buena nota los tres y siempre pendientes de lo que quiere el cliente, recomendado 10/10",
+  },
+  {
+    id: 8,
+    name: "Kendall Muñoz",
+    badge: null,
+    text: "Excelente servicio , muy profesionales 🔥🔥🔥",
+  },
+  {
+    id: 9,
+    name: "Karla Rodriguez",
+    badge: null,
+    text: "Llevo a mi bb de 2 años , me encanta por que el bárbaro me entiende perfecto como es que me gusta que le quede el corte , adicional el trato que nos brindan , y el servicio es 💯👌🏼.",
+  },
+  { id: 10, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 11, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 12, name: "David Vargas",  badge: null,                    text: null },
+]
+
 export const SITE_DATA = {
   name: "Barber Club",
   slogan: "Sin citas. Solo llegá.",

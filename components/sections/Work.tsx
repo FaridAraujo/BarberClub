@@ -96,7 +96,6 @@ function GalleryCell({
             src={image.src}
             alt={image.alt}
             fill
-            unoptimized
             onError={() => setImgError(true)}
             style={{
               objectFit: image.objectFit,

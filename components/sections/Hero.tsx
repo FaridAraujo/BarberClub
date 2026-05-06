@@ -570,7 +570,7 @@ export default function Hero({ logoSrc }: HeroProps) {
       <picture ref={bgImageRef as React.Ref<HTMLElement>} className="absolute inset-0 z-0">
         <source
           media="(max-width: 767px)"
-          srcSet={`/images/team-mobileprueba.jpg?${ASSET_VERSION}`}
+          srcSet={`/images/team-mobile.webp?${ASSET_VERSION}`}
         />
         <img
           src={`/images/team.webp?${ASSET_VERSION}`}

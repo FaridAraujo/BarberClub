@@ -69,7 +69,6 @@ function BarberCard({ barber, index }: BarberCardProps) {
             alt={barber.name}
             width={400}
             height={533}
-            unoptimized
             onError={() => setImgError(true)}
             className="h-full w-full object-cover"
             style={{
