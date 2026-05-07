@@ -172,9 +172,33 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente servicio",
   },
-  { id: 21, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 22, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 23, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 21,
+    name: "Roy lee Blanco Chavarría",
+    badge: null,
+    text: "Los mejores barberos de Heredia🔥",
+  },
+  {
+    id: 22,
+    name: "Gabriel Vindas Hernández",
+    badge: null,
+    text: "Los más duros de Heredia, sin duda 🫡",
+  },
+  {
+    id: 23,
+    name: "Jordan Fernandez Sojo",
+    badge: null,
+    text: "Excelente servicio, son pura calidad.",
+  },
+  {
+    id: 24,
+    name: "Esteban Méndez",
+    badge: null,
+    text: "La mejor barbería de Heredia, muy amables todos y siempre excelente el servicio",
+  },
+  { id: 25, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 26, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 27, name: "David Vargas",  badge: null,                    text: null },
 ]
 
 
