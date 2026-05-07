@@ -5,7 +5,7 @@ import Image from "next/image"
 export const metadata: Metadata = {
   title: "Política de Privacidad | Barber Club CR",
   description: "Política de privacidad de Barber Club CR, Heredia, Costa Rica.",
-  robots: { index: false, follow: true },
+  robots: { index: true, follow: true },
 }
 
 const LAST_UPDATED = "30 de abril de 2026"

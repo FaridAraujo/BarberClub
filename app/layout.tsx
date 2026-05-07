@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Bebas_Neue, DM_Sans } from "next/font/google"
-import { REVIEWS } from "@/lib/constants"
+import { REVIEWS, SITE_DATA } from "@/lib/constants"
 import "./globals.css"
 
 const bebasNeue = Bebas_Neue({
@@ -103,6 +103,7 @@ export default function RootLayout({
               priceRange: "$$",
               currenciesAccepted: "CRC",
               paymentAccepted: "Cash, Credit Card, SINPE Móvil",
+              areaServed: "Heredia, Costa Rica",
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Heredia",
@@ -115,6 +116,12 @@ export default function RootLayout({
                 longitude: -84.1351361,
               },
               hasMap: "https://www.google.com/maps?q=9.9906133,-84.1351361",
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "customer service",
+                url: `https://wa.me/${SITE_DATA.whatsapp}`,
+                availableLanguage: { "@type": "Language", name: "Spanish" },
+              },
               openingHoursSpecification: [
                 {
                   "@type": "OpeningHoursSpecification",
@@ -135,8 +142,19 @@ export default function RootLayout({
                   closes: "18:00",
                 },
               ],
+              hasOfferCatalog: {
+                "@type": "OfferCatalog",
+                name: "Servicios de barbería",
+                itemListElement: SITE_DATA.services.map((s) => ({
+                  "@type": "Offer",
+                  itemOffered: { "@type": "Service", name: s.name },
+                  price: String(s.price),
+                  priceCurrency: "CRC",
+                })),
+              },
               sameAs: [
                 "https://instagram.com/barber_club__",
+                SITE_DATA.tiktok,
                 "https://www.google.com/maps?q=9.9906133,-84.1351361",
               ],
               aggregateRating: {
