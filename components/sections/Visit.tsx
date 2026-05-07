@@ -80,6 +80,7 @@ function MobileMap({ embedSrc }: { embedSrc: string }) {
   useEffect(() => {
     // Auto-load on desktop (≥768px); mobile waits for the user to tap.
     if (window.matchMedia("(min-width: 768px)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoaded(true)
     }
   }, [])
@@ -354,6 +355,210 @@ function LocalCarousel() {
   )
 }
 
+// ─── Marquee ──────────────────────────────────────────────────────────────────
+
+type TextReview = (typeof REVIEWS)[number] & { text: string }
+
+function MarqueeCard({ review }: { review: TextReview }) {
+  return (
+    <div
+      style={{
+        width: 272,
+        flexShrink: 0,
+        backgroundColor: "#0d0d0d",
+        border: "1px solid #1e1e1e",
+        borderRadius: 4,
+        padding: "18px 20px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+      }}
+    >
+      <p
+        className="font-body"
+        style={{
+          fontSize: "0.8125rem",
+          lineHeight: 1.65,
+          color: "#888888",
+          display: "-webkit-box",
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          flexGrow: 1,
+        }}
+      >
+        &ldquo;{review.text}&rdquo;
+      </p>
+      <div style={{ paddingTop: 10, borderTop: "1px solid #141414" }}>
+        <span
+          className="font-display"
+          style={{ fontSize: "1.05rem", letterSpacing: "0.05em", color: "#cccccc", display: "block", lineHeight: 1 }}
+        >
+          {review.name}
+        </span>
+        {review.badge && (
+          <span
+            className="font-body"
+            style={{ fontSize: "0.5625rem", color: "#444444", display: "block", marginTop: 4, textTransform: "uppercase", letterSpacing: "0.12em" }}
+          >
+            {review.badge}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Fila individual del marquee — draggable en mobile y desktop
+function MarqueeRow({
+  reviews,
+  duration,
+  reverse = false,
+  style: outerStyle,
+}: {
+  reviews:    TextReview[]
+  duration:   number
+  reverse?:   boolean
+  style?:     React.CSSProperties
+}) {
+  const x        = useMotionValue(0)
+  const rowRef   = useRef<HTMLDivElement>(null)
+  const halfRef  = useRef(0)
+  const loopRef  = useRef<ReturnType<typeof animate> | null>(null)
+  const dragging = useRef(false)
+
+  // Normaliza x al rango [-half, 0] para el loop seamless.
+  // Caso especial: -h % h === 0 en JS, pero -h y 0 son posiciones distintas;
+  // si val != 0 y n sale 0, significa que val es múltiplo negativo de h → debe volver a -h.
+  function norm(val: number): number {
+    const h = halfRef.current
+    if (!h) return val
+    let n = val % h
+    if (n > 0) n -= h
+    if (n === 0 && val !== 0) n = -h
+    return n
+  }
+
+  function startLoop(fromX: number) {
+    loopRef.current?.stop()
+    const h = halfRef.current
+    if (!h || dragging.current) return
+
+    const from = norm(fromX)
+    x.set(from)
+    const end  = reverse ? 0 : -h
+    const dur  = (Math.abs(end - from) / h) * duration
+
+    loopRef.current = animate(x, end, {
+      duration: dur,
+      ease: "linear",
+      onComplete: () => {
+        x.set(reverse ? -h : 0)
+        startLoop(reverse ? -h : 0)
+      },
+    })
+  }
+
+  useEffect(() => {
+    const el = rowRef.current
+    if (!el) return
+    const id = requestAnimationFrame(() => {
+      const h = el.scrollWidth / 2
+      halfRef.current = h
+      startLoop(reverse ? -h : 0)
+    })
+    return () => { cancelAnimationFrame(id); loopRef.current?.stop() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reviews.length])
+
+  return (
+    <div style={{ overflow: "hidden", ...outerStyle }}>
+      <motion.div
+        ref={rowRef}
+        style={{ x, display: "flex", gap: 10, width: "max-content", cursor: "grab", userSelect: "none", touchAction: "pan-y" }}
+        drag="x"
+        dragMomentum={false}
+        dragElastic={0}
+        onDragStart={() => { dragging.current = true; loopRef.current?.stop() }}
+        onDragEnd={(_e, info) => {
+          dragging.current = false
+          // Coast un poco, luego reanuda el loop
+          animate(x, norm(x.get()) + info.velocity.x * 0.06, {
+            duration: 0.35,
+            ease: "easeOut",
+            onComplete: () => startLoop(x.get()),
+          })
+        }}
+        onHoverStart={() => { if (!dragging.current) loopRef.current?.stop() }}
+        onHoverEnd={()  => { if (!dragging.current) startLoop(x.get()) }}
+        whileDrag={{ cursor: "grabbing" }}
+      >
+        {[...reviews, ...reviews].map((r, i) => <MarqueeCard key={i} review={r} />)}
+      </motion.div>
+    </div>
+  )
+}
+
+function ReviewMarquee() {
+  const all  = REVIEWS.filter((r): r is TextReview => Boolean(r.text))
+  const mid  = Math.ceil(all.length / 2)
+  const row1 = all.slice(0, mid)
+  const row2 = all.slice(mid)
+
+  return (
+    <div
+      style={{
+        maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+      }}
+    >
+      <MarqueeRow reviews={row1} duration={44} style={{ marginBottom: 10 }} />
+      <MarqueeRow reviews={row2} duration={52} reverse />
+    </div>
+  )
+}
+
+// ─── Barber pole CTA button ───────────────────────────────────────────────────
+
+function ReviewCTA() {
+  return (
+    <a
+      href={GOOGLE_REVIEW_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center overflow-hidden transition-opacity duration-200 hover:opacity-70"
+      style={{ borderRadius: 4, whiteSpace: "nowrap" }}
+    >
+      {/* Barber pole sidebar */}
+      <span
+        aria-hidden
+        style={{
+          display: "block",
+          width: 8,
+          alignSelf: "stretch",
+          flexShrink: 0,
+          background: "repeating-linear-gradient(-45deg, #cc2222 0px, #cc2222 6px, #d4d4d4 6px, #d4d4d4 12px, #1432a6 12px, #1432a6 18px, #d4d4d4 18px, #d4d4d4 24px)",
+        }}
+      />
+      {/* Text area */}
+      <span
+        className="font-display inline-flex items-center gap-2.5 text-white"
+        style={{
+          padding: "9px 16px",
+          fontSize: "1rem",
+          letterSpacing: "0.06em",
+          background: "#0d0d0d",
+        }}
+      >
+        Dejá tu opinión
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden>
+          <path d="M2 8L8 2M8 2H4M8 2V6" />
+        </svg>
+      </span>
+    </a>
+  )
+}
+
 // ─── Reviews modal ────────────────────────────────────────────────────────────
 
 // Sharp 5-pointed star — long elegant points (inner r=3, outer r=10)
@@ -475,41 +680,63 @@ function ReviewsModal({ onClose }: { onClose: () => void }) {
         <div className="flex-1 overflow-y-auto" style={{ backgroundColor: "#080808" }}>
           <div className="mx-auto max-w-3xl px-5 py-10 md:px-10 md:py-14">
 
-            {/* Text reviews */}
-            {textReviews.map((review, i) => (
-              <div key={review.id}>
-                {i === 0 && <div className="h-px bg-[#1a1a1a]" />}
+            {/* Google review CTA — featured */}
+            <div
+              className="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between border border-[#1e1e1e] px-5 py-4"
+              style={{ borderRadius: 4, background: "linear-gradient(135deg, #0d0d0d 0%, #0a0a0a 100%)" }}
+            >
+              <div>
+                <p className="font-body text-[10px] uppercase tracking-widest text-[#444] mb-1">
+                  ¿Ya nos visitaste?
+                </p>
+                <p className="font-body text-sm text-[#888]">
+                  Contanos tu experiencia en Google
+                </p>
+              </div>
+              <ReviewCTA />
+            </div>
+
+            {/* Text reviews — card grid */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {textReviews.map((review, i) => (
                 <div
-                  className="grid grid-cols-1 gap-5 py-8 md:grid-cols-[180px_1fr] md:gap-10 md:py-10"
+                  key={review.id}
                   style={{
+                    backgroundColor: "#0d0d0d",
+                    border: "1px solid #1e1e1e",
+                    borderRadius: 4,
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
                     opacity: 0,
                     animation: `galleryFadeIn 0.4s ease forwards`,
-                    animationDelay: `${i * 80}ms`,
+                    animationDelay: `${i * 50}ms`,
                   }}
                 >
-                  {/* Author */}
-                  <div className="flex flex-col gap-2">
-                    <span className="font-body text-sm text-white">{review.name}</span>
+                  <StarRow size={10} />
+                  <p
+                    className="font-body"
+                    style={{ fontSize: "0.8125rem", lineHeight: 1.7, color: "#888888", flexGrow: 1 }}
+                  >
+                    &ldquo;{review.text}&rdquo;
+                  </p>
+                  <div style={{ paddingTop: 12, borderTop: "1px solid #141414" }}>
+                    <span className="font-body" style={{ fontSize: "0.75rem", color: "#cccccc", display: "block" }}>
+                      {review.name}
+                    </span>
                     {review.badge && (
-                      <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
+                      <span
+                        className="font-body"
+                        style={{ fontSize: "0.625rem", color: "#444444", display: "block", marginTop: 2, textTransform: "uppercase", letterSpacing: "0.12em" }}
+                      >
                         {review.badge} · Google
                       </span>
                     )}
-                    <div className="mt-1">
-                      <StarRow size={10} />
-                    </div>
-                  </div>
-
-                  {/* Quote */}
-                  <div className="flex flex-col justify-center">
-                    <p className="font-body text-sm leading-relaxed text-[#888]">
-                      "{review.text}"
-                    </p>
                   </div>
                 </div>
-                <div className="h-px bg-[#1a1a1a]" />
-              </div>
-            ))}
+              ))}
+            </div>
 
             {/* Silent reviews — compact two-column row */}
             {silentReviews.length > 0 && (
@@ -539,31 +766,18 @@ function ReviewsModal({ onClose }: { onClose: () => void }) {
             )}
             {silentReviews.length > 0 && <div className="h-px bg-[#1a1a1a]" />}
 
-            {/* Google CTAs */}
-            <div className="mt-8 flex flex-wrap items-center gap-5">
+            {/* Google Maps link — minimal footer */}
+            <div className="mt-8">
               <a
                 href={GOOGLE_MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-body inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#555] transition-colors duration-200 hover:text-white"
+                className="font-body inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#444] transition-colors duration-200 hover:text-[#888]"
               >
                 Ver en Google Maps
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden>
                   <path d="M2 8L8 2M8 2H4M8 2V6" />
                 </svg>
-              </a>
-
-              <a
-                href={GOOGLE_REVIEW_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body inline-flex items-center gap-1.5 border border-[#2a2a2a] px-4 py-2 text-xs uppercase tracking-widest text-[#888] transition-all duration-200 hover:border-[#555] hover:text-white"
-                style={{ borderRadius: 4 }}
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" style={{ flexShrink: 0 }} aria-hidden>
-                  <path d={SHARP_STAR} fill="#c8a96e" />
-                </svg>
-                Dejá tu opinión
               </a>
             </div>
 
@@ -582,6 +796,7 @@ export default function Visit() {
   const [showReviews,   setShowReviews]  = useState(false)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsIOS(
       /iPad|iPhone|iPod/.test(navigator.userAgent) ||
       (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent))
@@ -711,16 +926,14 @@ export default function Visit() {
 
         </div>
 
-        {/* ── Opiniones ── */}
+        {/* ── Opiniones — header ── */}
         <div className="mt-12 md:mt-16">
-
-          {/* Barber-pole accent line — same as modal header */}
+          {/* Barber-pole accent line */}
           <div className="h-[2px]" style={{ background: "linear-gradient(to right, #cc2222, #b0b0b0 50%, #1432a6)" }} />
 
-          <div className="pt-8 pb-0 md:pt-10">
-
+          <div className="pt-8">
             {/* Header: eyebrow + heading / score block */}
-            <div className="mb-8 flex items-start justify-between gap-4">
+            <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="font-body mb-3 text-xs uppercase tracking-widest text-[#555]">
                   ¿Querés venir?
@@ -730,8 +943,12 @@ export default function Visit() {
                 </h3>
               </div>
 
-              {/* Score */}
-              <div className="flex flex-col items-end gap-1.5 shrink-0">
+              {/* Score — clickable, opens modal */}
+              <button
+                onClick={() => setShowReviews(true)}
+                className="group flex flex-col items-end gap-1.5 shrink-0 transition-opacity duration-200 hover:opacity-70"
+                aria-label="Ver opiniones"
+              >
                 <span
                   className="font-display leading-none"
                   style={{
@@ -748,61 +965,27 @@ export default function Visit() {
                 <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
                   {REVIEWS.length} reseñas · Google
                 </span>
-              </div>
-            </div>
-
-            {/* Featured review — barber-pole left stripe + full-width quote */}
-            <div className="flex gap-5">
-              {/* Barber-pole vertical stripe */}
-              <div
-                className="w-[3px] flex-shrink-0 self-stretch rounded-full"
-                style={{ background: "linear-gradient(to bottom, #cc2222, #b0b0b0, #1432a6)" }}
-              />
-
-              {/* Quote + author */}
-              <div className="flex flex-col gap-4">
-                <p className="font-body text-sm leading-relaxed text-[#aaaaaa] md:text-base">
-                  &ldquo;{REVIEWS[0].text}&rdquo;
-                </p>
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <span className="font-body text-sm text-white">{REVIEWS[0].name}</span>
-                  {REVIEWS[0].badge && (
-                    <span className="font-body text-[10px] uppercase tracking-widest text-[#444]">
-                      {REVIEWS[0].badge} · Google
-                    </span>
-                  )}
-                  <StarRow size={10} />
-                </div>
-              </div>
-            </div>
-
-            {/* CTAs */}
-            <div className="mt-7 flex flex-wrap items-center gap-4 border-t border-[#1a1a1a] pt-5">
-              <button
-                onClick={() => setShowReviews(true)}
-                className="font-body inline-flex items-center gap-2 border border-[#2a2a2a] bg-[#111] px-4 py-2.5 text-xs uppercase tracking-widest text-white transition-all duration-200 hover:border-[#444] hover:bg-[#1a1a1a]"
-                style={{ borderRadius: 4 }}
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" style={{ flexShrink: 0 }} aria-hidden>
-                  <path d={SHARP_STAR} fill="#c8a96e" />
-                </svg>
-                Opiniones
+                <span className="font-body inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-[#555] group-hover:text-[#999] transition-colors duration-200" style={{ textDecoration: "underline", textUnderlineOffset: 3, textDecorationColor: "#333" }}>
+                  Ver opiniones
+                  <svg width="7" height="7" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+                    <path d="M2 8L8 2M8 2H4M8 2V6" />
+                  </svg>
+                </span>
               </button>
-
-              <a
-                href={GOOGLE_REVIEW_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#555] transition-colors duration-200 hover:text-white"
-              >
-                Dejá tu opinión en Google
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden>
-                  <path d="M2 8L8 2M8 2H4M8 2V6" />
-                </svg>
-              </a>
             </div>
-
           </div>
+        </div>
+
+      </div>{/* ── Review marquee — full-width ── */}
+      <div className="overflow-hidden py-8">
+        <ReviewMarquee />
+      </div>
+
+      <div className="mx-auto max-w-5xl px-6 md:px-12">
+
+        {/* CTA */}
+        <div className="flex justify-center border-t border-[#1a1a1a] pt-6">
+          <ReviewCTA />
         </div>
 
         {/* ── Local photo carousel ── */}

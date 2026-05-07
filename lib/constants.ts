@@ -142,9 +142,33 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente atención, la comodidad del lugar, la ubicación y el excelente servicio de parte de todos. Muy recomendados 👌👌",
   },
-  { id: 16, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 17, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 18, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 16,
+    name: "Santiago Medina Rodríguez",
+    badge: null,
+    text: "Muy buena experiencia",
+  },
+  {
+    id: 17,
+    name: "Justin Moya",
+    badge: null,
+    text: "Maes muy pichudos para cortar pelo.!!",
+  },
+  {
+    id: 18,
+    name: "Hernan Calderon Araya",
+    badge: null,
+    text: "Excelente barbería",
+  },
+  {
+    id: 19,
+    name: "Dereck Jimenez",
+    badge: null,
+    text: "Excelente Servicio y cortes de pelo a como lo quiere y a un precio accesible",
+  },
+  { id: 20, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 21, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 22, name: "David Vargas",  badge: null,                    text: null },
 ]
 
 
