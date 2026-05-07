@@ -3,9 +3,9 @@ import Link from "next/link"
 import Image from "next/image"
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad — Barber Club",
-  description: "Política de privacidad de Barber Club, Heredia, Costa Rica.",
-  robots: { index: false, follow: false },
+  title: "Política de Privacidad | Barber Club CR",
+  description: "Política de privacidad de Barber Club CR, Heredia, Costa Rica.",
+  robots: { index: false, follow: true },
 }
 
 const LAST_UPDATED = "30 de abril de 2026"

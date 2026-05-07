@@ -142,8 +142,19 @@ export default function Footer() {
         ))}
       </nav>
 
-      {/* ── Row 3: Copyright ── */}
-      <div className="flex flex-col items-center gap-1 pt-8 text-xs text-[#555555] sm:flex-row sm:justify-between sm:gap-0">
+      {/* ── Row 3: SEO text ── */}
+      <div
+        className="font-body flex flex-col items-center gap-2 py-5"
+        style={{ borderTop: "1px solid #111111", fontSize: "10px", color: "#333333" }}
+      >
+        <p className="text-center leading-relaxed">
+          Barber Club CR — Barbería en el centro de Heredia, Costa Rica. Especialistas en fades, cortes modernos y arreglo de barba. Sin cita previa, de lunes a sábado. Pagos con tarjeta, SINPE Móvil y efectivo.
+        </p>
+        <p>Barber Club · Barbería Heredia · Costa Rica</p>
+      </div>
+
+      {/* ── Row 4: Copyright ── */}
+      <div className="flex flex-col items-center gap-1 pt-4 text-xs text-[#555555] sm:flex-row sm:justify-between sm:gap-0">
         <span>© 2026 Barber Club. Todos los derechos reservados.</span>
         <div className="flex items-center gap-4">
           <Link

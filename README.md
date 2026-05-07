@@ -4,7 +4,7 @@
 > Designed and developed as a portfolio project with the goal of delivering a real product to a real client.
 
 ## Live Demo
-[barberclub.cr](https://barberclub.cr)
+[barberclubcr.com](https://barberclubcr.com)
 
 ## Features
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Bebas_Neue, DM_Sans } from "next/font/google"
 import { REVIEWS } from "@/lib/constants"
 import "./globals.css"
@@ -15,12 +15,12 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
 })
 
-const SITE_URL = "https://barberclub.cr" // update when domain is live
+const SITE_URL = "https://barberclubcr.com"
 
 export const metadata: Metadata = {
-  title: "Barber Club — Barbería en Heredia, Costa Rica",
+  title: "Barber Club CR | Barbería en Heredia, Costa Rica",
   description:
-    "Barbería en Heredia, Costa Rica. Cortes, fades y barba con los mejores barberos. Sin citas, solo llegá. Lunes a sábado en el centro de Heredia.",
+    "Barbería en Heredia, Costa Rica especializada en fades, cortes modernos y arreglo de barba. Atención profesional sin cita previa en el centro de Heredia.",
   keywords: [
     "barbería Heredia",
     "barber Heredia",
@@ -28,36 +28,52 @@ export const metadata: Metadata = {
     "barbería Costa Rica",
     "fades Heredia",
     "barba Heredia",
-    "Barber Club",
+    "Barber Club CR",
+    "barbería centro Heredia",
+    "cortes modernos Heredia",
   ],
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
-    title: "Barber Club — Barbería en Heredia, Costa Rica",
+    title: "Barber Club CR | Barbería en Heredia, Costa Rica",
     description:
-      "Cortes, fades y barba. Sin citas, solo llegá. Los mejores barberos de Heredia.",
+      "Fades, cortes modernos y barba. Sin cita previa. Los mejores barberos en el centro de Heredia, Costa Rica.",
     url: SITE_URL,
-    siteName: "Barber Club",
+    siteName: "Barber Club CR",
     locale: "es_CR",
     type: "website",
     images: [
       {
-        url: "/images/team.webp",
-        width: 800,
-        height: 600,
-        alt: "Barber Club — equipo de barberos en Heredia, Costa Rica",
+        url: "/images/og-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "Barber Club CR — equipo de barberos en Heredia, Costa Rica",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Barber Club — Barbería en Heredia, Costa Rica",
-    description: "Cortes, fades y barba. Sin citas, solo llegá.",
-    images: ["/images/team.webp"],
+    title: "Barber Club CR | Barbería en Heredia, Costa Rica",
+    description: "Fades, cortes modernos y barba. Sin cita previa en Heredia.",
+    images: ["/images/og-image.webp"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
+  colorScheme: "dark",
 }
 
 export default function RootLayout({
@@ -66,26 +82,31 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`${bebasNeue.variable} ${dmSans.variable}`}>
+    <html lang="es-CR" className={`${bebasNeue.variable} ${dmSans.variable}`}>
       <head>
         <link rel="preload" as="image" href="/images/team-mobile.webp?v5" media="(max-width: 767px)" />
         <link rel="preload" as="image" href="/images/team.webp?v5" media="(min-width: 768px)" />
+        <link rel="me" href="https://instagram.com/barber_club__" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "BarberShop",
-              name: "Barber Club",
+              "@type": "Barbershop",
+              name: "Barber Club CR",
               description:
-                "Barbería en Heredia, Costa Rica. Cortes, fades y barba. Sin citas, solo llegá.",
-              url: "https://barberclub.cr",
+                "Barbería en Heredia, Costa Rica especializada en fades, cortes modernos y arreglo de barba. Sin cita previa.",
+              url: SITE_URL,
               telephone: "+50660451251",
-              image: "https://barberclub.cr/images/team.webp",
-              priceRange: "₡₡",
+              image: `${SITE_URL}/images/team.webp`,
+              logo: `${SITE_URL}/images/logo.png`,
+              priceRange: "$$",
+              currenciesAccepted: "CRC",
+              paymentAccepted: "Cash, Credit Card, SINPE Móvil",
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Heredia",
+                addressRegion: "Heredia",
                 addressCountry: "CR",
               },
               geo: {
@@ -93,6 +114,7 @@ export default function RootLayout({
                 latitude: 9.9906133,
                 longitude: -84.1351361,
               },
+              hasMap: "https://www.google.com/maps?q=9.9906133,-84.1351361",
               openingHoursSpecification: [
                 {
                   "@type": "OpeningHoursSpecification",

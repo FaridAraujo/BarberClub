@@ -574,10 +574,9 @@ export default function Hero({ logoSrc }: HeroProps) {
         />
         <img
           src={`/images/team.webp?${ASSET_VERSION}`}
-          alt=""
+          alt="Equipo de barberos de Barber Club CR en su barbería en Heredia, Costa Rica"
           fetchPriority="high"
           decoding="sync"
-          aria-hidden="true"
           className="h-full w-full hero-team-img"
           style={{ objectFit: "cover" }}
         />
@@ -618,6 +617,7 @@ export default function Hero({ logoSrc }: HeroProps) {
           ref={headlineRef}
           className="flex w-full flex-wrap justify-center gap-x-2 gap-y-0 font-display text-5xl uppercase tracking-normal md:flex-nowrap md:gap-x-4 lg:text-8xl xl:text-9xl"
         >
+          <span className="sr-only">Barber Club CR | Barbería en Heredia, Costa Rica — </span>
           {HEADLINE_WORDS.map((word, i) => (
             <span key={i} className="overflow-hidden">
               <span ref={(el) => { wordRefs.current[i] = el }} className="inline-block">
@@ -773,9 +773,9 @@ export default function Hero({ logoSrc }: HeroProps) {
               </p>
 
               {/* Location name */}
-              <h3 className="font-display text-4xl uppercase leading-none tracking-tight text-white">
+              <h2 className="font-display text-4xl uppercase leading-none tracking-tight text-white">
                 Heredia
-              </h3>
+              </h2>
               <p className="font-display mt-0.5 text-4xl uppercase leading-none tracking-tight" style={{ color: "#333" }}>
                 Costa Rica
               </p>
