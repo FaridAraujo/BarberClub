@@ -617,7 +617,7 @@ export default function Hero({ logoSrc }: HeroProps) {
           ref={headlineRef}
           className="flex w-full flex-wrap justify-center gap-x-2 gap-y-0 font-display text-5xl uppercase tracking-normal md:flex-nowrap md:gap-x-4 lg:text-8xl xl:text-9xl"
         >
-          <span className="sr-only">Barber Club CR | Barbería en Heredia, Costa Rica — </span>
+          <span className="sr-only">Barber Club CR | Barbería en Heredia, Costa Rica</span>
           {HEADLINE_WORDS.map((word, i) => (
             <span key={i} className="overflow-hidden">
               <span ref={(el) => { wordRefs.current[i] = el }} className="inline-block">
