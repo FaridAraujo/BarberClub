@@ -59,6 +59,9 @@ export const metadata: Metadata = {
     description: "Fades, cortes modernos y barba. Sin cita previa en Heredia.",
     images: ["/images/og-image.webp"],
   },
+  verification: {
+    google: "x_T5IvegqxY8H5OZ7KU5PmPi-Fo3Mx6v09G53dz_ccs",
+  },
   robots: {
     index: true,
     follow: true,
