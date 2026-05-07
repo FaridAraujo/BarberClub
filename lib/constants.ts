@@ -196,9 +196,39 @@ export const REVIEWS = [
     badge: null,
     text: "La mejor barbería de Heredia, muy amables todos y siempre excelente el servicio",
   },
-  { id: 25, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 26, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 27, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 25,
+    name: "Emiliano Mata",
+    badge: null,
+    text: "Excelente servicio instalaciones muy buenas y el corte muy bueno.",
+  },
+  {
+    id: 26,
+    name: "GUIDO MATA",
+    badge: null,
+    text: "Buen servicio, rápido, buen corte,buen ambiente y lugar limpio y bien cuidado.",
+  },
+  {
+    id: 27,
+    name: "Gerardo Angulo",
+    badge: null,
+    text: "Siempre hace el trabajo de la mejor manera",
+  },
+  {
+    id: 28,
+    name: "Julian Malespin",
+    badge: null,
+    text: "Buena barbería, todos contar muy bien, muy buen ambiente, recomendada 💯💈",
+  },
+  {
+    id: 29,
+    name: "Jefferson Contreras",
+    badge: null,
+    text: "Excelente lugar y con un muy buen ambiente!! Súper recomendado y aparte de eso son rápidos y eficaces",
+  },
+  { id: 30, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 31, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 32, name: "David Vargas",  badge: null,                    text: null },
 ]
 
 
