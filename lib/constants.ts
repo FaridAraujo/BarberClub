@@ -55,13 +55,13 @@ export const REVIEWS = [
   {
     id: 1,
     name: "Ricardo Nu Cz",
-    badge: "Local Guide",
+    badge: null,
     text: "El servicio es rápido!! Pero de igual forma ir con tiempo porque tienen buena clientela!! Le cortaron el pelo a mi hijo de 5 años, y tenían lo necesario para atenderlo perfectamente, el corte que sugerí se lo hicieron tal cual!",
   },
   {
     id: 2,
     name: "Josué Choso Rojas",
-    badge: "Local Guide",
+    badge: null,
     text: "Una de las mejores barberías de Heredia junto a uno de los mejores barberos como es Dylan.",
   },
   {
@@ -166,9 +166,15 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente Servicio y cortes de pelo a como lo quiere y a un precio accesible",
   },
-  { id: 20, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 21, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 22, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 20,
+    name: "David Arias G",
+    badge: null,
+    text: "Excelente servicio",
+  },
+  { id: 21, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 22, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 23, name: "David Vargas",  badge: null,                    text: null },
 ]
 
 
