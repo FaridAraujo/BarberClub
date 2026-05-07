@@ -165,6 +165,7 @@ export default function RootLayout({
                 ratingValue: "5",
                 reviewCount: String(REVIEWS.length),
                 bestRating: "5",
+                worstRating: "1",
               },
             }),
           }}
