@@ -226,9 +226,16 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente lugar y con un muy buen ambiente!! Súper recomendado y aparte de eso son rápidos y eficaces",
   },
-  { id: 30, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 31, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 32, name: "David Vargas",  badge: null,                    text: null },
+  {
+    id: 30,
+    name: "Jason Matamoros",
+    badge: null,
+    text: "Un lugar muy bueno para cortarse el pelo, 100% recomendado, demasiado buena vibra todos!",
+  },
+  { id: 31, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 32, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 33, name: "David Vargas",  badge: null,                    text: null },
+  { id: 34, name: "Zerok",  badge: null,                    text: null },
 ]
 
 
