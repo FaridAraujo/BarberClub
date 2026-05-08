@@ -250,10 +250,22 @@ export const REVIEWS = [
     badge: null,
     text: "Calidad!",
   },
-  { id: 34, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 35, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 36, name: "David Vargas",  badge: null,                    text: null },
-  { id: 37, name: "Zerok",  badge: null,                    text: null },
+  {
+    id: 34,
+    name: "Anderson Ocampobarrantes",
+    badge: null,
+    text: "Demasiado buen servicio, y demasiada calidad en los cortes, lo recomiendo muchísimo",
+  },
+  {
+    id: 35,
+    name: "Dylan Ronaldo Morales",
+    badge: null,
+    text: "Excelente servicio, buena calidad en la atención!",
+  },
+  { id: 36, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 37, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 38, name: "David Vargas",  badge: null,                    text: null },
+  { id: 39, name: "Zerok",  badge: null,                    text: null },
 ]
 
 
