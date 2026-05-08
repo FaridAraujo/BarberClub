@@ -232,10 +232,16 @@ export const REVIEWS = [
     badge: null,
     text: "Un lugar muy bueno para cortarse el pelo, 100% recomendado, demasiado buena vibra todos!",
   },
-  { id: 31, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 32, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 33, name: "David Vargas",  badge: null,                    text: null },
-  { id: 34, name: "Zerok",  badge: null,                    text: null },
+  {
+    id: 31,
+    name: "Tavo Bermúdez",
+    badge: null,
+    text: "increíble lugar, muy limpio, muy buen trato, buen ambiente y buena atención",
+  },
+  { id: 32, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 33, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 34, name: "David Vargas",  badge: null,                    text: null },
+  { id: 35, name: "Zerok",  badge: null,                    text: null },
 ]
 
 
