@@ -238,10 +238,22 @@ export const REVIEWS = [
     badge: null,
     text: "increíble lugar, muy limpio, muy buen trato, buen ambiente y buena atención",
   },
-  { id: 32, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 33, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 34, name: "David Vargas",  badge: null,                    text: null },
-  { id: 35, name: "Zerok",  badge: null,                    text: null },
+  {
+    id: 32,
+    name: "Kenneth Jiménez",
+    badge: null,
+    text: "Los mejores del área 🔥",
+  },
+  {
+    id: 33,
+    name: "Dylan Delgado",
+    badge: null,
+    text: "Calidad!",
+  },
+  { id: 34, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 35, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 36, name: "David Vargas",  badge: null,                    text: null },
+  { id: 37, name: "Zerok",  badge: null,                    text: null },
 ]
 
 
