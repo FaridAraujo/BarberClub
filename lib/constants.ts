@@ -55,7 +55,7 @@ export const BARBERS = [
 export const REVIEWS = [
   { id: 9001, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
   { id: 9002, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 9003, name: "David Vargas",  badge: null,                    text: null },
+  { id: 9003, name: "David Vargas",  badge: null,                    text: "Buenos cortes y buena atención y precio" },
   { id: 9004, name: "Zerok",         badge: null,                    text: null },
   // ── Reseñas con comentario — agregar al final con ID siguiente ──────────────
   {
@@ -381,6 +381,12 @@ export const REVIEWS = [
     name: "D.A.S",
     badge: null,
     text: "mae excelente servicio, corte y atención100% recomendado",
+  },
+  {
+    id: 55,
+    name: "Santiago Núñez",
+    badge: null,
+    text: "Excelente atención y muy buen ambiente. Los 3 barberos muy buenos, entendió exactamente el corte que quería y el resultado quedó increíble. Además, el lugar es limpio, cómodo y el trato al cliente es de primera. Sin duda volvería y la recomiendo totalmente.",
   },
 ]
 
