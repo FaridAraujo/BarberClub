@@ -286,10 +286,46 @@ export const REVIEWS = [
     badge: null,
     text: "Buen ambiente mas el corte queda elite 👌🏾",
   },
-  { id: 40, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 41, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 42, name: "David Vargas",  badge: null,                    text: null },
-  { id: 43, name: "Zerok",  badge: null,                    text: null },
+  {
+    id: 40,
+    name: "Me Na",
+    badge: null,
+    text: "El trato del personal es excelente y la calidad del corte es de muy buena calidad",
+  },
+  {
+    id: 41,
+    name: "Eithan Campos",
+    badge: null,
+    text: "Muy buena experiencia",
+  },
+  {
+    id: 42,
+    name: "Olger Umaña",
+    badge: null,
+    text: "Excelente ambiente atención ,educación y profesión. Un lugar 100% recomendado",
+  },
+  {
+    id: 43,
+    name: "gilbert acuña",
+    badge: null,
+    text: "Buen servicio, buen ambiente y sobre todo buenos cortes. Recomendado a ojos cerrados...!",
+  },
+  {
+    id: 44,
+    name: "Mathias Jimenez",
+    badge: null,
+    text: "Muy buen servicio, muy bien el corte, 10/10",
+  },
+  {
+    id: 45,
+    name: "Andres Rodriguez",
+    badge: null,
+    text: "Los más fresas.",
+  },
+  { id: 46, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 47, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 48, name: "David Vargas",  badge: null,                    text: null },
+  { id: 49, name: "Zerok",  badge: null,                    text: null },
 ]
 
 
