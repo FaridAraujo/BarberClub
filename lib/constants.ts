@@ -388,6 +388,12 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente atención y muy buen ambiente. Los 3 barberos muy buenos, entendió exactamente el corte que quería y el resultado quedó increíble. Además, el lugar es limpio, cómodo y el trato al cliente es de primera. Sin duda volvería y la recomiendo totalmente.",
   },
+  {
+    id: 56,
+    name: "Kendall Solano",
+    badge: null,
+    text: "Llevo 7 años con el mismo barbero, y ahora en Barber Shop dan un servicio excelente y calidad corte, la mejor barbería",
+  },
 ]
 
 
