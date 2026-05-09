@@ -394,6 +394,18 @@ export const REVIEWS = [
     badge: null,
     text: "Llevo 7 años con el mismo barbero, y ahora en Barber Shop dan un servicio excelente y calidad corte, la mejor barbería",
   },
+  {
+    id: 57,
+    name: "Justin Cerdas",
+    badge: null,
+    text: "Muy recomendado, mucha calidad y buen atención al cliente",
+  },
+  {
+    id: 58,
+    name: "eduard bastos",
+    badge: null,
+    text: "Vengo desde Alajuela solo por cortármelo con Arson, ya que siento que vale la pena.!! E ido a otros lados y siento que ningún a valido la pena 👌🏽",
+  },
 ]
 
 
