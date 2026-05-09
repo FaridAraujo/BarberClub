@@ -51,7 +51,13 @@ export const BARBERS = [
 ]
 
 // Google reviews — add new entries here. reviewCount in layout.tsx is auto-calculated.
+// IDs 9001+ = solo estrellas sin comentario (van primero para no interferir con la numeración)
 export const REVIEWS = [
+  { id: 9001, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 9002, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 9003, name: "David Vargas",  badge: null,                    text: null },
+  { id: 9004, name: "Zerok",         badge: null,                    text: null },
+  // ── Reseñas con comentario — agregar al final con ID siguiente ──────────────
   {
     id: 1,
     name: "Ricardo Nu Cz",
@@ -322,10 +328,60 @@ export const REVIEWS = [
     badge: null,
     text: "Los más fresas.",
   },
-  { id: 46, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 47, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 48, name: "David Vargas",  badge: null,                    text: null },
-  { id: 49, name: "Zerok",  badge: null,                    text: null },
+  {
+    id: 46,
+    name: "Joel Rodriguez",
+    badge: null,
+    text: "Un lugar primeramente muy ordenado, limpio, ponen la música moderada para que los clientes estén tranquilos y en mi caso que me hago los cortes con Arson, siempre ha sido un excelente servicio 100% profesional, recomendando.",
+  },
+  {
+    id: 47,
+    name: "armando chavarria",
+    badge: null,
+    text: "Mas de 5año cortándome el pelo con estos crack sin duda no los cambio por nada ! Super recomendado",
+  },
+  {
+    id: 48,
+    name: "Steven Angulo",
+    badge: null,
+    text: "Legalmente en Barber Club se la rifan. Llegué sin mucha hablada y salí ak7, el corte quedó fino fino. Buen ambiente, buena vibra y los maes saben lo que hacen. De fijo vuelvo otra vez.",
+  },
+  {
+    id: 49,
+    name: "Gerald Lopez Fonseca",
+    badge: null,
+    text: "Excelente barbería, muy buenos cortes y atención. Además de excelente precio. Altamente recomendado. Además el lugar es fresco y música ambiente buena.",
+  },
+  {
+    id: 50,
+    name: "Maikell Hernandez",
+    badge: null,
+    text: "Los mejores súper buenos Cortes",
+  },
+  {
+    id: 51,
+    name: "shadrock sawers",
+    badge: null,
+    text: "Servicio muy profesional, recomiendo",
+  },
+  {
+    id: 52,
+    name: "Bryan Mendez",
+    badge: null,
+    text: "Mejores de Heredia",
+  },
+  {
+    id: 53,
+    name: "Fabian",
+    badge: null,
+    text: "Excelente servicio",
+  },
+  {
+    id: 54,
+    name: "D.A.S",
+    badge: null,
+    text: "mae excelente servicio, corte y atención100% recomendado",
+  },
 ]
 
 
