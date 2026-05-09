@@ -262,10 +262,34 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente servicio, buena calidad en la atención!",
   },
-  { id: 36, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 37, name: "Arson Salazar", badge: null,                    text: null },
-  { id: 38, name: "David Vargas",  badge: null,                    text: null },
-  { id: 39, name: "Zerok",  badge: null,                    text: null },
+  {
+    id: 36,
+    name: "Edixon López",
+    badge: null,
+    text: "el mejor servicio siempre!",
+  },
+  {
+    id: 37,
+    name: "Yorsbel Arguedas",
+    badge: null,
+    text: "Muy buen lugar, buenos barberos, buenos cortes y siempre una buena atención, totalmente recomendado.",
+  },
+  {
+    id: 38,
+    name: "axel sanchez",
+    badge: null,
+    text: "Buen servicio y siempre disponibilidad, muy buenos los tres !!",
+  },
+  {
+    id: 39,
+    name: "Antonio Porras",
+    badge: null,
+    text: "Buen ambiente mas el corte queda elite 👌🏾",
+  },
+  { id: 40, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
+  { id: 41, name: "Arson Salazar", badge: null,                    text: null },
+  { id: 42, name: "David Vargas",  badge: null,                    text: null },
+  { id: 43, name: "Zerok",  badge: null,                    text: null },
 ]
 
 
