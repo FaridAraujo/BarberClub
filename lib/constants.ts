@@ -53,10 +53,9 @@ export const BARBERS = [
 // Google reviews — add new entries here. reviewCount in layout.tsx is auto-calculated.
 // IDs 9001+ = solo estrellas sin comentario (van primero para no interferir con la numeración)
 export const REVIEWS = [
-  { id: 9001, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 9003, name: "David Vargas",  badge: null,                    text: "Buenos cortes y buena atención y precio" },
-  { id: 9004, name: "Zerok",         badge: null,                    text: null },
-  { id: 9005, name: "Jarret Dixon",  badge: null,                    text: null },
+  { id: 9001, name: "Alejandro LN",  badge: null,                    text: null },
+  { id: 9002, name: "Zerok",         badge: null,                    text: null },
+  { id: 9003, name: "Jarret Dixon",  badge: null,                    text: null },
   // ── Reseñas con comentario — agregar al final con ID siguiente ──────────────
   {
     id: 1,
@@ -435,6 +434,12 @@ export const REVIEWS = [
     name: "Joan Vázquez Álvarez",
     badge: null,
     text: "Muy recomendado, el lugar es muy limpio y la atención desde que se entra es excelente! Los barberos son muy profesionales!",
+  },
+  {
+    id: 64,
+    name: "David Vargas",
+    badge: null,
+    text: "Buenos cortes y buena atención y precio",
   },
 ]
 
