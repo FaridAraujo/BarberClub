@@ -15,6 +15,45 @@ const LNG  = "-84.1351361"
 
 const MAPS_EMBED = `https://www.google.com/maps?q=${LAT},${LNG}&output=embed`
 
+// ─── Map with click-to-load on mobile, always-on on desktop ─────────────────
+function MobileMap({ embedSrc }: { embedSrc: string }) {
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setLoaded(true)
+    }
+  }, [])
+
+  return (
+    <div>
+      {!loaded && (
+        <button
+          onClick={() => setLoaded(true)}
+          className="flex h-[250px] w-full flex-col items-center justify-center gap-3 border border-[#2a2a2a] bg-[#111111] md:hidden"
+          style={{ borderRadius: 4 }}
+          aria-label="Cargar mapa"
+        >
+          <PinIcon />
+          <span className="font-body text-xs uppercase tracking-widest text-[#666666]">
+            Tocar para ver el mapa
+          </span>
+        </button>
+      )}
+      <iframe
+        src={loaded ? embedSrc : undefined}
+        width="100%"
+        style={{ border: "none", borderRadius: 4, filter: "grayscale(100%)" }}
+        referrerPolicy="no-referrer-when-downgrade"
+        allowFullScreen
+        title="Ubicación Barber Club"
+        className={`h-[250px] md:h-[400px] ${loaded ? "block" : "hidden"}`}
+      />
+    </div>
+  )
+}
+
 const NAV_APPS = [
   {
     id:      "google",
@@ -69,52 +108,6 @@ function PinIcon() {
   )
 }
 
-// ─── Map with click-to-load on mobile, always-on on desktop ─────────────────
-// Single iframe — src only activates when ready, so no network request fires
-// on mobile until the user taps. On desktop, a useEffect sets loaded=true
-// immediately after mount so the map loads normally.
-
-function MobileMap({ embedSrc }: { embedSrc: string }) {
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    // Auto-load on desktop (≥768px); mobile waits for the user to tap.
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLoaded(true)
-    }
-  }, [])
-
-  return (
-    <div>
-      {/* Placeholder — mobile only, gone after tap */}
-      {!loaded && (
-        <button
-          onClick={() => setLoaded(true)}
-          className="flex h-[250px] w-full flex-col items-center justify-center gap-3 border border-[#2a2a2a] bg-[#111111] md:hidden"
-          style={{ borderRadius: 4 }}
-          aria-label="Cargar mapa"
-        >
-          <PinIcon />
-          <span className="font-body text-xs uppercase tracking-widest text-[#666666]">
-            Tocar para ver el mapa
-          </span>
-        </button>
-      )}
-
-      {/* Single iframe — src is only set once loaded=true */}
-      <iframe
-        src={loaded ? embedSrc : undefined}
-        width="100%"
-        style={{ border: "none", borderRadius: 4, filter: "grayscale(100%)" }}
-        referrerPolicy="no-referrer-when-downgrade"
-        allowFullScreen
-        title="Ubicación Barber Club"
-        className={`h-[250px] md:h-[400px] ${loaded ? "block" : "hidden"}`}
-      />
-    </div>
-  )
-}
 
 
 const GOOGLE_MAPS_URL   = "https://www.google.com/maps?q=9.9906133,-84.1351361"
@@ -896,7 +889,6 @@ export default function Visit() {
           {/* ── Right: map ── */}
           <div ref={rightRef} className="flex flex-col gap-4">
 
-            {/* Mobile: click-to-load placeholder (avoids loading ~2MB of Maps JS on page load) */}
             <MobileMap embedSrc={MAPS_EMBED} />
 
             {/* ── Nav app links ── */}
