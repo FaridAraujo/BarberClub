@@ -54,9 +54,9 @@ export const BARBERS = [
 // IDs 9001+ = solo estrellas sin comentario (van primero para no interferir con la numeración)
 export const REVIEWS = [
   { id: 9001, name: "Alejandro LN",  badge: "Local Guide" as const, text: null },
-  { id: 9002, name: "Arson Salazar", badge: null,                    text: null },
   { id: 9003, name: "David Vargas",  badge: null,                    text: "Buenos cortes y buena atención y precio" },
   { id: 9004, name: "Zerok",         badge: null,                    text: null },
+  { id: 9005, name: "Jarret Dixon",  badge: null,                    text: null },
   // ── Reseñas con comentario — agregar al final con ID siguiente ──────────────
   {
     id: 1,
@@ -405,6 +405,36 @@ export const REVIEWS = [
     name: "eduard bastos",
     badge: null,
     text: "Vengo desde Alajuela solo por cortármelo con Arson, ya que siento que vale la pena.!! E ido a otros lados y siento que ningún a valido la pena 👌🏽",
+  },
+  {
+    id: 59,
+    name: "Jefferson Vargas",
+    badge: null,
+    text: "Excelente atencion al cliente, excelente servicio",
+  },
+  {
+    id: 60,
+    name: "Ian Benavides",
+    badge: null,
+    text: "Buen servicio al cliente y buena técnica de corte.Totalmente recomendado.",
+  },
+  {
+    id: 61,
+    name: "ADRIAN 1215",
+    badge: null,
+    text: "Excelente servicio",
+  },
+  {
+    id: 62,
+    name: "axel gabriel noguera ortega",
+    badge: null,
+    text: "Excelente servicio",
+  },
+  {
+    id: 63,
+    name: "Joan Vázquez Álvarez",
+    badge: null,
+    text: "Muy recomendado, el lugar es muy limpio y la atención desde que se entra es excelente! Los barberos son muy profesionales!",
   },
 ]
 
