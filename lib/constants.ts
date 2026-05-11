@@ -441,6 +441,12 @@ export const REVIEWS = [
     badge: null,
     text: "Buenos cortes y buena atención y precio",
   },
+  {
+    id: 65,
+    name: "raul espinoza",
+    badge: null,
+    text: "Excelente servicio",
+  },
 ]
 
 
