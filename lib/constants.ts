@@ -447,6 +447,30 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente servicio",
   },
+  {
+    id: 66,
+    name: "Bryan",
+    badge: null,
+    text: "Excelente servicio en Barber Club, desde que uno llega lo atienden con amabilidad y profesionalismo. El corte siempre queda exactamente como lo quiero, con mucha atención a los detalles y un ambiente muy cómodo. Sin duda una barbería totalmente recomendada.",
+  },
+  {
+    id: 67,
+    name: "Alejandro Sosa",
+    badge: null,
+    text: "Soy cliente regular de Barber Club y siempre mantienen un nivel de servicio excelente. Los barberos son muy profesionales, el ambiente es agradable y siempre salgo satisfecho con el corte. Se nota la dedicación y la calidad en cada detalle. Súper recomendados.",
+  },
+  {
+    id: 68,
+    name: "Kevin Rodriguez",
+    badge: null,
+    text: "Excelente servicio.",
+  },
+  {
+    id: 69,
+    name: "Daniel Arce",
+    badge: null,
+    text: "La mejor barbería, no los cambio por nada. Un excelente servicio y muy dedicados en su trabajo.",
+  },
 ]
 
 
