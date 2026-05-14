@@ -471,6 +471,12 @@ export const REVIEWS = [
     badge: null,
     text: "La mejor barbería, no los cambio por nada. Un excelente servicio y muy dedicados en su trabajo.",
   },
+  {
+    id: 70,
+    name: "Brandon Quesada",
+    badge: null,
+    text: "La mejor barbería de Heredia.",
+  },
 ]
 
 
