@@ -477,6 +477,12 @@ export const REVIEWS = [
     badge: null,
     text: "La mejor barbería de Heredia.",
   },
+  {
+    id: 71,
+    name: "Genessis Gazo Mata",
+    badge: null,
+    text: "Excelente servicio! Muy pacientes con los niños.",
+  },
 ]
 
 
