@@ -138,9 +138,11 @@
     padding: 0;
     background-color: #0a0a0a;
     color: #ffffff;
+    overflow-x: hidden;
   }
   html {
     @apply font-sans;
+    overflow-x: hidden;
   }
   .maplibregl-popup-content {
     @apply bg-transparent! shadow-none! p-0! rounded-none!;
