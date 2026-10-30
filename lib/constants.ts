@@ -483,6 +483,14 @@ export const REVIEWS = [
     badge: null,
     text: "Excelente servicio! Muy pacientes con los niños.",
   },
+  {
+    id: 72,
+    name: "Francisco Sanchez",
+    badge: null,
+    stars: 5,
+    text: "Buen servicio 5 estrellas",
+    date: "Hace 2 meses",
+  },
 ]
 
 

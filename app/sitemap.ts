@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next"
 const SITE_URL = "https://barberclubcr.com"
 
 // Update this date whenever meaningful content changes (new services, team, photos, etc.)
-const LAST_UPDATED = "2026-05-07"
+const LAST_UPDATED = "2026-10-30"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
