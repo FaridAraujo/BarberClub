@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger)
 const HEADLINE_WORDS = ["EL", "CLUB", "DEL", "ESTILO"]
 
 const HERO_WA_URL =
-  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola, ¿hay espacio disponible?")}`
+  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola! ¿En cuánto está el tiempo de espera?")}`
 
 const GOOGLE_REVIEW_URL = "https://g.page/r/CeBRUzR_CAmwEBM/review"
 const SHARP_STAR = "M12,2 L13.76,9.57 L21.51,8.91 L14.85,12.93 L17.88,20.09 L12,15 L6.12,20.09 L9.15,12.93 L2.49,8.91 L10.24,9.57 Z"
@@ -250,7 +250,7 @@ function MapPickerSheet({
 // ─── WhatsApp barber picker ───────────────────────────────────────────────────
 
 function WaPickerSheet({ onClose }: { onClose: () => void }) {
-  const WA_TEXT = encodeURIComponent("Hola, ¿hay espacio disponible?")
+  const WA_TEXT = encodeURIComponent("Hola! ¿En cuánto está el tiempo de espera?")
 
   return (
     <AnimatePresence>
@@ -658,6 +658,14 @@ export default function Hero({ logoSrc }: HeroProps) {
           >
             ·
           </span>
+
+          {/* Walk-in badge */}
+          <span className="font-body text-xs uppercase tracking-widest text-[#555555]">
+            Sin cita
+          </span>
+
+          {/* Divider */}
+          <span className="text-xs text-[#2a2a2a]">·</span>
 
           {/* Location link — opens map picker on mobile, confirm popup on desktop */}
           <a

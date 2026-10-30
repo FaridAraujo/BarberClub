@@ -873,8 +873,21 @@ export default function Visit() {
               ))}
             </div>
 
+            {/* ── Walk-in notice ── */}
+            <div className="mt-4 flex items-start gap-3 border border-[#1a1a1a] px-4 py-3" style={{ borderRadius: 4 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0" aria-hidden>
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span className="font-body text-xs text-[#888888] leading-relaxed">
+                <span className="text-white">Sin cita previa</span> — solo llegá, hacé fila y listo.
+              </span>
+            </div>
+
             {/* ── Parking notice ── */}
-            <div className="mt-6 flex items-start gap-3 border border-[#1a1a1a] px-4 py-3" style={{ borderRadius: 4 }}>
+            <div className="mt-3 flex items-start gap-3 border border-[#1a1a1a] px-4 py-3" style={{ borderRadius: 4 }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0" aria-hidden>
                 <polygon points="22,12 17,3.3 7,3.3 2,12 7,20.7 17,20.7" />
                 <path d="M9 15.5V8.5h3.5a2.5 2.5 0 0 1 0 5h-3.5" />

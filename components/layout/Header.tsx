@@ -17,7 +17,7 @@ const NAV_LINKS = [
 const SECTION_IDS = NAV_LINKS.map((l) => l.id)
 
 const WA_LINK =
-  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola, ¿hay espacio disponible?")}`
+  `https://wa.me/${SITE_DATA.whatsapp}?text=${encodeURIComponent("Hola! ¿En cuánto está el tiempo de espera?")}`
 const MAPS_LINK        = "https://www.google.com/maps?q=9.9906133,-84.1351361"
 const GOOGLE_REVIEW_URL = "https://g.page/r/CeBRUzR_CAmwEBM/review"
 
